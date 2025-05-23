@@ -8,7 +8,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="500.0" prefWidth="778.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.CadastrarProController">
+<AnchorPane prefHeight="500.0" prefWidth="778.0" xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.controller.CadastrarProController">
     <children>
         <Label layoutX="20" layoutY="20" style="-fx-font-size: 20;" text="Cadastro de Produto" />
 

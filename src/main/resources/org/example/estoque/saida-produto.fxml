@@ -12,7 +12,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="500.0" prefWidth="778.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.saidaProController">
+<AnchorPane prefHeight="500.0" prefWidth="778.0" xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.controller.saidaProController">
    <children>
       <TabPane prefHeight="517.0" prefWidth="778.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>

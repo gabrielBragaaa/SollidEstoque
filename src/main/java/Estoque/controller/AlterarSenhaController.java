@@ -1,4 +1,4 @@
-package Estoque;
+package Estoque.controller;
 
 import Estoque.services.UsuarioService;
 import javafx.event.ActionEvent;

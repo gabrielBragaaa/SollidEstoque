@@ -1,4 +1,4 @@
-package Estoque;
+package Estoque.controller;
 
 import Estoque.config.AppContextProvider;
 import javafx.application.Platform;

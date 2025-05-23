@@ -1,4 +1,4 @@
-package Estoque;
+package Estoque.controller;
 
 import Estoque.Entities.Fornecedor;
 import Estoque.Entities.Produto;

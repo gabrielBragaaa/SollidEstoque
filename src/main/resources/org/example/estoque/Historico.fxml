@@ -10,7 +10,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="479.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.HistoricoController">
+<AnchorPane prefHeight="479.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.controller.HistoricoController">
     <children>
         <HBox spacing="10" layoutX="10" layoutY="10">
             <ComboBox fx:id="filtroUsuario" promptText="Filtrar por usuário" />
