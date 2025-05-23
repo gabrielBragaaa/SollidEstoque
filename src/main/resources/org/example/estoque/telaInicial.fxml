@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.telaInicialController">
+
+    <!-- Barra lateral azul -->
+    <left>
+        <VBox alignment="TOP_CENTER" prefWidth="150.0" spacing="10" style="-fx-background-color: #3333ff;" BorderPane.alignment="CENTER">
+            <children>
+                <Button onAction="#cadastrarProd" prefWidth="130" text="Cadastrar Produto" />
+                <Button onAction="#entradaPro" prefWidth="130" text="Entrada de Produtos" />
+                <Button onAction="#saidaProd" prefWidth="130" text="Saída de Produtos" />
+                <Button onAction="#buscarProd" prefWidth="130" text="Consultar Estoque" />
+                <Button onAction="#gerarRelato" prefWidth="130" text="Gerar Relatório" />
+                <Button onAction="#Historico" prefWidth="130" text="Historicos" />
+                <ImageView fx:id="minhaImagem" fitHeight="58.0" fitWidth="67.0" preserveRatio="true" />
+            <Button mnemonicParsing="false" onAction="#alterarSenha" prefHeight="25.0" prefWidth="129.0" style="-fx-background-color: #00ff99;" text="Alterar senha" />
+                <Button onAction="#sairDaAplicacao" prefHeight="26.0" prefWidth="130" style="-fx-background-color: #ff1a1a;" text="SAIR" />
+            </children>
+            <padding><Insets bottom="10" left="10" right="10" top="20" /></padding>
+        </VBox>
+    </left>
+
+    <!-- Conteúdo principal com logo -->
+    <center>
+        <StackPane style="-fx-background-color: #ffffff;">
+            <children>
+
+                <!-- Logo centralizada -->
+                <ImageView fitHeight="423.0" fitWidth="752.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@imagens/fundoLogoSollid.png" />
+                    </image>
+                </ImageView>
+
+                <!-- Botão (opcionalmente centralizado ou posicionado com StackPane alignment) -->
+            </children>
+        </StackPane>
+    </center>
+</BorderPane>

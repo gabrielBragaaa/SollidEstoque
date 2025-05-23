@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="585.0" prefWidth="764.0" style="-fx-background-color: #bfbfbf;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.GerarRelatoController">
+    <children>
+
+        <!-- Painel lateral com filtros -->
+        <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="98.0" prefHeight="479.0" prefWidth="271.0" spacing="15.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="479.0" AnchorPane.topAnchor="98.0">
+            <children>
+                <HBox spacing="10">
+                    <Label prefHeight="17.0" prefWidth="142.0" text="Tipo de Relatório:" />
+                    <ComboBox fx:id="tipoRelatorioComboBox" prefHeight="25.0" prefWidth="128.0" />
+                </HBox>
+
+                <HBox spacing="10">
+                    <Label prefHeight="17.0" prefWidth="144.0" text="Formato de Exportação:" />
+                    <ComboBox fx:id="formatoExportacaoComboBox" prefHeight="25.0" prefWidth="129.0" />
+                </HBox>
+
+                <Button fx:id="gerarRelatorioButton" onAction="#visualizarRelatorio" prefWidth="200" style="-fx-background-color: #66ff66;" text="Gerar Relatório" />
+            </children>
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </padding>
+        </VBox>
+        <Label layoutX="304.0" layoutY="19.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Gerar Relatório" />
+        <Button layoutX="601.0" layoutY="20.0" onAction="#voltar" style="-fx-background-color: red;" text="HOME" />
+
+        <!-- Tabela de relatórios -->
+        <TableView fx:id="tabelaRelatorio" layoutX="300.0" layoutY="100.0" prefHeight="400.0" prefWidth="450.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0">
+            <!-- Você pode deixar as colunas vazias para adicioná-las dinamicamente no controller -->
+        </TableView>
+
+        <!-- Título e logo -->
+        <ImageView fitHeight="51.0" fitWidth="74.0" layoutX="693.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@imagens/Sollid.png" />
+            </image>
+        </ImageView>
+
+    </children>
+</AnchorPane>
