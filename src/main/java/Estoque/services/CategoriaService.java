@@ -1,7 +1,7 @@
 package Estoque.services;
 
 
-import Estoque.Entities.Categoria;
+import Estoque.entities.Categoria;
 import Estoque.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

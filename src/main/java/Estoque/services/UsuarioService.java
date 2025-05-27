@@ -1,6 +1,6 @@
 package Estoque.services;
 
-import Estoque.Entities.Usuario;
+import Estoque.entities.Usuario;
 import Estoque.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,18 +17,15 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-
     public boolean autenticar(String username, String senha) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(username);
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
             return new BCryptPasswordEncoder().matches(senha, usuario.getPassword());
-
         }
         return false;
     }
 
-    //Altarar senha
     public boolean alterarSenha(String username, String senhaAntiga, String novaSenha) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(username);
         if (usuarioOpt.isPresent()) {
@@ -47,5 +44,11 @@ public class UsuarioService {
             }
         }
         return false;
+    }
+
+    // Slavamneto de usuario
+    public Usuario buscarPorUsername(String username) {
+        return usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado: " + username));
     }
 }

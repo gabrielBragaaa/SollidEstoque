@@ -1,7 +1,7 @@
 package Estoque.services;
 
-import Estoque.Entities.HistoricoAcao;
-import Estoque.Entities.Usuario;
+import Estoque.entities.HistoricoAcao;
+import Estoque.entities.Usuario;
 import Estoque.repositories.HistoricoAcaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

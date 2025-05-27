@@ -1,6 +1,6 @@
 package Estoque.repositories;
 
-import Estoque.Entities.HistoricoAcao;
+import Estoque.entities.HistoricoAcao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

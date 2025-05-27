@@ -1,6 +1,7 @@
 package Estoque.controller;
 
 import Estoque.config.AppContextProvider;
+import Estoque.entities.Usuario;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,10 +20,17 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Controller
-public class telaInicialController implements Initializable {
+public class TelaInicialController implements Initializable {
 
     @FXML
     private ImageView minhaImagem;
+
+    private Usuario usuarioLogado;
+
+    public void setUsuarioLogado(Usuario usuario) {
+        this.usuarioLogado = usuario;
+        System.out.println("Usuário logado: " + usuario.getUsername() + " (ROLE: " + usuario.getRole() + ")");
+    }
 
     @FXML
     public void sairDaAplicacao() {
@@ -46,7 +54,7 @@ public class telaInicialController implements Initializable {
         }
     }
 
-    //Ação para tela de cadastro de produto
+    //tela de cadastro de produto
     @FXML
     public void cadastrarProd(ActionEvent event) {
         try {
@@ -63,13 +71,17 @@ public class telaInicialController implements Initializable {
         }
     }
 
-    //Ação para tela de Remover produto
+    //tela de Remover produto
     @FXML
     public void saidaProd(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/estoque/saida-produto.fxml"));
             loader.setControllerFactory(AppContextProvider.getApplicationContext()::getBean);
             Scene scene = new Scene(loader.load());
+
+            // Obter controller e passar o usuário logado
+            SaidaProController controller = loader.getController();
+            controller.setUsuarioLogado(usuarioLogado);
 
             Stage stage = AppContextProvider.getStage();
             stage.setScene(scene);
@@ -80,7 +92,7 @@ public class telaInicialController implements Initializable {
         }
     }
 
-    //Ação da tela de entrada de produtos
+    //tela de entrada de produtos
     @FXML
     public void entradaPro(ActionEvent event) {
         try {

@@ -1,6 +1,6 @@
 package Estoque.resources;
 
-import Estoque.Entities.Fornecedor;
+import Estoque.entities.Fornecedor;
 import Estoque.services.FornecedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

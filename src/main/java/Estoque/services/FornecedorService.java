@@ -1,7 +1,7 @@
 package Estoque.services;
 
 
-import Estoque.Entities.Fornecedor;
+import Estoque.entities.Fornecedor;
 import Estoque.repositories.FornecedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

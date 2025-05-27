@@ -1,9 +1,7 @@
 package Estoque.resources;
 
-import Estoque.Entities.Categoria;
-import Estoque.Entities.Fornecedor;
+import Estoque.entities.Categoria;
 import Estoque.services.CategoriaService;
-import Estoque.services.FornecedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

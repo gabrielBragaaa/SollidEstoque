@@ -1,8 +1,8 @@
 package Estoque.controller;
 
-import Estoque.Entities.Categoria;
-import Estoque.Entities.Fornecedor;
-import Estoque.Entities.Produto;
+import Estoque.entities.Categoria;
+import Estoque.entities.Fornecedor;
+import Estoque.entities.Produto;
 import Estoque.config.AppContextProvider;
 import Estoque.services.CategoriaService;
 import Estoque.services.FornecedorService;

@@ -1,8 +1,7 @@
 package Estoque.repositories;
 
-import Estoque.Entities.Produto;
+import Estoque.entities.Produto;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.expression.spel.ast.OpOr;
 
 import java.util.List;
 import java.util.Optional;

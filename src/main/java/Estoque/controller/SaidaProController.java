@@ -1,8 +1,8 @@
 package Estoque.controller;
 
-import Estoque.Entities.Fornecedor;
-import Estoque.Entities.Produto;
+import Estoque.entities.Produto;
 import Estoque.config.AppContextProvider;
+import Estoque.entities.Usuario;
 import Estoque.repositories.ProdutoRepository;
 import Estoque.services.ProdutoService;
 import javafx.beans.property.SimpleStringProperty;
@@ -17,14 +17,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
-import org.hibernate.sql.results.graph.Initializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
 
@@ -36,7 +33,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 @Component
-public class saidaProController implements Initializable {
+public class SaidaProController implements Initializable {
 
     @Autowired
     private ProdutoRepository repository;
@@ -132,8 +129,16 @@ public class saidaProController implements Initializable {
 
     private Produto produtoParaRemover;
 
+    private Usuario usuarioLogado;
+
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        if (botaoRemoverProduto != null) { // Adicione uma checagem para evitar NullPointerException
+            botaoRemoverProduto.setVisible(false);
+        }
 
         // Configura as colunas da tabela
 
@@ -192,7 +197,17 @@ public class saidaProController implements Initializable {
         botaoRemoverProduto.setOnAction(event -> removerProdutoSelecionado());
 
         }
+      //Remover visibilidade de botao para usurio sem permissao
+    public void setUsuarioLogado(Usuario usuario) {
+        this.usuarioLogado = usuario;
+        System.out.println("Usuario logado na SaidaProController: " + usuario.getUsername() + ", Role: " + usuario.getRole());
 
+        if (!"ADMIN".equalsIgnoreCase(usuario.getRole())) {
+            botaoRemoverProduto.setVisible(false);
+        } else {
+            botaoRemoverProduto.setVisible(true);
+        }
+    }
 
     private void carregarProdutos() {
         tabelaProdutos.getItems().setAll(repository.findAll());
@@ -505,7 +520,16 @@ public class saidaProController implements Initializable {
     }
 
     @FXML
-    public void confirmarRemocaoProduto() {
+    public void RemoverProduto() {
+        if (!"ADMIN".equalsIgnoreCase(usuarioLogado.getRole())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Acesso Negado");
+            alert.setHeaderText("Permissão Insuficiente");
+            alert.setContentText("Você não tem permissão para remover produtos.");
+            alert.showAndWait();
+            return;
+        }
+
         if (produtoParaRemover != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmação de Remoção");
@@ -553,4 +577,6 @@ public class saidaProController implements Initializable {
             e.printStackTrace();
         }
     }
+
+
 }

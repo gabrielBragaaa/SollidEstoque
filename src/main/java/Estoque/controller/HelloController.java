@@ -1,6 +1,7 @@
 package Estoque.controller;
 
 import Estoque.config.AppContextProvider;
+import Estoque.entities.Usuario;
 import Estoque.services.UsuarioService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,6 +47,7 @@ public class HelloController {
     @FXML
     private Button botaoEntrar;
 
+
     @FXML
     public void initialize() {
         // ENTER no campo de usuário
@@ -63,26 +65,30 @@ public class HelloController {
         });
     }
 
-
     @FXML
     public void onLoginClicked(ActionEvent event) {
         String username = usernameField.getText();
         String password = passwordField.getText();
-
-
 
         if (usuarioService.autenticar(username, password)) {
             loginError.setText("");
             loginSucces.setText("Login realizado com sucesso!");
 
             try {
+                Usuario usuarioLogado = usuarioService.buscarPorUsername(username);
+
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/estoque/telaInicial.fxml"));
                 loader.setControllerFactory(AppContextProvider.getApplicationContext()::getBean);
                 Scene scene = new Scene(loader.load());
 
+                TelaInicialController controller = loader.getController();
+                controller.setUsuarioLogado(usuarioLogado); // <-- Passa o usuário logado
+
                 Stage stage = AppContextProvider.getStage();
                 stage.setScene(scene);
                 stage.setTitle("SOLLID COMERCIO LTDA");
+                stage.show();
+
             } catch (IOException e) {
                 e.printStackTrace();
                 loginError.setText("Erro ao carregar tela de produtos.");

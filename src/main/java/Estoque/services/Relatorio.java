@@ -1,6 +1,6 @@
 package Estoque.services;
 
-import Estoque.Entities.Produto;
+import Estoque.entities.Produto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;

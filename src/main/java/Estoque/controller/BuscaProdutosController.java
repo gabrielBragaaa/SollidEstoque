@@ -1,6 +1,6 @@
 package Estoque.controller;
 
-import Estoque.Entities.Produto;
+import Estoque.entities.Produto;
 import Estoque.config.AppContextProvider;
 import Estoque.repositories.ProdutoRepository;
 import javafx.beans.property.SimpleStringProperty;

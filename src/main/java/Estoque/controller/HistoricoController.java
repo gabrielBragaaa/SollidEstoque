@@ -1,6 +1,6 @@
 package Estoque.controller;
 
-import Estoque.Entities.HistoricoAcao;
+import Estoque.entities.HistoricoAcao;
 import Estoque.config.AppContextProvider;
 import Estoque.repositories.HistoricoAcaoRepository;
 import javafx.collections.FXCollections;

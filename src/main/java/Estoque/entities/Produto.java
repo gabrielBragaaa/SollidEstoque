@@ -1,4 +1,4 @@
-package Estoque.Entities;
+package Estoque.entities;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;

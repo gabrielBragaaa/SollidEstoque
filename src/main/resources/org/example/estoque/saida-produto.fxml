@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="500.0" prefWidth="778.0" xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.controller.saidaProController">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.controller.SaidaProController">
    <children>
       <TabPane prefHeight="517.0" prefWidth="778.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -76,7 +76,7 @@
                         </TableView>
                             <TextField fx:id="campoBuscaRemover" layoutX="14.0" layoutY="27.0" prefHeight="27.0" prefWidth="259.0" promptText="Digite ID ou Código" />
                             <Button fx:id="botaoBuscarRemover" layoutX="283.0" layoutY="27.0" onAction="#buscarProdutoParaRemover" prefHeight="27.0" prefWidth="90.0" text="Buscar" />
-                            <Button fx:id="botaoRemoverProduto" layoutX="400.0" layoutY="27.0" onAction="#confirmarRemocaoProduto" prefHeight="27.0" prefWidth="90.0" style="-fx-background-color: red;" text="Remover" />
+                            <Button fx:id="botaoRemoverProduto" layoutX="400.0" layoutY="27.0" onAction="#RemoverProduto" prefHeight="27.0" prefWidth="90.0" style="-fx-background-color: red;" text="Remover" />
 
                             <ImageView fitHeight="51.0" fitWidth="40.0" layoutX="669.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
@@ -88,7 +88,7 @@
                     </AnchorPane>
                 </content>
             </Tab>
-        </tabs>a
+         </tabs>
       </TabPane>
    </children>
 </AnchorPane>

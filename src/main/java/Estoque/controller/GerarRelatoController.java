@@ -1,6 +1,6 @@
 package Estoque.controller;
 
-import Estoque.Entities.Produto;
+import Estoque.entities.Produto;
 import Estoque.config.AppContextProvider;
 import Estoque.services.Relatorio;
 import javafx.collections.FXCollections;
@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Component

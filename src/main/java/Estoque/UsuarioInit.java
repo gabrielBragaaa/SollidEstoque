@@ -1,8 +1,6 @@
 package Estoque;
 
-import Estoque.Entities.Usuario;
-import Estoque.UsuarioInit;
-import Estoque.repositories.UsuarioRepository;
+import Estoque.entities.Usuario;
 import Estoque.repositories.UsuarioRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,9 +28,9 @@ public class UsuarioInit implements CommandLineRunner {
 
             usuarioRepository.save(user);
 
-            System.out.println("Usuário admin criado com sucesso.");
+            System.out.println("Usuário criado com sucesso.");
         } else {
-            System.out.println("Usuário admin já existe.");
+            System.out.println("Usuário já existe.");
         }
     }
 }

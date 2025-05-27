@@ -1,6 +1,6 @@
 package Estoque.repositories;
 
-import Estoque.Entities.Usuario;
+import Estoque.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
