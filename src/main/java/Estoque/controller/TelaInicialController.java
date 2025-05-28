@@ -2,11 +2,13 @@ package Estoque.controller;
 
 import Estoque.config.AppContextProvider;
 import Estoque.entities.Usuario;
+import Estoque.projections.UsuarioAware;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
@@ -20,16 +22,46 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Controller
-public class TelaInicialController implements Initializable {
+public class TelaInicialController implements Initializable, UsuarioAware {
 
     @FXML
     private ImageView minhaImagem;
 
     private Usuario usuarioLogado;
 
+    @FXML
+    private Button historicos;
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        Image imagem = new Image(getClass().getResource("/org/example/estoque/imagens/Sollid.png").toExternalForm());
+        minhaImagem.setImage(imagem);
+
+        // Deixa o ImageView redondo
+        double raio = Math.min(minhaImagem.getFitWidth(), minhaImagem.getFitHeight()) / 2;
+        Circle clip = new Circle(raio, raio, raio);
+        minhaImagem.setClip(clip);
+
+    }
+
     public void setUsuarioLogado(Usuario usuario) {
         this.usuarioLogado = usuario;
-        System.out.println("Usuário logado: " + usuario.getUsername() + " (ROLE: " + usuario.getRole() + ")");
+
+        if (usuario == null) {
+            System.out.println("Usuário está nulo no setUsuarioLogado da TelaInicialController.");
+            // Opcional: desabilitar ou esconder elementos sensíveis, ou mostrar mensagem
+            historicos.setVisible(false);
+            return;  // sai do método para evitar erros
+        }
+
+        System.out.println("Usuário logado na telaInicial: " + usuario.getUsername() + " (ROLE: " + usuario.getRole() + ")");
+        if (!"ADMIN".equalsIgnoreCase(usuario.getRole())) {
+            historicos.setVisible(false);
+        } else {
+            historicos.setVisible(true);
+        }
     }
 
     @FXML
@@ -125,6 +157,7 @@ public class TelaInicialController implements Initializable {
             e.printStackTrace();
         }
     }
+
     @FXML
     public void Historico() {
         try {
@@ -158,17 +191,5 @@ public class TelaInicialController implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-        Image imagem = new Image(getClass().getResource("/org/example/estoque/imagens/Sollid.png").toExternalForm());
-        minhaImagem.setImage(imagem);
-
-        // Deixa o ImageView redondo
-        double raio = Math.min(minhaImagem.getFitWidth(), minhaImagem.getFitHeight()) / 2;
-        Circle clip = new Circle(raio, raio, raio);
-        minhaImagem.setClip(clip);
-
-    }
 
 }

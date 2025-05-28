@@ -2,7 +2,10 @@ package Estoque.controller;
 
 import Estoque.entities.Produto;
 import Estoque.config.AppContextProvider;
+import Estoque.entities.Usuario;
+import Estoque.projections.UsuarioAware;
 import Estoque.repositories.ProdutoRepository;
+import Estoque.util.TelaLoader;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,7 +23,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Component
-public class BuscaProdutosController implements Initializable {
+public class BuscaProdutosController implements Initializable , UsuarioAware {
 
     @Autowired
     private ProdutoRepository repository;
@@ -49,6 +52,8 @@ public class BuscaProdutosController implements Initializable {
     @FXML
     private TextField campoBusca;
 
+    private Usuario usuarioLogado;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Configura as colunas da tabela
@@ -62,6 +67,11 @@ public class BuscaProdutosController implements Initializable {
         preco_unitario.setCellValueFactory(new PropertyValueFactory<>("preco_unitario"));
 
         carregarProdutos();
+    }
+
+    @Override
+    public void setUsuarioLogado(Usuario usuario) {
+        this.usuarioLogado = usuario;
     }
 
     @FXML
@@ -109,17 +119,7 @@ public class BuscaProdutosController implements Initializable {
 
     @FXML
     public void buscarPhome(ActionEvent event){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/estoque/telaInicial.fxml"));
-            loader.setControllerFactory(AppContextProvider.getApplicationContext()::getBean);
-            Scene scene = new Scene(loader.load());
-
-            Stage stage = AppContextProvider.getStage();
-            stage.setScene(scene);
-            stage.setTitle("Voltar");
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        System.out.println("Usuário atual: " + usuarioLogado); // debug
+        TelaLoader.carregarTela("/org/example/estoque/telaInicial.fxml", "Tela Inicial", usuarioLogado);
     }
 }

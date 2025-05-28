@@ -197,7 +197,7 @@ public class SaidaProController implements Initializable {
         botaoRemoverProduto.setOnAction(event -> removerProdutoSelecionado());
 
         }
-      //Remover visibilidade de botao para usurio sem permissao
+        //Remover visibilidade de botao para usurio sem permissao
     public void setUsuarioLogado(Usuario usuario) {
         this.usuarioLogado = usuario;
         System.out.println("Usuario logado na SaidaProController: " + usuario.getUsername() + ", Role: " + usuario.getRole());
