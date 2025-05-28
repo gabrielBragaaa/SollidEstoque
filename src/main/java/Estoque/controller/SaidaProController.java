@@ -3,8 +3,10 @@ package Estoque.controller;
 import Estoque.entities.Produto;
 import Estoque.config.AppContextProvider;
 import Estoque.entities.Usuario;
+import Estoque.projections.UsuarioAware;
 import Estoque.repositories.ProdutoRepository;
 import Estoque.services.ProdutoService;
+import Estoque.util.TelaLoader;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,7 +35,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 @Component
-public class SaidaProController implements Initializable {
+public class SaidaProController implements Initializable, UsuarioAware {
 
     @Autowired
     private ProdutoRepository repository;
@@ -565,18 +567,11 @@ public class SaidaProController implements Initializable {
     @FXML
     public void voltar(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/estoque/telaInicial.fxml"));
-            loader.setControllerFactory(AppContextProvider.getApplicationContext()::getBean);
-            Scene scene = new Scene(loader.load());
+            System.out.println("Usuário atual: " + usuarioLogado); // debug
+            TelaLoader.carregarTela("/org/example/estoque/telaInicial.fxml", "Tela Inicial", usuarioLogado);
 
-            Stage stage = AppContextProvider.getStage();
-            stage.setScene(scene);
-            stage.setTitle("Voltar para tela Inicial");
-            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-
 }

@@ -4,11 +4,14 @@ import Estoque.entities.Produto;
 import Estoque.entities.Fornecedor;
 import Estoque.entities.Categoria;
 import Estoque.config.AppContextProvider;
+import Estoque.entities.Usuario;
+import Estoque.projections.UsuarioAware;
 import Estoque.repositories.ProdutoRepository;
 import Estoque.repositories.FornecedorRepository;
 import Estoque.repositories.CategoriaRepository;
 import Estoque.services.CategoriaService;
 import Estoque.services.FornecedorService;
+import Estoque.util.TelaLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,7 +30,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Component
-public class EntradaProController implements Initializable {
+public class EntradaProController implements Initializable, UsuarioAware {
 
     @Autowired
     private ProdutoRepository produtoRepository;
@@ -68,6 +71,8 @@ public class EntradaProController implements Initializable {
     private ComboBox<Categoria> categoriaCombo;
 
     private Produto produtoAtual;
+
+    private Usuario usuarioLogado;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -111,6 +116,11 @@ public class EntradaProController implements Initializable {
                 setStyle("-fx-font-weight: bold;");
             }
         });
+    }
+
+    @Override
+    public void setUsuarioLogado(Usuario usuario) {
+        this.usuarioLogado = usuario;
     }
 
     public void carregarProdutoParaEdicao(Produto produto) {
@@ -171,17 +181,10 @@ public class EntradaProController implements Initializable {
     @FXML
     public void EntradaHome(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/estoque/telaInicial.fxml"));
-            loader.setControllerFactory(AppContextProvider.getApplicationContext()::getBean);
-            Scene scene = new Scene(loader.load());
-
-            Stage stage = AppContextProvider.getStage();
-            stage.setScene(scene);
-            stage.setTitle("Voltar");
-            stage.show();
+            System.out.println("Usuário atual: " + usuarioLogado); // debug
+            TelaLoader.carregarTela("/org/example/estoque/telaInicial.fxml", "Tela Inicial", usuarioLogado);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 }

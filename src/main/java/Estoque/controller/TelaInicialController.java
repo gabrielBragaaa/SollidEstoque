@@ -3,6 +3,7 @@ package Estoque.controller;
 import Estoque.config.AppContextProvider;
 import Estoque.entities.Usuario;
 import Estoque.projections.UsuarioAware;
+import Estoque.util.TelaLoader;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -73,14 +74,9 @@ public class TelaInicialController implements Initializable, UsuarioAware {
     @FXML
     public void buscarProd(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/estoque/buscar-produtos.fxml"));
-            loader.setControllerFactory(AppContextProvider.getApplicationContext()::getBean);
-            Scene scene = new Scene(loader.load());
+            System.out.println("Usuário atual: " + usuarioLogado); // debug
+            TelaLoader.carregarTela("/org/example/estoque/buscar-produtos.fxml", "Consultar Estoque", usuarioLogado);
 
-            Stage stage = AppContextProvider.getStage();
-            stage.setScene(scene);
-            stage.setTitle("Buscar Produtos");
-            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -90,14 +86,9 @@ public class TelaInicialController implements Initializable, UsuarioAware {
     @FXML
     public void cadastrarProd(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/estoque/cadastrar-produto.fxml"));
-            loader.setControllerFactory(AppContextProvider.getApplicationContext()::getBean);
-            Scene scene = new Scene(loader.load());
+            System.out.println("Usuário atual: " + usuarioLogado); // debug
+            TelaLoader.carregarTela("/org/example/estoque/cadastrar-produto.fxml", "Cadastro de Produtos", usuarioLogado);
 
-            Stage stage = AppContextProvider.getStage();
-            stage.setScene(scene);
-            stage.setTitle("Cadastrar Produtos");
-            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -107,18 +98,9 @@ public class TelaInicialController implements Initializable, UsuarioAware {
     @FXML
     public void saidaProd(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/estoque/saida-produto.fxml"));
-            loader.setControllerFactory(AppContextProvider.getApplicationContext()::getBean);
-            Scene scene = new Scene(loader.load());
+            System.out.println("Usuário atual: " + usuarioLogado); // debug
+            TelaLoader.carregarTela("/org/example/estoque/saida-produto.fxml", "Saida de Produtos", usuarioLogado);
 
-            // Obter controller e passar o usuário logado
-            SaidaProController controller = loader.getController();
-            controller.setUsuarioLogado(usuarioLogado);
-
-            Stage stage = AppContextProvider.getStage();
-            stage.setScene(scene);
-            stage.setTitle("Saída de Produtos");
-            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -128,14 +110,8 @@ public class TelaInicialController implements Initializable, UsuarioAware {
     @FXML
     public void entradaPro(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/estoque/Entrada-produto.fxml"));
-            loader.setControllerFactory(AppContextProvider.getApplicationContext()::getBean);
-            Scene scene = new Scene(loader.load());
-
-            Stage stage = AppContextProvider.getStage();
-            stage.setScene(scene);
-            stage.setTitle("Entrada de Produtos");
-            stage.show();
+            System.out.println("Usuario Atual: " + usuarioLogado);
+            TelaLoader.carregarTela("/org/example/estoque/Entrada-produto.fxml","Entrada de Produtos", usuarioLogado);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -145,14 +121,8 @@ public class TelaInicialController implements Initializable, UsuarioAware {
     @FXML
     public void gerarRelato(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/estoque/gerar-relatorios.fxml"));
-            loader.setControllerFactory(AppContextProvider.getApplicationContext()::getBean);
-            Scene scene = new Scene(loader.load());
-
-            Stage stage = AppContextProvider.getStage();
-            stage.setScene(scene);
-            stage.setTitle("Relatorios");
-            stage.show();
+            System.out.println("Usuario Logado: " + usuarioLogado);
+            TelaLoader.carregarTela("/org/example/estoque/gerar-relatorios.fxml","Gerar Relatorio", usuarioLogado);
         } catch (Exception e) {
             e.printStackTrace();
         }

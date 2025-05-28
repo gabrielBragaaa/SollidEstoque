@@ -2,7 +2,10 @@ package Estoque.controller;
 
 import Estoque.entities.Produto;
 import Estoque.config.AppContextProvider;
+import Estoque.entities.Usuario;
+import Estoque.projections.UsuarioAware;
 import Estoque.services.Relatorio;
+import Estoque.util.TelaLoader;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,7 +20,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class GerarRelatoController {
+public class GerarRelatoController implements UsuarioAware {
 
     @FXML
     private ComboBox<String> tipoRelatorioComboBox;
@@ -32,6 +35,8 @@ public class GerarRelatoController {
     @Autowired
     private Relatorio relatorioService;
 
+    private Usuario usuarioLogado;
+
     @FXML
     public void initialize() {
         tipoRelatorioComboBox.setItems(FXCollections.observableArrayList(
@@ -44,6 +49,11 @@ public class GerarRelatoController {
         formatoExportacaoComboBox.setItems(FXCollections.observableArrayList(
                 "Visualizar", "PDF", "Excel", "Word"
         ));
+    }
+
+    @Override
+    public void setUsuarioLogado(Usuario usuario) {
+        this.usuarioLogado = usuario;
     }
 
     @FXML
@@ -139,14 +149,8 @@ public class GerarRelatoController {
     @FXML
     public void voltar(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/estoque/telaInicial.fxml"));
-            loader.setControllerFactory(AppContextProvider.getApplicationContext()::getBean);
-            Scene scene = new Scene(loader.load());
-
-            Stage stage = AppContextProvider.getStage();
-            stage.setScene(scene);
-            stage.setTitle("SOLLID COMERCIO LTDA");
-            stage.show();
+            System.out.println("Usuario Atual: " + usuarioLogado);
+            TelaLoader.carregarTela("/org/example/estoque/telaInicial.fxml", "Tela Inicial", usuarioLogado);
         } catch (Exception e) {
             e.printStackTrace();
         }

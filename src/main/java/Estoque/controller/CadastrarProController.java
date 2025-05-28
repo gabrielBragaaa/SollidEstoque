@@ -4,9 +4,12 @@ import Estoque.entities.Categoria;
 import Estoque.entities.Fornecedor;
 import Estoque.entities.Produto;
 import Estoque.config.AppContextProvider;
+import Estoque.entities.Usuario;
+import Estoque.projections.UsuarioAware;
 import Estoque.services.CategoriaService;
 import Estoque.services.FornecedorService;
 import Estoque.services.ProdutoService;
+import Estoque.util.TelaLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +22,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class CadastrarProController {
+public class CadastrarProController implements UsuarioAware {
 
     @FXML private TextField nomeField;
     @FXML private TextField codigoField;
@@ -36,6 +39,8 @@ public class CadastrarProController {
 
     @Autowired
     private CategoriaService categoriaService;
+
+    private Usuario usuarioLogado;
 
     @FXML
     public void initialize() {
@@ -80,6 +85,11 @@ public class CadastrarProController {
                 setStyle("-fx-font-weight: bold;");
             }
         });
+    }
+
+    @Override
+    public void setUsuarioLogado(Usuario usuario) {
+        this.usuarioLogado = usuario;
     }
 
     @FXML
@@ -128,14 +138,8 @@ public class CadastrarProController {
     @FXML
     public void cadatroPhome(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/estoque/telaInicial.fxml"));
-            loader.setControllerFactory(AppContextProvider.getApplicationContext()::getBean);
-            Scene scene = new Scene(loader.load());
-
-            Stage stage = AppContextProvider.getStage();
-            stage.setScene(scene);
-            stage.setTitle("Voltar para tela Inicial");
-            stage.show();
+            System.out.println("Usuário atual: " + usuarioLogado); // debug
+            TelaLoader.carregarTela("/org/example/estoque/telaInicial.fxml", "Tela Inicial", usuarioLogado);
         } catch (Exception e) {
             e.printStackTrace();
         }
