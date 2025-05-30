@@ -63,9 +63,10 @@
           </Tab>
             <Tab text="EXCLUIR PRODUTO">
                 <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
                         <children>
-                        <TableView fx:id="segundaTabela" layoutX="8.0" layoutY="75.0" prefHeight="197.0" prefWidth="761.0">
+                            <TableView fx:id="segundaTabela" layoutX="8.0" layoutY="75.0" prefHeight="197.0" prefWidth="761.0"
+                                       onMouseClicked="#selecionarProdutoDaTabela">
                            <columns>
                               <TableColumn fx:id="fornecedorProdutoExcluir" prefWidth="83.0" text="Fornecedor" />
                               <TableColumn fx:id="codigoProdutoExcluir" prefWidth="103.0" text="Codigo" />
@@ -76,7 +77,7 @@
                         </TableView>
                             <TextField fx:id="campoBuscaExcluir" layoutX="14.0" layoutY="27.0" prefHeight="27.0" prefWidth="259.0" promptText="Digite ID ou Código" />
                             <Button fx:id="botaoBuscarExcluir" layoutX="283.0" layoutY="27.0" onAction="#buscarProdutoParaExcluir" prefHeight="27.0" prefWidth="90.0" text="Buscar" />
-                            <Button fx:id="botaoRemoverProduto" layoutX="400.0" layoutY="27.0" onAction="#RemoverProduto" prefHeight="27.0" prefWidth="90.0" style="-fx-background-color: red;" text="Remover" />
+                            <Button fx:id="excluirProduto" layoutX="400.0" layoutY="27.0" onAction="#ExcluirProduto" prefHeight="27.0" prefWidth="90.0" style="-fx-background-color: red;" text="Excluir" />
 
                             <ImageView fitHeight="51.0" fitWidth="40.0" layoutX="669.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                                 <image>

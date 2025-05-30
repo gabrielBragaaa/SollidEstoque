@@ -134,25 +134,22 @@ public class SaidaProController implements Initializable, UsuarioAware {
     private Produto produtoSelecionado;
 
     @FXML
-    private Button botaoRemoverProduto;
+    private Button botaoBuscarVenda;
+
+    //Botao de excluir permanentemente do banco
+    @FXML
+    private Button excluirProduto;
 
     @FXML
-    private Button botaoBuscarExcluir;
+    private Button botaoBuscarExcluir;//Botao da segunda tabela
 
-    private Produto produtoParaRemover;
+    private Produto produtoExcluir;
 
     private Usuario usuarioLogado;
 
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-
-
-        if (botaoRemoverProduto != null) { // NullPointerException
-            botaoRemoverProduto.setVisible(false);
-        }
 
         // Configura as colunas da tabela
 
@@ -173,18 +170,6 @@ public class SaidaProController implements Initializable, UsuarioAware {
 
         tabelaSelecionados.setItems(produtosSelecionados);
 
-        //Seguda Tabela De Excluir
-        nomeProdutoExcluir.setCellValueFactory(new PropertyValueFactory<>("nome"));
-
-        fornecedorProdutoExcluir.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getFornecedor() != null
-                        ? cellData.getValue().getFornecedor().getNome()
-                        : "Não informado"));
-
-        codigoProdutoExcluir.setCellValueFactory(new PropertyValueFactory<>("codigo"));
-        quantidadeInicialExcluir.setCellValueFactory(new PropertyValueFactory<>("quantidade_inicial"));
-        precoUnitarioExcluir.setCellValueFactory(new PropertyValueFactory<>("preco_unitario"));
-
 // Evento de duplo clique para adicionar produto
         tabelaProdutos.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) { // Duplo clique
@@ -197,7 +182,7 @@ public class SaidaProController implements Initializable, UsuarioAware {
             quantidadeSelecionada.setCellFactory(TextFieldTableCell.<Produto, Integer>forTableColumn(new IntegerStringConverter()));
 
 
-            });
+        });
         quantidadeSelecionada.setOnEditCommit(editEvent -> {
             Produto produtoEditado = editEvent.getRowValue();
             int novaQuantidade = editEvent.getNewValue();
@@ -217,18 +202,44 @@ public class SaidaProController implements Initializable, UsuarioAware {
             }
         });
 
-        botaoRemoverProduto.setOnAction(event -> removerProdutoSelecionado());
+        //Seguda Tabela De Excluir
 
+        if (excluirProduto != null) { // NullPointerException
+            excluirProduto.setVisible(false);
         }
-        //Remover visibilidade de botao para usurio sem permissao
+        nomeProdutoExcluir.setCellValueFactory(new PropertyValueFactory<>("nome"));
+
+        fornecedorProdutoExcluir.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getFornecedor() != null
+                        ? cellData.getValue().getFornecedor().getNome()
+                        : "Não informado"));
+
+        codigoProdutoExcluir.setCellValueFactory(new PropertyValueFactory<>("codigo"));
+        quantidadeInicialExcluir.setCellValueFactory(new PropertyValueFactory<>("quantidade_inicial"));
+        precoUnitarioExcluir.setCellValueFactory(new PropertyValueFactory<>("preco_unitario"));
+
+
+//        excluirProduto.setOnAction(event -> removerProdutoSelecionado());
+
+        //Botao de slecionar produto para excluir permanentemente do banco
+        segundaTabela.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                produtoExcluir = newSelection;
+                excluirProduto.setVisible(true);
+            }
+        });
+
+    }
+
+    //Remover visibilidade de botao para usurio sem permissao
     public void setUsuarioLogado(Usuario usuario) {
         this.usuarioLogado = usuario;
         System.out.println("Usuario logado na SaidaProController: " + usuario.getUsername() + ", Role: " + usuario.getRole());
 
         if (!"ADMIN".equalsIgnoreCase(usuario.getRole())) {
-            botaoRemoverProduto.setVisible(false);
+            excluirProduto.setVisible(false);
         } else {
-            botaoRemoverProduto.setVisible(true);
+            excluirProduto.setVisible(true);
         }
     }
 
@@ -450,7 +461,7 @@ public class SaidaProController implements Initializable, UsuarioAware {
                 header.setAlignment(Element.ALIGN_CENTER);
                 document.add(header);
 
-//                Paragraph nf = new Paragraph("")
+                //Paragraph nf = new Paragraph("")
 
                 Paragraph endereco = new Paragraph("Praça da Bandeira\nCNPJ: 11.489.912/0001-95\n\n", regularFont);
                 endereco.setAlignment(Element.ALIGN_CENTER);
@@ -519,51 +530,51 @@ public class SaidaProController implements Initializable, UsuarioAware {
             return;
         }
 
-        produtoParaRemover = null;
+        produtoExcluir = null;
+        excluirProduto.setDisable(true); // Desativa o botão por padrão
+
         List<Produto> produtosEncontrados = new ArrayList<>();
 
-        // ✅ Tenta buscar por código primeiro
+        // Busca por código
         Optional<Produto> porCodigo = repository.findByCodigo(textoBusca);
         porCodigo.ifPresent(produtosEncontrados::add);
 
-        // ✅ Tenta buscar por ID se for numérico e ainda não encontrou por código
+        // Busca por ID, se for numérico
         if (produtosEncontrados.isEmpty()) {
             try {
                 Long id = Long.parseLong(textoBusca);
                 Optional<Produto> porId = repository.findById(id);
                 porId.ifPresent(produtosEncontrados::add);
             } catch (NumberFormatException ignored) {
-                // Ignorado — não é um número válido
+                // Não é um número
             }
         }
 
-        // ✅ Se ainda não encontrou, busca parcial por nome
+        // Busca por nome parcial
         if (produtosEncontrados.isEmpty()) {
             produtosEncontrados = repository.findByNomeContainingIgnoreCase(textoBusca);
         }
 
-        // ✅ Se ainda não encontrou, busca por nome da categoria
+        // Busca por categoria
         if (produtosEncontrados.isEmpty()) {
             produtosEncontrados = repository.findByCategoriaNomeContainingIgnoreCase(textoBusca);
         }
 
-        // ✅ Resultado final
+        // Resultado final
         if (!produtosEncontrados.isEmpty()) {
             ObservableList<Produto> dados = FXCollections.observableArrayList(produtosEncontrados);
             segundaTabela.setItems(dados);
 
             if (produtosEncontrados.size() == 1) {
-                produtoParaRemover = produtosEncontrados.get(0);
-                botaoRemoverProduto.setVisible(true);
+                produtoExcluir = produtosEncontrados.get(0);
+                segundaTabela.getSelectionModel().select(0); // Seleciona o item na tabela
+                excluirProduto.setDisable(false); // Habilita botão
             } else {
-                produtoParaRemover = null;
-                botaoRemoverProduto.setVisible(false);
-                mostrarAlerta("Foram encontrados múltiplos produtos. Selecione um para excluir.", Alert.AlertType.INFORMATION);
+                mostrarAlerta("Foram encontrados múltiplos produtos. Selecione um na tabela para excluir.", Alert.AlertType.INFORMATION);
             }
         } else {
             mostrarAlerta("Nenhum produto encontrado com esse termo.", Alert.AlertType.WARNING);
-            segundaTabela.setItems(FXCollections.observableArrayList());
-            botaoRemoverProduto.setVisible(false);
+            segundaTabela.setItems(FXCollections.observableArrayList()); // limpa tabela
         }
     }
 
@@ -571,14 +582,15 @@ public class SaidaProController implements Initializable, UsuarioAware {
     @FXML
     public void selecionarProdutoDaTabela() {
         Produto selecionado = segundaTabela.getSelectionModel().getSelectedItem();
+        System.out.println("Produto selecionado na tabela: " + selecionado);
         if (selecionado != null) {
-            produtoParaRemover = selecionado;
-            botaoRemoverProduto.setVisible(true);
+            produtoExcluir = selecionado;
+            excluirProduto.setVisible(true);
         }
     }
 
     @FXML
-    public void RemoverProduto() {
+    public void ExcluirProduto() {
         if (!"ADMIN".equalsIgnoreCase(usuarioLogado.getRole())) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Acesso Negado");
@@ -588,16 +600,16 @@ public class SaidaProController implements Initializable, UsuarioAware {
             return;
         }
 
-        if (produtoParaRemover != null) {
+        if (produtoExcluir != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmação de Remoção");
             alert.setHeaderText("Remover Produto");
-            alert.setContentText("Deseja remover permanentemente o produto: " + produtoParaRemover.getNome() + "?");
+            alert.setContentText("Deseja remover permanentemente o produto: " + produtoExcluir.getNome() + "?");
 
             alert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
                     try {
-                        produtoService.delete((long) produtoParaRemover.getId_produto());
+                        produtoService.delete((long) produtoExcluir.getId_produto());
                         mostrarAlerta("Produto removido com sucesso!", Alert.AlertType.INFORMATION);
                         limparCamposRemover();
                     } catch (Exception e) {
@@ -617,7 +629,7 @@ public class SaidaProController implements Initializable, UsuarioAware {
         fornecedorProdutoExcluir.setText("Fornecedor:");
         quantidadeInicialExcluir.setText(("Quantidade:"));
         precoUnitarioExcluir.setText("Preço Unitario:");
-        produtoParaRemover = null;
+        produtoExcluir = null;
     }
 
     @FXML
