@@ -65,17 +65,17 @@
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                         <children>
-                        <TableView fx:id="tabelaProdutos1" layoutX="8.0" layoutY="75.0" prefHeight="197.0" prefWidth="761.0">
+                        <TableView fx:id="segundaTabela" layoutX="8.0" layoutY="75.0" prefHeight="197.0" prefWidth="761.0">
                            <columns>
-                              <TableColumn fx:id="fornecedorProdutoRemove" prefWidth="83.0" text="Fornecedor" />
-                              <TableColumn fx:id="codigoProdutoRemover" prefWidth="103.0" text="Codigo" />
-                              <TableColumn fx:id="nomeProdutoRemover" prefWidth="289.0" text="Produto" />
-                              <TableColumn fx:id="quantidadeInicialRemove" prefWidth="113.0" text="Qtd." />
-                              <TableColumn fx:id="precoUnitarioRemove" prefWidth="165.0" text="Preço" />
+                              <TableColumn fx:id="fornecedorProdutoExcluir" prefWidth="83.0" text="Fornecedor" />
+                              <TableColumn fx:id="codigoProdutoExcluir" prefWidth="103.0" text="Codigo" />
+                              <TableColumn fx:id="nomeProdutoExcluir" prefWidth="289.0" text="Produto" />
+                              <TableColumn fx:id="quantidadeInicialExcluir" prefWidth="113.0" text="Qtd." />
+                              <TableColumn fx:id="precoUnitarioExcluir" prefWidth="165.0" text="Preço" />
                            </columns>
                         </TableView>
-                            <TextField fx:id="campoBuscaRemover" layoutX="14.0" layoutY="27.0" prefHeight="27.0" prefWidth="259.0" promptText="Digite ID ou Código" />
-                            <Button fx:id="botaoBuscarRemover" layoutX="283.0" layoutY="27.0" onAction="#buscarProdutoParaRemover" prefHeight="27.0" prefWidth="90.0" text="Buscar" />
+                            <TextField fx:id="campoBuscaExcluir" layoutX="14.0" layoutY="27.0" prefHeight="27.0" prefWidth="259.0" promptText="Digite ID ou Código" />
+                            <Button fx:id="botaoBuscarExcluir" layoutX="283.0" layoutY="27.0" onAction="#buscarProdutoParaExcluir" prefHeight="27.0" prefWidth="90.0" text="Buscar" />
                             <Button fx:id="botaoRemoverProduto" layoutX="400.0" layoutY="27.0" onAction="#RemoverProduto" prefHeight="27.0" prefWidth="90.0" style="-fx-background-color: red;" text="Remover" />
 
                             <ImageView fitHeight="51.0" fitWidth="40.0" layoutX="669.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">

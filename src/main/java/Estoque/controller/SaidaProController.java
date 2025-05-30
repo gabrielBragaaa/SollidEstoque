@@ -31,7 +31,10 @@ import java.io.*;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Component
@@ -45,6 +48,9 @@ public class SaidaProController implements Initializable, UsuarioAware {
 
     @FXML
     private TableView<Produto> tabelaProdutos;
+
+    @FXML
+    private TableView<Produto> segundaTabela;
 
     @FXML
     private TableColumn<Produto, Long> id_produto;
@@ -77,19 +83,20 @@ public class SaidaProController implements Initializable, UsuarioAware {
     private TableColumn<Produto, String> fornecedorSelecionado;
 
     @FXML
-    private TableColumn<Produto, String> nomeProdutoRemover;
+    private TableColumn<Produto, String> nomeProdutoExcluir;
 
     @FXML
-    private TableColumn<Produto, Long> codigoProdutoRemover;
+    private TableColumn<Produto, String> fornecedorProdutoExcluir;
 
     @FXML
-    private TableColumn<Produto,String> fornecedorProdutoRemove;
+    private TableColumn<Produto, Long> codigoProdutoExcluir;
 
     @FXML
-    private TableColumn<Produto, Long> quantidadeInicialRemove;
+    private TableColumn<Produto, Integer> quantidadeInicialExcluir;
 
     @FXML
-    private TableColumn<Produto, Double> precoUnitarioRemove;
+    private TableColumn<Produto, Double> precoUnitarioExcluir;
+
 
     @FXML
     private TextField campoBuscaVenda;
@@ -98,7 +105,7 @@ public class SaidaProController implements Initializable, UsuarioAware {
     private TextField campoQuantidadeSaida;
 
     @FXML
-    private TextField campoBuscaRemover;
+    private TextField campoBuscaExcluir;
 
     @FXML
     private Label labelProduto;
@@ -129,6 +136,9 @@ public class SaidaProController implements Initializable, UsuarioAware {
     @FXML
     private Button botaoRemoverProduto;
 
+    @FXML
+    private Button botaoBuscarExcluir;
+
     private Produto produtoParaRemover;
 
     private Usuario usuarioLogado;
@@ -138,7 +148,9 @@ public class SaidaProController implements Initializable, UsuarioAware {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        if (botaoRemoverProduto != null) { // Adicione uma checagem para evitar NullPointerException
+
+
+        if (botaoRemoverProduto != null) { // NullPointerException
             botaoRemoverProduto.setVisible(false);
         }
 
@@ -151,9 +163,6 @@ public class SaidaProController implements Initializable, UsuarioAware {
         quantidade_inicial.setCellValueFactory(new PropertyValueFactory<>("quantidade_inicial"));
         preco_unitario.setCellValueFactory(new PropertyValueFactory<>("preco_unitario"));
 
-
-        carregarProdutos();
-
         fornecedorSelecionado.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getFornecedor() != null
                         ? cellData.getValue().getFornecedor().getNome()
@@ -163,6 +172,18 @@ public class SaidaProController implements Initializable, UsuarioAware {
         precoSelecionado.setCellValueFactory(new PropertyValueFactory<>("preco_unitario"));
 
         tabelaSelecionados.setItems(produtosSelecionados);
+
+        //Seguda Tabela De Excluir
+        nomeProdutoExcluir.setCellValueFactory(new PropertyValueFactory<>("nome"));
+
+        fornecedorProdutoExcluir.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getFornecedor() != null
+                        ? cellData.getValue().getFornecedor().getNome()
+                        : "Não informado"));
+
+        codigoProdutoExcluir.setCellValueFactory(new PropertyValueFactory<>("codigo"));
+        quantidadeInicialExcluir.setCellValueFactory(new PropertyValueFactory<>("quantidade_inicial"));
+        precoUnitarioExcluir.setCellValueFactory(new PropertyValueFactory<>("preco_unitario"));
 
 // Evento de duplo clique para adicionar produto
         tabelaProdutos.setOnMouseClicked(event -> {
@@ -429,7 +450,9 @@ public class SaidaProController implements Initializable, UsuarioAware {
                 header.setAlignment(Element.ALIGN_CENTER);
                 document.add(header);
 
-                Paragraph endereco = new Paragraph("Praça da Bandeira\nCNPJ: 00.000.000/0001-00\n\n", regularFont);
+//                Paragraph nf = new Paragraph("")
+
+                Paragraph endereco = new Paragraph("Praça da Bandeira\nCNPJ: 11.489.912/0001-95\n\n", regularFont);
                 endereco.setAlignment(Element.ALIGN_CENTER);
                 document.add(endereco);
 
@@ -445,7 +468,7 @@ public class SaidaProController implements Initializable, UsuarioAware {
 
                     document.add(new Paragraph(String.format("Item %02d", count++), boldFont));
                     document.add(new Paragraph("Produto: " + p.getNome(), regularFont));
-                    document.add(new Paragraph("fornecedor" + p.getFornecedor(), regularFont));
+                    document.add(new Paragraph("" + p.getFornecedor(), regularFont));
                     document.add(new Paragraph("Quantidade: " + p.getQuantidade_inicial(), regularFont));
                     document.add(new Paragraph(String.format("Preço Unitário: R$ %.2f", p.getPreco_unitario()), regularFont));
                     document.add(new Paragraph(String.format("Subtotal: R$ %.2f", subtotal), regularFont));
@@ -488,36 +511,69 @@ public class SaidaProController implements Initializable, UsuarioAware {
 
 
     @FXML
-    public void buscarProdutoParaRemover() {
-        String textoBusca = campoBuscaRemover.getText();
+    public void buscarProdutoParaExcluir() {
+        String textoBusca = campoBuscaExcluir.getText().trim();
 
-        if (textoBusca != null && !textoBusca.trim().isEmpty()) {
+        if (textoBusca == null || textoBusca.isEmpty()) {
+            mostrarAlerta("Digite o ID, Código, Nome ou Categoria do produto!", Alert.AlertType.WARNING);
+            return;
+        }
+
+        produtoParaRemover = null;
+        List<Produto> produtosEncontrados = new ArrayList<>();
+
+        // ✅ Tenta buscar por código primeiro
+        Optional<Produto> porCodigo = repository.findByCodigo(textoBusca);
+        porCodigo.ifPresent(produtosEncontrados::add);
+
+        // ✅ Tenta buscar por ID se for numérico e ainda não encontrou por código
+        if (produtosEncontrados.isEmpty()) {
             try {
-                // Tenta buscar pelo ID
                 Long id = Long.parseLong(textoBusca);
-                produtoParaRemover = repository.findById(id).orElse(null);
-            } catch (NumberFormatException e) {
-                // buscar pelo Código
-                produtoParaRemover = repository.findByCodigo(textoBusca).orElse(null);
-
+                Optional<Produto> porId = repository.findById(id);
+                porId.ifPresent(produtosEncontrados::add);
+            } catch (NumberFormatException ignored) {
+                // Ignorado — não é um número válido
             }
+        }
 
-            if (produtoParaRemover != null) {
-                nomeProdutoRemover.setText("Produto: " + produtoParaRemover.getNome());
-                codigoProdutoRemover.setText("Código: " + produtoParaRemover.getCodigo());
-                fornecedorProdutoRemove.setText("Fornecedor: " + produtoParaRemover.getFornecedor());
-                quantidadeInicialRemove.setText("Quantidade Inicial: " + produtoParaRemover.getQuantidade_inicial());
-                precoUnitarioRemove.setText("Preço Unitario: " + produtoParaRemover.getPreco_unitario());
+        // ✅ Se ainda não encontrou, busca parcial por nome
+        if (produtosEncontrados.isEmpty()) {
+            produtosEncontrados = repository.findByNomeContainingIgnoreCase(textoBusca);
+        }
+
+        // ✅ Se ainda não encontrou, busca por nome da categoria
+        if (produtosEncontrados.isEmpty()) {
+            produtosEncontrados = repository.findByCategoriaNomeContainingIgnoreCase(textoBusca);
+        }
+
+        // ✅ Resultado final
+        if (!produtosEncontrados.isEmpty()) {
+            ObservableList<Produto> dados = FXCollections.observableArrayList(produtosEncontrados);
+            segundaTabela.setItems(dados);
+
+            if (produtosEncontrados.size() == 1) {
+                produtoParaRemover = produtosEncontrados.get(0);
+                botaoRemoverProduto.setVisible(true);
             } else {
-                mostrarAlerta("Produto não encontrado.", Alert.AlertType.WARNING);
-                nomeProdutoRemover.setText("Produto:");
-                codigoProdutoRemover.setText("Código:");
-                fornecedorProdutoRemove.setText("Fornecedor:");
-                quantidadeInicialRemove.setText(("Quantidade:"));
-                precoUnitarioRemove.setText("Preço Unitario:");
+                produtoParaRemover = null;
+                botaoRemoverProduto.setVisible(false);
+                mostrarAlerta("Foram encontrados múltiplos produtos. Selecione um para excluir.", Alert.AlertType.INFORMATION);
             }
         } else {
-            mostrarAlerta("Digite o ID ou Código do produto!", Alert.AlertType.WARNING);
+            mostrarAlerta("Nenhum produto encontrado com esse termo.", Alert.AlertType.WARNING);
+            segundaTabela.setItems(FXCollections.observableArrayList());
+            botaoRemoverProduto.setVisible(false);
+        }
+    }
+
+
+    @FXML
+    public void selecionarProdutoDaTabela() {
+        Produto selecionado = segundaTabela.getSelectionModel().getSelectedItem();
+        if (selecionado != null) {
+            produtoParaRemover = selecionado;
+            botaoRemoverProduto.setVisible(true);
         }
     }
 
@@ -555,12 +611,12 @@ public class SaidaProController implements Initializable, UsuarioAware {
     }
 
     private void limparCamposRemover() {
-        campoBuscaRemover.clear();
-        nomeProdutoRemover.setText("Produto:");
-        codigoProdutoRemover.setText("Código:");
-        fornecedorProdutoRemove.setText("Fornecedor:");
-        quantidadeInicialRemove.setText(("Quantidade:"));
-        precoUnitarioRemove.setText("Preço Unitario:");
+        campoBuscaExcluir.clear();
+        nomeProdutoExcluir.setText("Produto:");
+        codigoProdutoExcluir.setText("Código:");
+        fornecedorProdutoExcluir.setText("Fornecedor:");
+        quantidadeInicialExcluir.setText(("Quantidade:"));
+        precoUnitarioExcluir.setText("Preço Unitario:");
         produtoParaRemover = null;
     }
 

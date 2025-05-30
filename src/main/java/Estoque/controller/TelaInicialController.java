@@ -33,7 +33,6 @@ public class TelaInicialController implements Initializable, UsuarioAware {
     @FXML
     private Button historicos;
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
