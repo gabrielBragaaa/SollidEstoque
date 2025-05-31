@@ -6,6 +6,7 @@ import Estoque.entities.Usuario;
 import Estoque.projections.UsuarioAware;
 import Estoque.repositories.ProdutoRepository;
 import Estoque.services.ProdutoService;
+import Estoque.util.NotaFiscalUtil;
 import Estoque.util.TelaLoader;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -140,8 +141,9 @@ public class SaidaProController implements Initializable, UsuarioAware {
     @FXML
     private Button excluirProduto;
 
+    //Botao da segunda tabela
     @FXML
-    private Button botaoBuscarExcluir;//Botao da segunda tabela
+    private Button botaoBuscarExcluir;
 
     private Produto produtoExcluir;
 
@@ -449,6 +451,10 @@ public class SaidaProController implements Initializable, UsuarioAware {
 
         if (file != null) {
             try {
+
+                int numeroNota = NotaFiscalUtil.getProximaNota();
+                String cabecalhoNF = "Nota Fiscal - NF " + numeroNota;
+
                 Document document = new Document(PageSize.A4);
                 PdfWriter.getInstance(document, new FileOutputStream(file));
                 document.open();
@@ -461,11 +467,13 @@ public class SaidaProController implements Initializable, UsuarioAware {
                 header.setAlignment(Element.ALIGN_CENTER);
                 document.add(header);
 
-                //Paragraph nf = new Paragraph("")
-
                 Paragraph endereco = new Paragraph("Praça da Bandeira\nCNPJ: 11.489.912/0001-95\n\n", regularFont);
                 endereco.setAlignment(Element.ALIGN_CENTER);
                 document.add(endereco);
+
+                Paragraph numeroNotaParagrafo = new Paragraph("Nota Fiscal Nº: " + numeroNota + "\n\n", boldFont);
+                numeroNotaParagrafo.setAlignment(Element.ALIGN_CENTER);
+                document.add(numeroNotaParagrafo);
 
                 document.add(new Paragraph("CUPOM FISCAL NÃO ELETRÔNICO", boldFont));
                 document.add(new Paragraph("--------------------------------------------------"));
@@ -494,10 +502,15 @@ public class SaidaProController implements Initializable, UsuarioAware {
 
                 mostrarAlerta("PEDIDO gerado com sucesso!", Alert.AlertType.INFORMATION);
 
+                NotaFiscalUtil.IncrementarNota();
+
+                mostrarAlerta("PDF gerado com sucesso como " + cabecalhoNF, Alert.AlertType.INFORMATION);
+
             } catch (Exception e) {
                 e.printStackTrace();
-                mostrarAlerta("Erro ao gerar PEDIDO: " + e.getMessage(), Alert.AlertType.ERROR);
+                mostrarAlerta("Erro ao gerar PDF: " + e.getMessage(), Alert.AlertType.ERROR);
             }
+
         }
 
         for (Produto produtoSelecionado : produtosSelecionados) {
@@ -515,6 +528,8 @@ public class SaidaProController implements Initializable, UsuarioAware {
                 repository.save(produtoEstoque); // ou produtoService.insert(produtoEstoque);
             }
         }
+
+
     }
 
 
