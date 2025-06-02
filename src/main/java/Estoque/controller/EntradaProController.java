@@ -3,7 +3,6 @@ package Estoque.controller;
 import Estoque.entities.Produto;
 import Estoque.entities.Fornecedor;
 import Estoque.entities.Categoria;
-import Estoque.config.AppContextProvider;
 import Estoque.entities.Usuario;
 import Estoque.projections.UsuarioAware;
 import Estoque.repositories.ProdutoRepository;
@@ -14,14 +13,9 @@ import Estoque.services.FornecedorService;
 import Estoque.util.TelaLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.net.URL;
@@ -33,6 +27,12 @@ import java.util.ResourceBundle;
 public class EntradaProController implements Initializable, UsuarioAware {
 
     @Autowired
+    private FornecedorService fornecedorService;
+
+    @Autowired
+    private CategoriaService categoriaService;
+
+    @Autowired
     private ProdutoRepository produtoRepository;
 
     @Autowired
@@ -42,33 +42,30 @@ public class EntradaProController implements Initializable, UsuarioAware {
     private CategoriaRepository categoriaRepository;
 
     @FXML
-    private TextField buscaField;
+    private TextField txtBuscar;
 
     private Long id_produto;
 
     @FXML
-    private TextField nomeField;
+    private TextField txtNome;
 
     @FXML
-    private TextField codigoField;
+    private TextField txtCodigo;
 
     @FXML
-    private TextField quantidadeField;
+    private TextField txtQuantidade;
 
     @FXML
-    private TextField precoField;
+    private TextField txtPreco;
 
     @FXML
     private ComboBox<Fornecedor> fornecedorCombo;
 
-    @Autowired
-    private FornecedorService fornecedorService;
-
-    @Autowired
-    private CategoriaService categoriaService;
-
     @FXML
     private ComboBox<Categoria> categoriaCombo;
+
+    @FXML
+    private Button btnBuscar;
 
     private Produto produtoAtual;
 
@@ -76,6 +73,13 @@ public class EntradaProController implements Initializable, UsuarioAware {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        txtBuscar.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                btnBuscar.fire();
+            }
+        } );
+
         // Carrega os fornecedores no ComboBox e exibe seus nomes
         List<Fornecedor> fornecedores = fornecedorService.findAll();
         fornecedorCombo.getItems().addAll(fornecedores);
@@ -83,7 +87,7 @@ public class EntradaProController implements Initializable, UsuarioAware {
             @Override
             protected void updateItem(Fornecedor item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty ? "" : item.getNome());
+                setText(empty ? "" : item.getNomeFornecedor());
             }
         });
 
@@ -103,7 +107,7 @@ public class EntradaProController implements Initializable, UsuarioAware {
             @Override
             protected void updateItem(Fornecedor item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty || item == null ? "" : item.getNome());
+                setText(empty || item == null ? "" : item.getNomeFornecedor());
                 setStyle("-fx-font-weight: bold;");
             }
         });
@@ -125,10 +129,10 @@ public class EntradaProController implements Initializable, UsuarioAware {
 
     public void carregarProdutoParaEdicao(Produto produto) {
         this.produtoAtual = produto;
-        nomeField.setText(produto.getNome());
-        codigoField.setText(produto.getCodigo());
-        quantidadeField.setText(String.valueOf(produto.getQuantidade_inicial()));
-        precoField.setText(String.valueOf(produto.getPreco_unitario()));
+        txtNome.setText(produto.getNome());
+        txtCodigo.setText(produto.getCodigo());
+        txtQuantidade.setText(String.valueOf(produto.getQuantidade_inicial()));
+        txtPreco.setText(String.valueOf(produto.getPreco_unitario()));
         fornecedorCombo.setValue(produto.getFornecedor());
         categoriaCombo.setValue(produto.getCategoria());
     }
@@ -139,10 +143,10 @@ public class EntradaProController implements Initializable, UsuarioAware {
             produtoAtual = new Produto();
         }
 
-        produtoAtual.setNome(nomeField.getText());
-        produtoAtual.setCodigo(codigoField.getText());
-        produtoAtual.setQuantidade_inicial(Integer.parseInt(quantidadeField.getText()));
-        produtoAtual.setPreco_unitario(Double.parseDouble(precoField.getText()));
+        produtoAtual.setNome(txtNome.getText());
+        produtoAtual.setCodigo(txtCodigo.getText());
+        produtoAtual.setQuantidade_inicial(Integer.parseInt(txtQuantidade.getText()));
+        produtoAtual.setPreco_unitario(Double.parseDouble(txtPreco.getText()));
         produtoAtual.setFornecedor(fornecedorCombo.getValue());
         produtoAtual.setCategoria(categoriaCombo.getValue());
 
@@ -159,7 +163,7 @@ public class EntradaProController implements Initializable, UsuarioAware {
 
     @FXML
     public void buscarProduto() {
-        String codigoBusca = buscaField.getText();
+        String codigoBusca = txtBuscar.getText();
 
         if (codigoBusca == null || codigoBusca.isBlank()) {
             System.out.println("Campo de busca vazio.");

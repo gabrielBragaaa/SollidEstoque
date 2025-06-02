@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 public class AlterarSenhaController {
 
     @FXML
-    private TextField usernameField;
+    private TextField txtUsername;
 
     @FXML
     private PasswordField oldPasswordField;
@@ -30,7 +30,7 @@ public class AlterarSenhaController {
 
     @FXML
     public void onChangePasswordClicked(ActionEvent event) {
-        String username = usernameField.getText().trim();
+        String username = txtUsername.getText().trim();
         String senhaAntiga = oldPasswordField.getText();
         String novaSenha = newPasswordField.getText();
         String confirmar = confirmPasswordField.getText();

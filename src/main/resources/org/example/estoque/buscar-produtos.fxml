@@ -13,20 +13,20 @@
         <!-- Barra de busca no topo -->
         <HBox fx:id="hBoxBusca" spacing="10" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
             <children>
-                <TextField fx:id="campoBusca" promptText="Buscar por nome ou Id do produto...">
+                <TextField fx:id="txtCampoBuscar" promptText="Buscar por nomeFornecedor ou Id do produto...">
                 </TextField>
-                <Button onAction="#buscarProdutos" text="Buscar" />
+                <Button fx:id="btnBuscarProduto" onAction="#buscarProdutos" text="Buscar" />
                 <Button onAction="#buscarPhome" style="-fx-background-color: red;" text="HOME" />
             </children>
         </HBox>
 
         <!-- Tabela responsiva -->
-        <TableView fx:id="produto" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="70.0">
+        <TableView fx:id="tblProduto" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="70.0">
             <columns>
                 <TableColumn fx:id="fornecedor" prefWidth="137.0" text="Fornecedor" />
                 <TableColumn fx:id="codigo" prefWidth="137.0" text="Codigo" />
                 <TableColumn fx:id="categoria" prefWidth="137.0" text="Categoria" />
-                <TableColumn fx:id="nome" prefWidth="255.0" text="Nome" />
+                <TableColumn fx:id="nomeProduto" prefWidth="255.0" text="Nome" />
                 <TableColumn fx:id="quantidade_inicial" minWidth="0.0" prefWidth="61.0" text="Quantidade no Estoque" />
                 <TableColumn fx:id="preco_unitario" prefWidth="137.0" text="Preço Unitário" />
             </columns>

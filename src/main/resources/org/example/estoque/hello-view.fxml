@@ -37,7 +37,7 @@
                     <Image url="@imagens/usuario.png" />
                 </image>
             </ImageView>
-            <TextField fx:id="usernameField" promptText="Usuário" styleClass="custom-field" />
+            <TextField fx:id="txtUsername" promptText="Usuário" styleClass="custom-field" />
         </HBox>
 
         <!-- Campo de Senha com ícone -->
@@ -49,7 +49,7 @@
             </ImageView>
             <PasswordField fx:id="passwordField" promptText="Senha" styleClass="custom-field" />
         </HBox>
-        <Button fx:id="botaoEntrar" onAction="#onLoginClicked" styleClass="login-button" text="Entrar" />
+        <Button fx:id="btnEntrar" onAction="#onLoginClicked" styleClass="login-button" text="Entrar" />
 
     </children>
 </VBox>

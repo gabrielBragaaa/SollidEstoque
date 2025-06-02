@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 public class HistoricoController implements Initializable {
 
     @FXML
-    private TableView<HistoricoAcao> tabelaHistorico;
+    private TableView<HistoricoAcao> tblHistorico;
 
     @FXML
     private TableColumn<HistoricoAcao, String> colunaUsuario;
@@ -44,7 +44,7 @@ public class HistoricoController implements Initializable {
 
     @FXML
     private ComboBox<String> filtroUsuario;
-//
+
 //    @FXML
 //    private DatePicker filtroDataInicio;
 //
@@ -71,7 +71,7 @@ public class HistoricoController implements Initializable {
     private void carregarHistorico() {
         List<HistoricoAcao> historico = historicoRepository.findAll();
         ObservableList<HistoricoAcao> dados = FXCollections.observableArrayList(historico);
-        tabelaHistorico.setItems(dados);
+        tblHistorico.setItems(dados);
     }
 
     @FXML

@@ -13,14 +13,14 @@ import java.util.Optional;
 public class FornecedorService {
 
     @Autowired
-    private FornecedorRepository repository;
+    private FornecedorRepository fornecedorRepository;
 
     public List<Fornecedor> findAll() {
-        return repository.findAll();
+        return fornecedorRepository.findAll();
     }
 
     public Fornecedor findById(Long id_fornecedor) {
-        Optional<Fornecedor> obj = repository.findById(id_fornecedor);
+        Optional<Fornecedor> obj = fornecedorRepository.findById(id_fornecedor);
         return obj.get();
     }
 

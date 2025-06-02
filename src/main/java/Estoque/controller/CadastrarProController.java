@@ -3,7 +3,6 @@ package Estoque.controller;
 import Estoque.entities.Categoria;
 import Estoque.entities.Fornecedor;
 import Estoque.entities.Produto;
-import Estoque.config.AppContextProvider;
 import Estoque.entities.Usuario;
 import Estoque.projections.UsuarioAware;
 import Estoque.services.CategoriaService;
@@ -12,10 +11,7 @@ import Estoque.services.ProdutoService;
 import Estoque.util.TelaLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,10 +20,10 @@ import java.util.List;
 @Component
 public class CadastrarProController implements UsuarioAware {
 
-    @FXML private TextField nomeField;
-    @FXML private TextField codigoField;
-    @FXML private TextField quantidadeField;
-    @FXML private TextField precoField;
+    @FXML private TextField txtNome;
+    @FXML private TextField txtCodigo;
+    @FXML private TextField txtQuantidade;
+    @FXML private TextField txtPreco;
     @FXML private ComboBox<Fornecedor> fornecedorCombo;
     @FXML private ComboBox<Categoria> categoriaCombo;
 
@@ -51,7 +47,7 @@ public class CadastrarProController implements UsuarioAware {
             @Override
             protected void updateItem(Fornecedor item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty ? "" : item.getNome());
+                setText(empty ? "" : item.getNomeFornecedor());
             }
         });
 
@@ -72,7 +68,7 @@ public class CadastrarProController implements UsuarioAware {
             @Override
             protected void updateItem(Fornecedor item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty || item == null ? "" : item.getNome());
+                setText(empty || item == null ? "" : item.getNomeFornecedor());
                 setStyle("-fx-font-weight: bold;");
             }
         });
@@ -95,7 +91,7 @@ public class CadastrarProController implements UsuarioAware {
     @FXML
     public void salvarProduto() {
         try {
-            String codigo = codigoField.getText();
+            String codigo = txtCodigo.getText();
             Produto existente = null;
 
             try {
@@ -104,7 +100,7 @@ public class CadastrarProController implements UsuarioAware {
                 // Produto não existe, será criado
             }
 
-            int quantidade = Integer.parseInt(quantidadeField.getText());
+            int quantidade = Integer.parseInt(txtQuantidade.getText());
 
             if (existente != null) {
                 // Atualiza apenas a quantidade
@@ -117,10 +113,10 @@ public class CadastrarProController implements UsuarioAware {
             } else {
                 // Cadastra novo produto
                 Produto novo = new Produto();
-                novo.setNome(nomeField.getText());
+                novo.setNome(txtNome.getText());
                 novo.setCodigo(codigo);
                 novo.setQuantidade_inicial(quantidade);
-                novo.setPreco_unitario(Double.parseDouble(precoField.getText()));
+                novo.setPreco_unitario(Double.parseDouble(txtPreco.getText()));
                 novo.setFornecedor(fornecedorCombo.getValue());
                 novo.setCategoria(categoriaCombo.getValue());
 

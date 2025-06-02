@@ -17,7 +17,8 @@ public class Fornecedor implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_fornecedor;
-    private String nome;
+    @Column(name = "nome")
+    private String nomeFornecedor;
 
     @OneToMany(mappedBy = "fornecedor")
     @JsonIgnore
@@ -29,7 +30,7 @@ public class Fornecedor implements Serializable {
 
     public Fornecedor(int id_fornecedor, String nome) {
         this.id_fornecedor = id_fornecedor;
-        this.nome = nome;
+        this.nomeFornecedor = nome;
 
     }
 
@@ -41,13 +42,13 @@ public class Fornecedor implements Serializable {
         this.id_fornecedor = id_fornecedor;
     }
 
-    public String getNome() {
-        return nome;
+    public String getNomeFornecedor() {
+        return nomeFornecedor;
     }
 
-    public void setNome(String nome) {
+    public void setNomeFornecedor(String nomeFornecedor) {
 
-        this.nome = nome;
+        this.nomeFornecedor = nomeFornecedor;
     }
 
     public List<Produto> getProduto() {
@@ -70,7 +71,7 @@ public class Fornecedor implements Serializable {
     @Override
     public String toString() {
         return "Fornecedor{" +
-                "nome='" + nome + '\'' +
+                "nomeFornecedor='" + nomeFornecedor + '\'' +
                 '}';
     }
 }

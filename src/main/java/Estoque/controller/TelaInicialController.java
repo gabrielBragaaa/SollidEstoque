@@ -31,7 +31,7 @@ public class TelaInicialController implements Initializable, UsuarioAware {
     private Usuario usuarioLogado;
 
     @FXML
-    private Button historicos;
+    private Button btnHistoricos;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -52,15 +52,15 @@ public class TelaInicialController implements Initializable, UsuarioAware {
         if (usuario == null) {
             System.out.println("Usuário está nulo no setUsuarioLogado da TelaInicialController.");
             // Opcional: desabilitar ou esconder elementos sensíveis, ou mostrar mensagem
-            historicos.setVisible(false);
+            btnHistoricos.setVisible(false);
             return;  // sai do método para evitar erros
         }
 
         System.out.println("Usuário logado na telaInicial: " + usuario.getUsername() + " (ROLE: " + usuario.getRole() + ")");
         if (!"ADMIN".equalsIgnoreCase(usuario.getRole())) {
-            historicos.setVisible(false);
+            btnHistoricos.setVisible(false);
         } else {
-            historicos.setVisible(true);
+            btnHistoricos.setVisible(true);
         }
     }
 

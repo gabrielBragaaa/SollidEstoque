@@ -18,7 +18,7 @@ import java.io.IOException;
 public class HelloController {
 
     @FXML
-    private TextField usernameField;
+    private TextField txtUsername;
 
     @FXML
     private PasswordField passwordField;
@@ -45,29 +45,29 @@ public class HelloController {
     private UsuarioService usuarioService;
 
     @FXML
-    private Button botaoEntrar;
+    private Button btnEntrar;
 
 
     @FXML
     public void initialize() {
         // ENTER no campo de usuário
-        usernameField.setOnKeyPressed(event -> {
+        txtUsername.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                botaoEntrar.fire();
+                btnEntrar.fire();
             }
         });
 
         // ENTER no campo de senha
         passwordField.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                botaoEntrar.fire();
+                btnEntrar.fire();
             }
         });
     }
 
     @FXML
     public void onLoginClicked(ActionEvent event) {
-        String username = usernameField.getText();
+        String username = txtUsername.getText();
         String password = passwordField.getText();
 
         if (usuarioService.autenticar(username, password)) {
@@ -102,7 +102,7 @@ public class HelloController {
 
     @FXML
     public void onChangePasswordClicked(ActionEvent event) {
-        String username = usernameField.getText();
+        String username = txtUsername.getText();
         String senhaAntiga = oldPasswordField.getText();
         String novaSenha = newPasswordField.getText();
         String confirmar = confirmPasswordField.getText();

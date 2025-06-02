@@ -21,7 +21,7 @@
             <Button text="Limpar Filtros" onAction="#onLimparFiltrosClicked" />
         </HBox>
 
-        <TableView fx:id="tabelaHistorico" layoutY="50" prefWidth="800" prefHeight="400">
+        <TableView fx:id="tblHistorico" layoutY="50" prefWidth="800" prefHeight="400">
             <columns>
                 <TableColumn fx:id="colunaUsuario" text="Usuário" prefWidth="100"/>
                 <TableColumn fx:id="colunaAcao" text="Ação" prefWidth="150"/>

@@ -1,7 +1,6 @@
 package Estoque.controller;
 
 import Estoque.entities.Produto;
-import Estoque.config.AppContextProvider;
 import Estoque.entities.Usuario;
 import Estoque.projections.UsuarioAware;
 import Estoque.repositories.ProdutoRepository;
@@ -9,14 +8,13 @@ import Estoque.util.TelaLoader;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
+import javafx.scene.input.KeyCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.net.URL;
@@ -32,13 +30,13 @@ public class BuscaProdutosController implements Initializable , UsuarioAware {
     private TableColumn<Produto,String> fornecedor;
 
     @FXML
-    private TableView<Produto> produto;
+    private TableView<Produto> tblProduto;
 
     @FXML
     private TableColumn<Produto, String> codigo;
 
     @FXML
-    private TableColumn<Produto, String> nome;
+    private TableColumn<Produto, String> nomeProduto;
 
     @FXML
     private TableColumn<Produto, String> categoria;
@@ -50,17 +48,27 @@ public class BuscaProdutosController implements Initializable , UsuarioAware {
     private TableColumn<Produto, Double> preco_unitario;
 
     @FXML
-    private TextField campoBusca;
+    private TextField txtCampoBuscar;
+
+    @FXML
+    private Button btnBuscarProduto;
 
     private Usuario usuarioLogado;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        txtCampoBuscar.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER){
+                btnBuscarProduto.fire();
+            }
+        });
+
         // Configura as colunas da tabela
         fornecedor.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getFornecedor().getNome()));
+                new SimpleStringProperty(cellData.getValue().getFornecedor().getNomeFornecedor()));
         codigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));
-        nome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        nomeProduto.setCellValueFactory(new PropertyValueFactory<>("nome"));
         categoria.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getCategoria().getNome()));
         quantidade_inicial.setCellValueFactory(new PropertyValueFactory<>("quantidade_inicial"));
@@ -76,14 +84,14 @@ public class BuscaProdutosController implements Initializable , UsuarioAware {
 
     @FXML
     public void buscarProdutos() {
-        String textoBusca = campoBusca.getText();
+        String textoBusca = txtCampoBuscar.getText();
 
         if (textoBusca != null && !textoBusca.trim().isEmpty()) {
             try {
                 Long id = Long.parseLong(textoBusca);
                 Produto produtoEncontrado = repository.findById(id).orElse(null);
                 if (produtoEncontrado != null) {
-                    produto.getItems().setAll(produtoEncontrado);
+                    tblProduto.getItems().setAll(produtoEncontrado);
                     return;
                 }
             } catch (NumberFormatException e) {
@@ -92,19 +100,20 @@ public class BuscaProdutosController implements Initializable , UsuarioAware {
 
             Produto produtoPorCodigo = repository.findByCodigo(textoBusca).orElse(null);
             if (produtoPorCodigo != null) {
-                produto.getItems().setAll(produtoPorCodigo);
+                tblProduto.getItems().setAll(produtoPorCodigo);
                 return;
             }
 
             var produtosPorNome = repository.findByNomeContainingIgnoreCase(textoBusca);
             if (!produtosPorNome.isEmpty()) {
-                produto.getItems().setAll(produtosPorNome);
+                tblProduto.getItems().setAll(produtosPorNome);
                 return;
             }
 
             // Se não encontrou por nome, tenta por categoria
             var produtosPorCategoria = repository.findByCategoriaNomeContainingIgnoreCase(textoBusca);
-            produto.getItems().setAll(produtosPorCategoria);produto.getItems().setAll(produtosPorCategoria);
+            tblProduto.getItems().setAll(produtosPorCategoria);
+            tblProduto.getItems().setAll(produtosPorCategoria);
 
         } else {
             carregarProdutos(); // Se estiver vazio, busca todos
@@ -114,7 +123,7 @@ public class BuscaProdutosController implements Initializable , UsuarioAware {
 
 
     private void carregarProdutos() {
-        produto.getItems().setAll(repository.findAll());
+        tblProduto.getItems().setAll(repository.findAll());
     }
 
     @FXML

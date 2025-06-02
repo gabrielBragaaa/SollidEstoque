@@ -1,7 +1,6 @@
 package Estoque.controller;
 
 import Estoque.entities.Produto;
-import Estoque.config.AppContextProvider;
 import Estoque.entities.Usuario;
 import Estoque.projections.UsuarioAware;
 import Estoque.services.Relatorio;
@@ -9,11 +8,8 @@ import Estoque.util.TelaLoader;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +25,7 @@ public class GerarRelatoController implements UsuarioAware {
     private ComboBox<String> formatoExportacaoComboBox;
 
     @FXML
-    private TableView<Produto> tabelaRelatorio;
+    private TableView<Produto> tblRelatorio;
 
 
     @Autowired
@@ -69,13 +65,13 @@ public class GerarRelatoController implements UsuarioAware {
             case "Produtos com baixo estoque":
                 carregarColunasProduto();
                 List<Produto> produtosBaixoEstoque = relatorioService.getProdutosComBaixoEstoque();
-                tabelaRelatorio.setItems(FXCollections.observableArrayList(produtosBaixoEstoque));
+                tblRelatorio.setItems(FXCollections.observableArrayList(produtosBaixoEstoque));
                 break;
 
             case "Validade dos produtos":
                 carregarColunasProdutoComValidade();
                 List<Produto> produtosComValidade = relatorioService.getProdutosComValidadeProxima();
-                tabelaRelatorio.setItems(FXCollections.observableArrayList(produtosComValidade));
+                tblRelatorio.setItems(FXCollections.observableArrayList(produtosComValidade));
                 break;
 
 
@@ -101,7 +97,7 @@ public class GerarRelatoController implements UsuarioAware {
     }
 
     private void carregarColunasProduto() {
-        tabelaRelatorio.getColumns().clear();
+        tblRelatorio.getColumns().clear();
 
         TableColumn<Produto, String> nomeCol = new TableColumn<>("Nome");
         nomeCol.setCellValueFactory(new PropertyValueFactory<>("nome"));
@@ -115,11 +111,11 @@ public class GerarRelatoController implements UsuarioAware {
         TableColumn<Produto, Double> precoCol = new TableColumn<>("Preço Unitário");
         precoCol.setCellValueFactory(new PropertyValueFactory<>("preco_unitario"));
 
-        tabelaRelatorio.getColumns().addAll(nomeCol, codigoCol, quantidadeCol, precoCol);
+        tblRelatorio.getColumns().addAll(nomeCol, codigoCol, quantidadeCol, precoCol);
     }
 
     private void carregarColunasProdutoComValidade() {
-        tabelaRelatorio.getColumns().clear();
+        tblRelatorio.getColumns().clear();
 
         TableColumn<Produto, String> nomeCol = new TableColumn<>("Nome");
         nomeCol.setCellValueFactory(new PropertyValueFactory<>("nome"));
@@ -136,7 +132,7 @@ public class GerarRelatoController implements UsuarioAware {
         TableColumn<Produto, String> validadeCol = new TableColumn<>("Validade");
         validadeCol.setCellValueFactory(new PropertyValueFactory<>("validade"));
 
-        tabelaRelatorio.getColumns().addAll(nomeCol, codigoCol, quantidadeCol, precoCol, validadeCol);
+        tblRelatorio.getColumns().addAll(nomeCol, codigoCol, quantidadeCol, precoCol, validadeCol);
     }
 
     private void mostrarAlerta(String mensagem) {

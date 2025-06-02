@@ -13,11 +13,11 @@
     <children>
         <Label layoutX="20" layoutY="20" style="-fx-font-size: 20;" text="Cadastro de Produto" />
 
-        <TextField fx:id="nomeField" layoutX="20" layoutY="60" prefWidth="300" promptText="Nome do Produto" />
-        <TextField fx:id="codigoField" layoutX="340" layoutY="60" prefWidth="150" promptText="Código" />
+        <TextField fx:id="txtNome" layoutX="20" layoutY="60" prefWidth="300" promptText="Nome do Produto" />
+        <TextField fx:id="txtCodigo" layoutX="340" layoutY="60" prefWidth="150" promptText="Código" />
 
-        <TextField fx:id="quantidadeField" layoutX="20" layoutY="110" prefWidth="150" promptText="Quantidade Inicial" />
-        <TextField fx:id="precoField" layoutX="190" layoutY="110" prefWidth="150" promptText="Preço Unitário" />
+        <TextField fx:id="txtQuantidade" layoutX="20" layoutY="110" prefWidth="150" promptText="Quantidade Inicial" />
+        <TextField fx:id="txtPreco" layoutX="190" layoutY="110" prefWidth="150" promptText="Preço Unitário" />
 
         <ComboBox fx:id="fornecedorCombo" layoutX="20" layoutY="160" prefWidth="300" promptText="Fornecedor" />
         <ComboBox fx:id="categoriaCombo" layoutX="340" layoutY="160" prefWidth="300" promptText="Categoria" />

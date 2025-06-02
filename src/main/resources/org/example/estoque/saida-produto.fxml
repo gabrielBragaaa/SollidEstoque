@@ -23,7 +23,7 @@
                      <children>
                         <AnchorPane prefHeight="582.0" prefWidth="778.0">
                            <children>
-                              <TableView fx:id="tabelaProdutos" layoutX="14.0" layoutY="54.0" prefHeight="197.0" prefWidth="754.0">
+                              <TableView fx:id="tblProdutos" layoutX="14.0" layoutY="54.0" prefHeight="197.0" prefWidth="754.0">
                                  <columns>
                                      <TableColumn fx:id="fornecedor" prefWidth="69.0" text="Fornecedor" />
                                     <TableColumn fx:id="codigo" prefWidth="117.0" text="Codigo" />
@@ -37,7 +37,7 @@
                                <Button layoutX="482.0" layoutY="362.0" mnemonicParsing="false" onAction="#finalizarSaida" prefHeight="25.0" prefWidth="114.0" style="-fx-background-color: #33ff33;" text="Finalizar Saída" underline="true" />
                               <Button layoutX="658.0" layoutY="14.0" onAction="#voltar" style="-fx-background-color: red;" text="HOME" />
                               <Separator layoutX="602.0" layoutY="255.0" orientation="VERTICAL" prefHeight="265.0" prefWidth="3.0" />
-                               <TableView fx:id="tabelaSelecionados" layoutX="14.0" layoutY="299.0" prefHeight="150.0" prefWidth="461.0">
+                               <TableView fx:id="tblSelecionados" layoutX="14.0" layoutY="299.0" prefHeight="150.0" prefWidth="461.0">
                                    <columns>
                                        <TableColumn fx:id="fornecedorSelecionado" prefWidth="73.0" text="Fornecedor" />
                                        <TableColumn fx:id="nomeSelecionado" prefWidth="216.0" text="Produto" />
@@ -49,8 +49,8 @@
 
                            </children>
                         </AnchorPane>
-                        <TextField fx:id="campoBuscaVenda" layoutX="14.0" layoutY="24.0" prefHeight="25.0" prefWidth="257.0" promptText="Buscar por nome ou ID" />
-                        <Button fx:id="botaoBuscarVenda" layoutX="294.0" layoutY="24.0" onAction="#buscarProdutos" prefHeight="25.0" prefWidth="97.0" text="Buscar Produto" />
+                        <TextField fx:id="txtCampoBuscaVenda" layoutX="14.0" layoutY="24.0" prefHeight="25.0" prefWidth="257.0" promptText="Buscar por nomeFornecedor ou ID" />
+                        <Button fx:id="btnBuscarVenda" layoutX="294.0" layoutY="24.0" onAction="#buscarProdutos" prefHeight="25.0" prefWidth="97.0" text="Buscar Produto" />
 
                          <ImageView fitHeight="51.0" fitWidth="40.0" layoutX="727.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -65,7 +65,7 @@
                 <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" >
                         <children>
-                            <TableView fx:id="segundaTabela" layoutX="8.0" layoutY="75.0" prefHeight="197.0" prefWidth="761.0"
+                            <TableView fx:id="tblExcluirProdutos" layoutX="8.0" layoutY="75.0" prefHeight="197.0" prefWidth="761.0"
                                        onMouseClicked="#selecionarProdutoDaTabela">
                            <columns>
                               <TableColumn fx:id="fornecedorProdutoExcluir" prefWidth="83.0" text="Fornecedor" />
@@ -75,9 +75,9 @@
                               <TableColumn fx:id="precoUnitarioExcluir" prefWidth="165.0" text="Preço" />
                            </columns>
                         </TableView>
-                            <TextField fx:id="campoBuscaExcluir" layoutX="14.0" layoutY="27.0" prefHeight="27.0" prefWidth="259.0" promptText="Digite ID ou Código" />
-                            <Button fx:id="botaoBuscarExcluir" layoutX="283.0" layoutY="27.0" onAction="#buscarProdutoParaExcluir" prefHeight="27.0" prefWidth="90.0" text="Buscar" />
-                            <Button fx:id="excluirProduto" layoutX="400.0" layoutY="27.0" onAction="#ExcluirProduto" prefHeight="27.0" prefWidth="90.0" style="-fx-background-color: red;" text="Excluir" />
+                            <TextField fx:id="txtCampoBuscaExcluir" layoutX="14.0" layoutY="27.0" prefHeight="27.0" prefWidth="259.0" promptText="Digite ID ou Código" />
+                            <Button fx:id="btnBuscarExcluir" layoutX="283.0" layoutY="27.0" onAction="#buscarProdutoParaExcluir" prefHeight="27.0" prefWidth="90.0" text="Buscar" />
+                            <Button fx:id="btnExcluirProduto" layoutX="400.0" layoutY="27.0" onAction="#ExcluirProduto" prefHeight="27.0" prefWidth="90.0" style="-fx-background-color: red;" text="Excluir" />
 
                             <ImageView fitHeight="51.0" fitWidth="40.0" layoutX="669.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                                 <image>

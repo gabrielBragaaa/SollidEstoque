@@ -39,7 +39,7 @@
         <Button layoutX="601.0" layoutY="20.0" onAction="#voltar" style="-fx-background-color: red;" text="HOME" />
 
         <!-- Tabela de relatórios -->
-        <TableView fx:id="tabelaRelatorio" layoutX="300.0" layoutY="100.0" prefHeight="400.0" prefWidth="450.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0">
+        <TableView fx:id="tblRelatorio" layoutX="300.0" layoutY="100.0" prefHeight="400.0" prefWidth="450.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0">
             <!-- Você pode deixar as colunas vazias para adicioná-las dinamicamente no controller -->
         </TableView>
 

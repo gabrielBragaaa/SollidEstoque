@@ -1,7 +1,6 @@
 package Estoque.controller;
 
 import Estoque.entities.Produto;
-import Estoque.config.AppContextProvider;
 import Estoque.entities.Usuario;
 import Estoque.projections.UsuarioAware;
 import Estoque.repositories.ProdutoRepository;
@@ -13,15 +12,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
+import javafx.scene.input.KeyCode;
 import javafx.util.converter.IntegerStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -48,10 +44,13 @@ public class SaidaProController implements Initializable, UsuarioAware {
     private TableColumn<Produto, String> fornecedor;
 
     @FXML
-    private TableView<Produto> tabelaProdutos;
+    private TableView<Produto> tblProdutos;
 
     @FXML
-    private TableView<Produto> segundaTabela;
+    private TableView<Produto> tblExcluirProdutos;
+
+    @FXML
+    private TableView<Produto> tblSelecionados;
 
     @FXML
     private TableColumn<Produto, Long> id_produto;
@@ -67,9 +66,6 @@ public class SaidaProController implements Initializable, UsuarioAware {
 
     @FXML
     private TableColumn<Produto, Double> preco_unitario;
-
-    @FXML
-    private TableView<Produto> tabelaSelecionados;
 
     @FXML
     private TableColumn<Produto, String> nomeSelecionado;
@@ -100,13 +96,13 @@ public class SaidaProController implements Initializable, UsuarioAware {
 
 
     @FXML
-    private TextField campoBuscaVenda;
+    private TextField txtCampoBuscaVenda;
 
     @FXML
-    private TextField campoQuantidadeSaida;
+    private TextField txtCampoQuantidadeSaida;
 
     @FXML
-    private TextField campoBuscaExcluir;
+    private TextField txtCampoBuscaExcluir;
 
     @FXML
     private Label labelProduto;
@@ -135,15 +131,15 @@ public class SaidaProController implements Initializable, UsuarioAware {
     private Produto produtoSelecionado;
 
     @FXML
-    private Button botaoBuscarVenda;
+    private Button btnBuscarVenda;
 
     //Botao de excluir permanentemente do banco
     @FXML
-    private Button excluirProduto;
+    private Button btnExcluirProduto;
 
     //Botao da segunda tabela
     @FXML
-    private Button botaoBuscarExcluir;
+    private Button btnBuscarExcluir;
 
     private Produto produtoExcluir;
 
@@ -153,37 +149,45 @@ public class SaidaProController implements Initializable, UsuarioAware {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+       txtCampoBuscaVenda.setOnKeyPressed(event -> {
+           if (event.getCode() == KeyCode.ENTER){
+               btnBuscarVenda.fire();
+           }
+       });
+
+        txtCampoBuscaExcluir.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER){
+                btnBuscarExcluir.fire();
+            }
+        });
+
         // Configura as colunas da tabela
 
         fornecedor.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getFornecedor().getNome()));
+                new SimpleStringProperty(cellData.getValue().getFornecedor().getNomeFornecedor()));
         codigo.setCellValueFactory(new PropertyValueFactory<>("codigo"));
         nome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         quantidade_inicial.setCellValueFactory(new PropertyValueFactory<>("quantidade_inicial"));
         preco_unitario.setCellValueFactory(new PropertyValueFactory<>("preco_unitario"));
-
         fornecedorSelecionado.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getFornecedor() != null
-                        ? cellData.getValue().getFornecedor().getNome()
-                        : "Não informado"));
+                        ? cellData.getValue().getFornecedor().getNomeFornecedor() : "Não informado"));
         nomeSelecionado.setCellValueFactory(new PropertyValueFactory<>("nome"));
         quantidadeSelecionada.setCellValueFactory(new PropertyValueFactory<>("quantidade_inicial"));
         precoSelecionado.setCellValueFactory(new PropertyValueFactory<>("preco_unitario"));
 
-        tabelaSelecionados.setItems(produtosSelecionados);
+        tblSelecionados.setItems(produtosSelecionados);
 
-// Evento de duplo clique para adicionar produto
-        tabelaProdutos.setOnMouseClicked(event -> {
+        // Evento de duplo clique para adicionar produto
+        tblProdutos.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) { // Duplo clique
-                Produto selecionado = tabelaProdutos.getSelectionModel().getSelectedItem();
+                Produto selecionado = tblProdutos.getSelectionModel().getSelectedItem();
                 if (selecionado != null) {
                     adicionarProdutoSelecionado(selecionado);
                 }
             }
-            tabelaSelecionados.setEditable(true);
+            tblSelecionados.setEditable(true);
             quantidadeSelecionada.setCellFactory(TextFieldTableCell.<Produto, Integer>forTableColumn(new IntegerStringConverter()));
-
-
         });
         quantidadeSelecionada.setOnEditCommit(editEvent -> {
             Produto produtoEditado = editEvent.getRowValue();
@@ -196,7 +200,7 @@ public class SaidaProController implements Initializable, UsuarioAware {
                 if (novaQuantidade > produtoOriginal.getQuantidade_inicial()) {
                     mostrarAlerta("Quantidade excede o estoque disponível (" + produtoOriginal.getQuantidade_inicial() + ").", Alert.AlertType.WARNING);
                     // Força a tabela a voltar ao valor antigo
-                    tabelaSelecionados.refresh();
+                    tblSelecionados.refresh();
                 } else {
                     produtoEditado.setQuantidade_inicial(novaQuantidade);
                     atualizarTotal(); // Atualiza o total após alteração válida
@@ -204,16 +208,19 @@ public class SaidaProController implements Initializable, UsuarioAware {
             }
         });
 
+        produtosSelecionados.clear(); // Limpa a lista ao abrir a tela
+        tblSelecionados.refresh(); // Atualiza a tabela visualmente
+
         //Seguda Tabela De Excluir
 
-        if (excluirProduto != null) { // NullPointerException
-            excluirProduto.setVisible(false);
+        if (btnExcluirProduto != null) { // NullPointerException
+            btnExcluirProduto.setVisible(false);
         }
         nomeProdutoExcluir.setCellValueFactory(new PropertyValueFactory<>("nome"));
 
         fornecedorProdutoExcluir.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getFornecedor() != null
-                        ? cellData.getValue().getFornecedor().getNome()
+                        ? cellData.getValue().getFornecedor().getNomeFornecedor()
                         : "Não informado"));
 
         codigoProdutoExcluir.setCellValueFactory(new PropertyValueFactory<>("codigo"));
@@ -221,13 +228,13 @@ public class SaidaProController implements Initializable, UsuarioAware {
         precoUnitarioExcluir.setCellValueFactory(new PropertyValueFactory<>("preco_unitario"));
 
 
-//        excluirProduto.setOnAction(event -> removerProdutoSelecionado());
+//        btnExcluirProduto.setOnAction(event -> removerProdutoSelecionado());
 
         //Botao de slecionar produto para excluir permanentemente do banco
-        segundaTabela.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+        tblExcluirProdutos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 produtoExcluir = newSelection;
-                excluirProduto.setVisible(true);
+                btnExcluirProduto.setVisible(true);
             }
         });
 
@@ -239,20 +246,20 @@ public class SaidaProController implements Initializable, UsuarioAware {
         System.out.println("Usuario logado na SaidaProController: " + usuario.getUsername() + ", Role: " + usuario.getRole());
 
         if (!"ADMIN".equalsIgnoreCase(usuario.getRole())) {
-            excluirProduto.setVisible(false);
+            btnExcluirProduto.setVisible(false);
         } else {
-            excluirProduto.setVisible(true);
+            btnExcluirProduto.setVisible(true);
         }
     }
 
     private void carregarProdutos() {
-        tabelaProdutos.getItems().setAll(repository.findAll());
+        tblProdutos.getItems().setAll(repository.findAll());
     }
 
 
     @FXML
     public void buscarProdutos() {
-        String textoBusca = campoBuscaVenda.getText();
+        String textoBusca = txtCampoBuscaVenda.getText();
 
         if (textoBusca != null && !textoBusca.trim().isEmpty()) {
             try {
@@ -260,7 +267,7 @@ public class SaidaProController implements Initializable, UsuarioAware {
                 Long id = Long.parseLong(textoBusca);
                 Produto produtoEncontrado = repository.findById(id).orElse(null);
                 if (produtoEncontrado != null) {
-                    tabelaProdutos.getItems().setAll(produtoEncontrado);
+                    tblProdutos.getItems().setAll(produtoEncontrado);
                     return;
                 }
             } catch (NumberFormatException e) {
@@ -270,13 +277,13 @@ public class SaidaProController implements Initializable, UsuarioAware {
             // Se não encontrou pelo ID, tenta buscar pelo Código
             Produto produtoPorCodigo = repository.findByCodigo(textoBusca).orElse(null);
             if (produtoPorCodigo != null) {
-                tabelaProdutos.getItems().setAll(produtoPorCodigo);
+                tblProdutos.getItems().setAll(produtoPorCodigo);
                 return;
             }
 
             // Se não encontrou pelo Código, tenta buscar pelo Nome
             var produtosPorNome = repository.findByNomeContainingIgnoreCase(textoBusca);
-            tabelaProdutos.getItems().setAll(produtosPorNome);
+            tblProdutos.getItems().setAll(produtosPorNome);
 
         } else {
             carregarProdutos(); // Busca padrão se não digitou nada
@@ -299,7 +306,7 @@ public class SaidaProController implements Initializable, UsuarioAware {
 
         if (tipoSaida.equals("Saída por Venda")) {
             try {
-                int quantidade = Integer.parseInt(campoQuantidadeSaida.getText());
+                int quantidade = Integer.parseInt(txtCampoQuantidadeSaida.getText());
 
                 if (quantidade <= 0) {
                     mostrarAlerta("A quantidade precisa ser maior que zero.", Alert.AlertType.WARNING);
@@ -353,7 +360,7 @@ public class SaidaProController implements Initializable, UsuarioAware {
     }
 
     private void exibirDetalhesProduto(Produto produto) {
-        fornecedorlabel.setText("Fonecedor: " + produto.getFornecedor());
+        fornecedorlabel.setText("Fonecedor: " + produto.getNome());
         labelProduto.setText("Produto encontrado:");
         nomeLabel.setText("Nome: " + produto.getNome());
         codigoLabel.setText("Código: " + produto.getCodigo());
@@ -362,8 +369,8 @@ public class SaidaProController implements Initializable, UsuarioAware {
     }
 
     private void limparTela() {
-        campoBuscaVenda.clear();
-        campoQuantidadeSaida.clear();
+        txtCampoBuscaVenda.clear();
+        txtCampoQuantidadeSaida.clear();
         tipoSaidaCombo.getSelectionModel().clearSelection();
         labelProduto.setText("Produto não encontrado");
         nomeLabel.setText("Nome: ");
@@ -411,7 +418,7 @@ public class SaidaProController implements Initializable, UsuarioAware {
 
     @FXML
     public void removerProdutoSelecionado() {
-        Produto produtoSelecionadoParaRemover = tabelaSelecionados.getSelectionModel().getSelectedItem();
+        Produto produtoSelecionadoParaRemover = tblSelecionados.getSelectionModel().getSelectedItem();
 
         if (produtoSelecionadoParaRemover != null) {
             // Remove o produto da lista de produtos selecionados
@@ -435,6 +442,57 @@ public class SaidaProController implements Initializable, UsuarioAware {
         labelTotal.setText("Total: R$ " + String.format("%.2f", total));
     }
 
+    //Pre visualização de notas
+    private String gerarPreviewNota(int numeroNota) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("● SOLLID COMERCIO LTDA ●\n");
+        sb.append("Praça da Bandeira\nCNPJ: 11.489.912/0001-95\n\n");
+        sb.append("Nota Fiscal Nº: ").append(numeroNota).append("\n");
+        sb.append("CUPOM FISCAL NÃO ELETRÔNICO\n");
+        sb.append("--------------------------------------------------\n");
+
+        double total = 0.0;
+        int count = 1;
+
+        for (Produto p : produtosSelecionados) {
+            double subtotal = p.getPreco_unitario() * p.getQuantidade_inicial();
+            total += subtotal;
+
+            sb.append(String.format("Item %02d\n", count++));
+            sb.append("Produto: ").append(p.getNome()).append("\n");
+            sb.append(p.getFornecedor().getNomeFornecedor()).append("\n");
+            sb.append("Quantidade: ").append(p.getQuantidade_inicial()).append("\n");
+            sb.append(String.format("Preço Unitário: R$ %.2f\n", p.getPreco_unitario()));
+            sb.append(String.format("Subtotal: R$ %.2f\n", subtotal));
+            sb.append("--------------------------------------------------\n");
+        }
+
+        sb.append(String.format("TOTAL DO PEDIDO: R$ %.2f\n", total));
+        sb.append("Data: ").append(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))).append("\n");
+        sb.append("\n* Sollid Comercio LTDA *\n");
+
+        return sb.toString();
+    }
+
+    private boolean mostrarPreview(String conteudo) {
+        TextArea area = new TextArea(conteudo);
+        area.setWrapText(true);
+        area.setEditable(false);
+        area.setPrefSize(600, 400);
+
+        ButtonType salvar = new ButtonType("Salvar PDF", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Pré-visualização da Nota");
+        alert.setHeaderText("Confira a Nota Fiscal antes de salvar:");
+        alert.getDialogPane().setContent(area);
+        alert.getButtonTypes().setAll(salvar, cancelar);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == salvar;
+    }
+
     @FXML
     public void finalizarSaida() {
         if (produtosSelecionados.isEmpty()) {
@@ -442,94 +500,73 @@ public class SaidaProController implements Initializable, UsuarioAware {
             return;
         }
 
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Salvar Cupom em PDF");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Arquivo PDF", "*.pdf"));
+        int numeroNota = NotaFiscalUtil.getProximaNota();
+        String preview = gerarPreviewNota(numeroNota);
 
-        Stage stage = (Stage) tabelaProdutos.getScene().getWindow();
-        File file = fileChooser.showSaveDialog(stage);
+        boolean confirmar = mostrarPreview(preview);
+        if (!confirmar) {
+            return; // Usuário cancelou
+        }
 
-        if (file != null) {
-            try {
+        try {
+            String nomeArquivo = "NotaFiscal_" + String.format("%03d", numeroNota) + ".pdf";
+            String diretorio = "C:/NotasFiscais/";
+            File pasta = new File(diretorio);
+            if (!pasta.exists()) pasta.mkdirs();
 
-                int numeroNota = NotaFiscalUtil.getProximaNota();
-                String cabecalhoNF = "Nota Fiscal - NF " + numeroNota;
+            File file = new File(diretorio + nomeArquivo);
 
-                Document document = new Document(PageSize.A4);
-                PdfWriter.getInstance(document, new FileOutputStream(file));
-                document.open();
+            // A geração do PDF (igual à sua lógica anterior)
+            Document document = new Document(PageSize.A4);
+            PdfWriter.getInstance(document, new FileOutputStream(file));
+            document.open();
 
-                Font titleFont = new Font(Font.HELVETICA, 16, Font.BOLD);
-                Font regularFont = new Font(Font.HELVETICA, 12);
-                Font boldFont = new Font(Font.HELVETICA, 12, Font.BOLD);
+            Font titleFont = new Font(Font.HELVETICA, 16, Font.BOLD);
+            Font regularFont = new Font(Font.HELVETICA, 12);
+            Font boldFont = new Font(Font.HELVETICA, 12, Font.BOLD);
 
-                Paragraph header = new Paragraph("● SOLLID COMERCIO LTDA ●", titleFont);
-                header.setAlignment(Element.ALIGN_CENTER);
-                document.add(header);
+            Paragraph header = new Paragraph("● SOLLID COMERCIO LTDA ●", titleFont);
+            header.setAlignment(Element.ALIGN_CENTER);
+            document.add(header);
 
-                Paragraph endereco = new Paragraph("Praça da Bandeira\nCNPJ: 11.489.912/0001-95\n\n", regularFont);
-                endereco.setAlignment(Element.ALIGN_CENTER);
-                document.add(endereco);
+            Paragraph endereco = new Paragraph("Praça da Bandeira\nCNPJ: 11.489.912/0001-95\n\n", regularFont);
+            endereco.setAlignment(Element.ALIGN_CENTER);
+            document.add(endereco);
 
-                Paragraph numeroNotaParagrafo = new Paragraph("Nota Fiscal Nº: " + numeroNota + "\n\n", boldFont);
-                numeroNotaParagrafo.setAlignment(Element.ALIGN_CENTER);
-                document.add(numeroNotaParagrafo);
+            Paragraph numeroNotaParagrafo = new Paragraph("Nota Fiscal Nº: " + numeroNota + "\n\n", boldFont);
+            numeroNotaParagrafo.setAlignment(Element.ALIGN_CENTER);
+            document.add(numeroNotaParagrafo);
 
-                document.add(new Paragraph("CUPOM FISCAL NÃO ELETRÔNICO", boldFont));
+            document.add(new Paragraph("CUPOM FISCAL NÃO ELETRÔNICO", boldFont));
+            document.add(new Paragraph("--------------------------------------------------"));
+
+            double total = 0.0;
+            int count = 1;
+            for (Produto p : produtosSelecionados) {
+                double subtotal = p.getPreco_unitario() * p.getQuantidade_inicial();
+                total += subtotal;
+
+                document.add(new Paragraph(String.format("Item %02d", count++), boldFont));
+                document.add(new Paragraph("Produto: " + p.getNome(), regularFont));
+                document.add(new Paragraph("Fornecedor: " + p.getFornecedor().getNomeFornecedor(), regularFont));
+                document.add(new Paragraph("Quantidade: " + p.getQuantidade_inicial(), regularFont));
+                document.add(new Paragraph(String.format("Preço Unitário: R$ %.2f", p.getPreco_unitario()), regularFont));
+                document.add(new Paragraph(String.format("Subtotal: R$ %.2f", subtotal), regularFont));
                 document.add(new Paragraph("--------------------------------------------------"));
-
-                double total = 0.0;
-                int count = 1;
-
-                for (Produto p : produtosSelecionados) {
-                    double subtotal = p.getPreco_unitario() * p.getQuantidade_inicial();
-                    total += subtotal;
-
-                    document.add(new Paragraph(String.format("Item %02d", count++), boldFont));
-                    document.add(new Paragraph("Produto: " + p.getNome(), regularFont));
-                    document.add(new Paragraph("" + p.getFornecedor(), regularFont));
-                    document.add(new Paragraph("Quantidade: " + p.getQuantidade_inicial(), regularFont));
-                    document.add(new Paragraph(String.format("Preço Unitário: R$ %.2f", p.getPreco_unitario()), regularFont));
-                    document.add(new Paragraph(String.format("Subtotal: R$ %.2f", subtotal), regularFont));
-                    document.add(new Paragraph("--------------------------------------------------"));
-                }
-
-                document.add(new Paragraph(String.format("TOTAL DO PEDIDO: R$ %.2f\n", total), boldFont));
-                document.add(new Paragraph("Data: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), regularFont));
-                document.add(new Paragraph("\n* Sollid Comercio LTDA *", regularFont));
-
-                document.close();
-
-                mostrarAlerta("PEDIDO gerado com sucesso!", Alert.AlertType.INFORMATION);
-
-                NotaFiscalUtil.IncrementarNota();
-
-                mostrarAlerta("PDF gerado com sucesso como " + cabecalhoNF, Alert.AlertType.INFORMATION);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                mostrarAlerta("Erro ao gerar PDF: " + e.getMessage(), Alert.AlertType.ERROR);
             }
 
+            document.add(new Paragraph(String.format("TOTAL DO PEDIDO: R$ %.2f\n", total), boldFont));
+            document.add(new Paragraph("Data: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), regularFont));
+            document.add(new Paragraph("\n* Sollid Comercio LTDA *", regularFont));
+            document.close();
+
+            NotaFiscalUtil.IncrementarNota();
+            mostrarAlerta("PDF gerado com sucesso como " + nomeArquivo, Alert.AlertType.INFORMATION);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Erro ao gerar PDF: " + e.getMessage(), Alert.AlertType.ERROR);
         }
-
-        for (Produto produtoSelecionado : produtosSelecionados) {
-            Produto produtoEstoque = repository.findById((long) produtoSelecionado.getId_produto()).orElse(null);
-
-            if (produtoEstoque != null) {
-                int novaQuantidade = produtoEstoque.getQuantidade_inicial() - produtoSelecionado.getQuantidade_inicial();
-
-                if (novaQuantidade < 0) {
-                    mostrarAlerta("Estoque insuficiente para o produto: " + produtoEstoque.getNome(), Alert.AlertType.ERROR);
-                    continue;
-                }
-
-                produtoEstoque.setQuantidade_inicial(novaQuantidade);
-                repository.save(produtoEstoque); // ou produtoService.insert(produtoEstoque);
-            }
-        }
-
-
     }
 
 
@@ -538,7 +575,7 @@ public class SaidaProController implements Initializable, UsuarioAware {
 
     @FXML
     public void buscarProdutoParaExcluir() {
-        String textoBusca = campoBuscaExcluir.getText().trim();
+        String textoBusca = txtCampoBuscaExcluir.getText().trim();
 
         if (textoBusca == null || textoBusca.isEmpty()) {
             mostrarAlerta("Digite o ID, Código, Nome ou Categoria do produto!", Alert.AlertType.WARNING);
@@ -546,7 +583,7 @@ public class SaidaProController implements Initializable, UsuarioAware {
         }
 
         produtoExcluir = null;
-        excluirProduto.setDisable(true); // Desativa o botão por padrão
+        btnExcluirProduto.setDisable(true); // Desativa o botão por padrão
 
         List<Produto> produtosEncontrados = new ArrayList<>();
 
@@ -578,29 +615,29 @@ public class SaidaProController implements Initializable, UsuarioAware {
         // Resultado final
         if (!produtosEncontrados.isEmpty()) {
             ObservableList<Produto> dados = FXCollections.observableArrayList(produtosEncontrados);
-            segundaTabela.setItems(dados);
+            tblExcluirProdutos.setItems(dados);
 
             if (produtosEncontrados.size() == 1) {
                 produtoExcluir = produtosEncontrados.get(0);
-                segundaTabela.getSelectionModel().select(0); // Seleciona o item na tabela
-                excluirProduto.setDisable(false); // Habilita botão
+                tblExcluirProdutos.getSelectionModel().select(0); // Seleciona o item na tabela
+                btnExcluirProduto.setDisable(false); // Habilita botão
             } else {
                 mostrarAlerta("Foram encontrados múltiplos produtos. Selecione um na tabela para excluir.", Alert.AlertType.INFORMATION);
             }
         } else {
             mostrarAlerta("Nenhum produto encontrado com esse termo.", Alert.AlertType.WARNING);
-            segundaTabela.setItems(FXCollections.observableArrayList()); // limpa tabela
+            tblExcluirProdutos.setItems(FXCollections.observableArrayList()); // limpa tabela
         }
     }
 
 
     @FXML
     public void selecionarProdutoDaTabela() {
-        Produto selecionado = segundaTabela.getSelectionModel().getSelectedItem();
+        Produto selecionado = tblExcluirProdutos.getSelectionModel().getSelectedItem();
         System.out.println("Produto selecionado na tabela: " + selecionado);
         if (selecionado != null) {
             produtoExcluir = selecionado;
-            excluirProduto.setVisible(true);
+            btnExcluirProduto.setVisible(true);
         }
     }
 
@@ -638,7 +675,7 @@ public class SaidaProController implements Initializable, UsuarioAware {
     }
 
     private void limparCamposRemover() {
-        campoBuscaExcluir.clear();
+        txtCampoBuscaExcluir.clear();
         nomeProdutoExcluir.setText("Produto:");
         codigoProdutoExcluir.setText("Código:");
         fornecedorProdutoExcluir.setText("Fornecedor:");

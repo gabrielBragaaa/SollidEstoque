@@ -13,14 +13,14 @@
     <children>
         <Label layoutX="20" layoutY="20" style="-fx-font-size: 20;" text="Entrada / Atualização de Produto" />
 
-        <TextField fx:id="buscaField" layoutX="514.0" layoutY="79.0" prefWidth="150" promptText="Buscar Código" />
-        <Button layoutX="688.0" layoutY="74.0" onAction="#buscarProduto" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #1ABC9C;" text="Buscar" />
+        <TextField fx:id="txtBuscar" layoutX="514.0" layoutY="79.0" prefWidth="150" promptText="Buscar Código" />
+        <Button fx:id="btnBuscar" layoutX="688.0" layoutY="74.0" onAction="#buscarProduto" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #1ABC9C;" text="Buscar" />
 
-        <TextField fx:id="nomeField" layoutX="20.0" layoutY="79.0" prefWidth="300" promptText="Nome do Produto" />
-        <TextField fx:id="codigoField" layoutX="340.0" layoutY="79.0" prefWidth="150" promptText="Código" />
+        <TextField fx:id="txtNome" layoutX="20.0" layoutY="79.0" prefWidth="300" promptText="Nome do Produto" />
+        <TextField fx:id="txtCodigo" layoutX="340.0" layoutY="79.0" prefWidth="150" promptText="Código" />
 
-        <TextField fx:id="quantidadeField" layoutX="20.0" layoutY="135.0" prefWidth="150" promptText="Quantidade Inicial" />
-        <TextField fx:id="precoField" layoutX="190.0" layoutY="135.0" prefWidth="150" promptText="Preço Unitário" />
+        <TextField fx:id="txtQuantidade" layoutX="20.0" layoutY="135.0" prefWidth="150" promptText="Quantidade Inicial" />
+        <TextField fx:id="txtPreco" layoutX="190.0" layoutY="135.0" prefWidth="150" promptText="Preço Unitário" />
 
         <ComboBox fx:id="fornecedorCombo" layoutX="20.0" layoutY="192.0" prefWidth="300" promptText="Fornecedor" />
         <ComboBox fx:id="categoriaCombo" layoutX="340.0" layoutY="192.0" prefWidth="300" promptText="Categoria" />

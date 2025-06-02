@@ -20,7 +20,7 @@
                 <Button onAction="#saidaProd" prefWidth="130" text="Saída de Produtos" />
                 <Button onAction="#buscarProd" prefWidth="130" text="Consultar Estoque" />
                 <Button onAction="#gerarRelato" prefWidth="130" text="Gerar Relatório" />
-                <Button fx:id="historicos" onAction="#Historico" prefWidth="130" text="Historicos" />
+                <Button fx:id="btnHistoricos" onAction="#Historico" prefWidth="130" text="Historicos" />
                 <ImageView fx:id="minhaImagem" fitHeight="58.0" fitWidth="67.0" preserveRatio="true" />
             <Button mnemonicParsing="false" onAction="#alterarSenha" prefHeight="25.0" prefWidth="129.0" style="-fx-background-color: #00ff99;" text="Alterar senha" />
                 <Button onAction="#sairDaAplicacao" prefHeight="26.0" prefWidth="130" style="-fx-background-color: #ff1a1a;" text="SAIR" />
