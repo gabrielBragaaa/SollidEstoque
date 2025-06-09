@@ -103,7 +103,6 @@ public class SaidaProController implements Initializable, UsuarioAware {
 
     @FXML
     private TextField txtCampoBuscaExcluir;
-
     @FXML
     private Label labelProduto;
     @FXML
@@ -499,6 +498,30 @@ public class SaidaProController implements Initializable, UsuarioAware {
             mostrarAlerta("Nenhum produto selecionado para saída.", Alert.AlertType.WARNING);
             return;
         }
+
+        for (Produto produtoSelecionado : produtosSelecionados) {
+            Produto produtoBanco = repository.findById(produtoSelecionado.getId_produto()).orElse(null);
+            if (produtoBanco != null) {
+                int quantidadeAtual = produtoBanco.getQuantidade_inicial();
+                int quantidadeSaida = produtoSelecionado.getQuantidade_inicial();
+
+                if (quantidadeSaida <= quantidadeAtual) {
+                    produtoBanco.setQuantidade_inicial(quantidadeAtual - quantidadeSaida);
+                    repository.save(produtoBanco);
+                } else {
+                    mostrarAlerta("Estoque insuficiente para o produto: " + produtoBanco.getNome(), Alert.AlertType.ERROR);
+                    return;
+                }
+            } else {
+                mostrarAlerta("Produto não encontrado no banco de dados: " + produtoSelecionado.getNome(), Alert.AlertType.ERROR);
+                return;
+            }
+        }
+
+        produtosSelecionados.clear();
+        tblSelecionados.setItems(FXCollections.observableArrayList(produtosSelecionados));
+        mostrarAlerta("Saída de produtos finalizada com sucesso!", Alert.AlertType.INFORMATION);
+
 
         int numeroNota = NotaFiscalUtil.getProximaNota();
         String preview = gerarPreviewNota(numeroNota);
