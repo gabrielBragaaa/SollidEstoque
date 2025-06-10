@@ -127,6 +127,15 @@ public class EntradaProController implements Initializable, UsuarioAware {
         this.usuarioLogado = usuario;
     }
 
+    private void limparProdutosEntrada(){
+        txtNome.clear();
+        txtCodigo.clear();
+        txtQuantidade.clear();
+        txtPreco.clear();
+        fornecedorCombo.getSelectionModel().clearSelection();
+        categoriaCombo.getSelectionModel().clearSelection();
+    }
+
     public void carregarProdutoParaEdicao(Produto produto) {
         this.produtoAtual = produto;
         txtNome.setText(produto.getNome());
@@ -159,6 +168,7 @@ public class EntradaProController implements Initializable, UsuarioAware {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Produto atualizado com sucesso!");
             alert.showAndWait();
         }
+        limparProdutosEntrada();
     }
 
     @FXML

@@ -88,6 +88,15 @@ public class CadastrarProController implements UsuarioAware {
         this.usuarioLogado = usuario;
     }
 
+    private void limparCampos(){
+        txtNome.clear();
+        txtCodigo.clear();
+        txtPreco.clear();
+        txtQuantidade.clear();
+        fornecedorCombo.getSelectionModel().clearSelection();
+        categoriaCombo.getSelectionModel().clearSelection();
+    }
+
     @FXML
     public void salvarProduto() {
         try {
@@ -103,8 +112,7 @@ public class CadastrarProController implements UsuarioAware {
             int quantidade = Integer.parseInt(txtQuantidade.getText());
 
             if (existente != null) {
-                // Atualiza apenas a quantidade
-                existente.setQuantidade_inicial(existente.getQuantidade_inicial() + quantidade);
+                existente.setQuantidade_inicial(quantidade);
                 produtoService.insert(existente);
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Produto já existente. Quantidade atualizada com sucesso!");
@@ -130,6 +138,7 @@ public class CadastrarProController implements UsuarioAware {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Erro ao cadastrar produto: " + e.getMessage());
             alert.showAndWait();
         }
+        limparCampos();
     }
     @FXML
     public void cadatroPhome(ActionEvent event) {
