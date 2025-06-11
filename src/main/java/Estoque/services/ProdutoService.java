@@ -1,5 +1,7 @@
 package Estoque.services;
 
+import Estoque.entities.Categoria;
+import Estoque.entities.Fornecedor;
 import Estoque.entities.Produto;
 import Estoque.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,5 +61,14 @@ public class ProdutoService {
     public void delete(Long id_produto) {
         repository.deleteById(id_produto);
 
+    }
+
+    //Filtro de buscar
+    public List<Produto> buscarComFiltros(String texto, Categoria categoria, Fornecedor fornecedor) {
+        return repository.buscarComFiltros(
+                (texto != null && !texto.trim().isEmpty()) ? texto.trim() : null,
+                categoria,
+                fornecedor
+        );
     }
 }

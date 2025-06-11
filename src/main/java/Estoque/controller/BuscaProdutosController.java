@@ -1,23 +1,25 @@
 package Estoque.controller;
 
+import Estoque.entities.Categoria;
+import Estoque.entities.Fornecedor;
 import Estoque.entities.Produto;
 import Estoque.entities.Usuario;
 import Estoque.projections.UsuarioAware;
 import Estoque.repositories.ProdutoRepository;
+import Estoque.services.CategoriaService;
+import Estoque.services.FornecedorService;
 import Estoque.util.TelaLoader;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 @Component
@@ -25,6 +27,12 @@ public class BuscaProdutosController implements Initializable , UsuarioAware {
 
     @Autowired
     private ProdutoRepository repository;
+
+   @Autowired
+    private FornecedorService fornecedorService;
+
+    @Autowired
+    private CategoriaService categoriaService;
 
     @FXML
     private TableColumn<Produto,String> fornecedor;
@@ -46,6 +54,10 @@ public class BuscaProdutosController implements Initializable , UsuarioAware {
 
     @FXML
     private TableColumn<Produto, Double> preco_unitario;
+    @FXML
+    private ComboBox<Categoria> categoriaCombo;
+    @FXML
+    private ComboBox<Fornecedor> fornecedorCombo;
 
     @FXML
     private TextField txtCampoBuscar;
@@ -58,8 +70,16 @@ public class BuscaProdutosController implements Initializable , UsuarioAware {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        // Preenche o ComboBox de categorias
+        List<Categoria> categorias = categoriaService.findAll();
+        categoriaCombo.getItems().addAll(categorias);
+
+        // Preenche o ComboBox de fornecedores
+        List<Fornecedor> fornecedores = fornecedorService.findAll();
+        fornecedorCombo.getItems().addAll(fornecedores);
+
         txtCampoBuscar.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER){
+            if (event.getCode() == KeyCode.ENTER) {
                 btnBuscarProduto.fire();
             }
         });
@@ -75,7 +95,9 @@ public class BuscaProdutosController implements Initializable , UsuarioAware {
         preco_unitario.setCellValueFactory(new PropertyValueFactory<>("preco_unitario"));
 
         carregarProdutos();
+
     }
+
 
     @Override
     public void setUsuarioLogado(Usuario usuario) {
@@ -85,40 +107,56 @@ public class BuscaProdutosController implements Initializable , UsuarioAware {
     @FXML
     public void buscarProdutos() {
         String textoBusca = txtCampoBuscar.getText();
+        Categoria categoriaSelecionada = categoriaCombo.getValue();
+        Fornecedor fornecedorSelecionado = fornecedorCombo.getValue();
 
+        // Caso não tenha filtros, retorna todos
+        if ((textoBusca == null || textoBusca.trim().isEmpty()) && categoriaSelecionada == null && fornecedorSelecionado == null) {
+            carregarProdutos();
+            return;
+        }
+
+        List<Produto> produtosFiltrados;
+
+        // Filtro principal por texto
         if (textoBusca != null && !textoBusca.trim().isEmpty()) {
             try {
                 Long id = Long.parseLong(textoBusca);
-                Produto produtoEncontrado = repository.findById(id).orElse(null);
-                if (produtoEncontrado != null) {
-                    tblProduto.getItems().setAll(produtoEncontrado);
-                    return;
+                Produto produto = repository.findById(id).orElse(null);
+                if (produto != null) {
+                    produtosFiltrados = List.of(produto);
+                } else {
+                    produtosFiltrados = repository.findByNomeContainingIgnoreCase(textoBusca);
+                    if (produtosFiltrados.isEmpty()) {
+                        produtosFiltrados = repository.findByCategoriaNomeContainingIgnoreCase(textoBusca);
+                    }
                 }
             } catch (NumberFormatException e) {
-                // Não é número, segue a busca
+                produtosFiltrados = repository.findByNomeContainingIgnoreCase(textoBusca);
+                if (produtosFiltrados.isEmpty()) {
+                    produtosFiltrados = repository.findByCategoriaNomeContainingIgnoreCase(textoBusca);
+                }
             }
-
-            Produto produtoPorCodigo = repository.findByCodigo(textoBusca).orElse(null);
-            if (produtoPorCodigo != null) {
-                tblProduto.getItems().setAll(produtoPorCodigo);
-                return;
-            }
-
-            var produtosPorNome = repository.findByNomeContainingIgnoreCase(textoBusca);
-            if (!produtosPorNome.isEmpty()) {
-                tblProduto.getItems().setAll(produtosPorNome);
-                return;
-            }
-
-            // Se não encontrou por nome, tenta por categoria
-            var produtosPorCategoria = repository.findByCategoriaNomeContainingIgnoreCase(textoBusca);
-            tblProduto.getItems().setAll(produtosPorCategoria);
-            tblProduto.getItems().setAll(produtosPorCategoria);
-
         } else {
-            carregarProdutos(); // Se estiver vazio, busca todos
+            produtosFiltrados = repository.findAll();
         }
+
+        // Aplica filtros adicionais de categoria e fornecedor
+        if (categoriaSelecionada != null) {
+            produtosFiltrados = produtosFiltrados.stream()
+                    .filter(p -> p.getCategoria().equals(categoriaSelecionada))
+                    .toList();
+        }
+
+        if (fornecedorSelecionado != null) {
+            produtosFiltrados = produtosFiltrados.stream()
+                    .filter(p -> p.getFornecedor().equals(fornecedorSelecionado))
+                    .toList();
+        }
+
+        tblProduto.getItems().setAll(produtosFiltrados);
     }
+
 
 
 

@@ -1,7 +1,11 @@
 package Estoque.repositories;
 
+import Estoque.entities.Categoria;
+import Estoque.entities.Fornecedor;
 import Estoque.entities.Produto;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +22,13 @@ public interface ProdutoRepository extends JpaRepository<Produto,Long> {
 
     List<Produto> findByCategoriaNomeContainingIgnoreCase(String nome);
 
-
+    @Query("SELECT p FROM Produto p " +
+            "WHERE (:texto IS NULL OR LOWER(p.nome) LIKE LOWER(CONCAT('%', :texto, '%')) " +
+            "   OR LOWER(p.codigo) LIKE LOWER(CONCAT('%', :texto, '%'))) " +
+            "AND (:categoria IS NULL OR p.categoria = :categoria) " +
+            "AND (:fornecedor IS NULL OR p.fornecedor = :fornecedor)")
+    List<Produto> buscarComFiltros(@Param("texto") String texto,
+                                   @Param("categoria") Categoria categoria,
+                                   @Param("fornecedor") Fornecedor fornecedor);
 
 }

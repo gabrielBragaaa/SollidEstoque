@@ -70,8 +70,6 @@ public class Fornecedor implements Serializable {
 
     @Override
     public String toString() {
-        return "Fornecedor{" +
-                "nomeFornecedor='" + nomeFornecedor + '\'' +
-                '}';
+        return nomeFornecedor;
     }
 }
