@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<VBox alignment="CENTER" prefHeight="309.0" prefWidth="250.0" spacing="10" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.controller.AlterarSenhaController">
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="Estoque.controller.AlterarSenhaController"
-      spacing="10" alignment="CENTER" style="-fx-padding: 20;">
-
-    <Label text="Alterar Senha" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+    <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Alterar Senha" />
 
     <TextField fx:id="txtUsername" promptText="Usuário" />
     <PasswordField fx:id="oldPasswordField" promptText="Senha Atual" />
     <PasswordField fx:id="newPasswordField" promptText="Nova Senha" />
     <PasswordField fx:id="confirmPasswordField" promptText="Confirmar Nova Senha" />
 
-    <Button text="Alterar Senha" onAction="#onChangePasswordClicked" />
+    <Button onAction="#onChangePasswordClicked" text="Alterar Senha" />
 
     <Label fx:id="msgLabel" textFill="red" wrapText="true" />
 </VBox>
-

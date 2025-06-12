@@ -3,17 +3,27 @@ package Estoque.controller;
 import Estoque.entities.Produto;
 import Estoque.entities.Usuario;
 import Estoque.projections.UsuarioAware;
-import Estoque.services.Relatorio;
+import Estoque.services.RelatorioService;
 import Estoque.util.TelaLoader;
+import com.lowagie.text.*;
+import com.lowagie.text.Font;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.swing.*;
+import java.awt.*;
+import java.io.FileOutputStream;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Component
 public class GerarRelatoController implements UsuarioAware {
@@ -26,24 +36,22 @@ public class GerarRelatoController implements UsuarioAware {
 
     @FXML
     private TableView<Produto> tblRelatorio;
-
+    @FXML
+    private Button btnExportar;
 
     @Autowired
-    private Relatorio relatorioService;
+    private RelatorioService relatorioService;
 
     private Usuario usuarioLogado;
 
     @FXML
     public void initialize() {
         tipoRelatorioComboBox.setItems(FXCollections.observableArrayList(
-                "Produtos com baixo estoque",
-                "Validade dos produtos",
-                "Histórico de entrada e saída",
-                "Resumo financeiro"
+                "Produtos com baixo estoque"
         ));
 
         formatoExportacaoComboBox.setItems(FXCollections.observableArrayList(
-                "Visualizar", "PDF", "Excel", "Word"
+                "Visualizar", "PDF"
         ));
     }
 
@@ -68,11 +76,11 @@ public class GerarRelatoController implements UsuarioAware {
                 tblRelatorio.setItems(FXCollections.observableArrayList(produtosBaixoEstoque));
                 break;
 
-            case "Validade dos produtos":
-                carregarColunasProdutoComValidade();
-                List<Produto> produtosComValidade = relatorioService.getProdutosComValidadeProxima();
-                tblRelatorio.setItems(FXCollections.observableArrayList(produtosComValidade));
-                break;
+//            case "Validade dos produtos":
+//                carregarColunasProdutoComValidade();
+//                List<Produto> produtosComValidade = relatorioService.getProdutosComValidadeProxima();
+//                tblRelatorio.setItems(FXCollections.observableArrayList(produtosComValidade));
+//                break;
 
 
             default:
@@ -82,18 +90,48 @@ public class GerarRelatoController implements UsuarioAware {
     }
 
     @FXML
-    private void exportarRelatorio() {
-        String tipoRelatorio = tipoRelatorioComboBox.getValue();
-        String formato = formatoExportacaoComboBox.getValue();
+    private void gerarPdfRelatorio(List<Produto> produtos, String tituloRelatorio) throws Exception {
+        Document document = new Document();
+        String nomeArquivo = "relatorio_" + System.currentTimeMillis() + ".pdf";
+        PdfWriter.getInstance(document, new FileOutputStream(nomeArquivo));
 
-        if (tipoRelatorio == null || formato == null) {
-            mostrarAlerta("Selecione o tipo de relatório e o formato de exportação.");
-            return;
+        document.open();
+
+        // Título
+        Font fontTitulo = new Font(Font.HELVETICA, 18, Font.BOLD);
+        Paragraph titulo = new Paragraph(tituloRelatorio, fontTitulo);
+        titulo.setAlignment(Element.ALIGN_CENTER);
+        titulo.setSpacingAfter(20);
+        document.add(titulo);
+
+        // Tabela com 4 colunas
+        PdfPTable table = new PdfPTable(4);
+        table.setWidthPercentage(100);
+        table.setWidths(new float[]{1f, 3f, 1f, 1f});
+
+        // Cabeçalhos da tabela
+        Font headerFont = new Font(Font.HELVETICA, 12, Font.BOLD);
+        Stream.of("Código","Nome\n Descrição do Produto", "Quantidade", "Preço Unitário").forEach(headerTitle -> {
+            PdfPCell header = new PdfPCell(new Phrase(headerTitle, headerFont));
+            header.setBackgroundColor(Color.LIGHT_GRAY);
+            header.setHorizontalAlignment(Element.ALIGN_CENTER);
+            header.setPadding(5);
+            table.addCell(header);
+        });
+
+        // Conteúdo da tabela
+        Font cellFont = new Font(Font.HELVETICA, 12);
+        for (Produto produto : produtos) {
+            table.addCell(new PdfPCell(new Phrase(produto.getCodigo(), cellFont)));
+            table.addCell(new PdfPCell(new Phrase(produto.getNome(), cellFont)));
+            table.addCell(new PdfPCell(new Phrase(String.valueOf(produto.getQuantidade_inicial()), cellFont)));
+            table.addCell(new PdfPCell(new Phrase(String.format("R$ %.2f", produto.getPreco_unitario()), cellFont)));
         }
 
-        System.out.println("Exportando " + tipoRelatorio + " como " + formato);
+        document.add(table);
+        document.close();
 
-        // Aqui você pode implementar as lógicas de exportação específicas.
+        System.out.println("PDF gerado com sucesso: " + nomeArquivo);
     }
 
     private void carregarColunasProduto() {
@@ -113,26 +151,50 @@ public class GerarRelatoController implements UsuarioAware {
 
         tblRelatorio.getColumns().addAll(nomeCol, codigoCol, quantidadeCol, precoCol);
     }
+//Implementar Futuramnet
+//    private void carregarColunasProdutoComValidade() {
+//        tblRelatorio.getColumns().clear();
+//
+//        TableColumn<Produto, String> nomeCol = new TableColumn<>("Nome");
+//        nomeCol.setCellValueFactory(new PropertyValueFactory<>("nome"));
+//
+//        TableColumn<Produto, String> codigoCol = new TableColumn<>("Código");
+//        codigoCol.setCellValueFactory(new PropertyValueFactory<>("codigo"));
+//
+//        TableColumn<Produto, Integer> quantidadeCol = new TableColumn<>("Quantidade");
+//        quantidadeCol.setCellValueFactory(new PropertyValueFactory<>("quantidade_inicial"));
+//
+//        TableColumn<Produto, Double> precoCol = new TableColumn<>("Preço Unitário");
+//        precoCol.setCellValueFactory(new PropertyValueFactory<>("preco_unitario"));
+//
+//        TableColumn<Produto, String> validadeCol = new TableColumn<>("Validade");
+//        validadeCol.setCellValueFactory(new PropertyValueFactory<>("validade"));
+//
+//        tblRelatorio.getColumns().addAll(nomeCol, codigoCol, quantidadeCol, precoCol, validadeCol);
+//    }
 
-    private void carregarColunasProdutoComValidade() {
-        tblRelatorio.getColumns().clear();
+    @FXML
+    private void exportarRelatorioPDF() {
+        String tipoRelatorio = tipoRelatorioComboBox.getValue();
 
-        TableColumn<Produto, String> nomeCol = new TableColumn<>("Nome");
-        nomeCol.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        if (tipoRelatorio == null) {
+            mostrarAlerta("Selecione um tipo de relatório!");
+            return;
+        }
 
-        TableColumn<Produto, String> codigoCol = new TableColumn<>("Código");
-        codigoCol.setCellValueFactory(new PropertyValueFactory<>("codigo"));
+        List<Produto> produtos = tblRelatorio.getItems();
+        if (produtos == null || produtos.isEmpty()) {
+            mostrarAlerta("Não há dados para exportar.");
+            return;
+        }
 
-        TableColumn<Produto, Integer> quantidadeCol = new TableColumn<>("Quantidade");
-        quantidadeCol.setCellValueFactory(new PropertyValueFactory<>("quantidade_inicial"));
-
-        TableColumn<Produto, Double> precoCol = new TableColumn<>("Preço Unitário");
-        precoCol.setCellValueFactory(new PropertyValueFactory<>("preco_unitario"));
-
-        TableColumn<Produto, String> validadeCol = new TableColumn<>("Validade");
-        validadeCol.setCellValueFactory(new PropertyValueFactory<>("validade"));
-
-        tblRelatorio.getColumns().addAll(nomeCol, codigoCol, quantidadeCol, precoCol, validadeCol);
+        try {
+            gerarPdfRelatorio(produtos, "Relatório - " + tipoRelatorio);
+            mostrarAlerta("PDF gerado com sucesso!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta("Erro ao gerar PDF: " + e.getMessage());
+        }
     }
 
     private void mostrarAlerta(String mensagem) {
@@ -146,7 +208,7 @@ public class GerarRelatoController implements UsuarioAware {
     public void voltar(ActionEvent event) {
         try {
             System.out.println("Usuario Atual: " + usuarioLogado);
-            TelaLoader.carregarTela("/org/example/estoque/telaInicial.fxml", "Tela Inicial", usuarioLogado);
+            TelaLoader.carregarTela("/org/example/estoque/telaInicial.fxml", "SOLLID COMERCIO LTDA", usuarioLogado);
         } catch (Exception e) {
             e.printStackTrace();
         }

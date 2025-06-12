@@ -95,7 +95,7 @@ public class HistoricoController implements Initializable {
 
             Stage stage = AppContextProvider.getStage();
             stage.setScene(scene);
-            stage.setTitle("Voltar para tela Inicial");
+            stage.setTitle("SOLLID COMERCIO LTDA");
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();

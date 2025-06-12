@@ -167,6 +167,6 @@ public class BuscaProdutosController implements Initializable , UsuarioAware {
     @FXML
     public void buscarPhome(ActionEvent event){
         System.out.println("Usuário atual: " + usuarioLogado); // debug
-        TelaLoader.carregarTela("/org/example/estoque/telaInicial.fxml", "Tela Inicial", usuarioLogado);
+        TelaLoader.carregarTela("/org/example/estoque/telaInicial.fxml", "SOLLID COMERCIO LTDA", usuarioLogado);
     }
 }

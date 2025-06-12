@@ -152,7 +152,7 @@ public class TelaInicialController implements Initializable, UsuarioAware {
 
             Stage stage = new Stage();
             stage.setScene(scene);
-            stage.setTitle("Alterar Senha");
+            stage.setTitle("SOLLID COMERCIO LTDA");
             stage.show();
 
         } catch (Exception e) {

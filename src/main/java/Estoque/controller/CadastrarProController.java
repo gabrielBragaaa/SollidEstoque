@@ -144,7 +144,7 @@ public class CadastrarProController implements UsuarioAware {
     public void cadatroPhome(ActionEvent event) {
         try {
             System.out.println("Usuário atual: " + usuarioLogado); // debug
-            TelaLoader.carregarTela("/org/example/estoque/telaInicial.fxml", "Tela Inicial", usuarioLogado);
+            TelaLoader.carregarTela("/org/example/estoque/telaInicial.fxml", "SOLLID COMERCIO LTDA", usuarioLogado);
         } catch (Exception e) {
             e.printStackTrace();
         }
