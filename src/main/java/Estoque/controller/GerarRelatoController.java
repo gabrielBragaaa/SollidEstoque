@@ -47,7 +47,8 @@ public class GerarRelatoController implements UsuarioAware {
     @FXML
     public void initialize() {
         tipoRelatorioComboBox.setItems(FXCollections.observableArrayList(
-                "Produtos com baixo estoque"
+                "Produtos com baixo estoque",
+                "Todos os produtos do estoque"
         ));
 
         formatoExportacaoComboBox.setItems(FXCollections.observableArrayList(
@@ -76,12 +77,11 @@ public class GerarRelatoController implements UsuarioAware {
                 tblRelatorio.setItems(FXCollections.observableArrayList(produtosBaixoEstoque));
                 break;
 
-//            case "Validade dos produtos":
-//                carregarColunasProdutoComValidade();
-//                List<Produto> produtosComValidade = relatorioService.getProdutosComValidadeProxima();
-//                tblRelatorio.setItems(FXCollections.observableArrayList(produtosComValidade));
-//                break;
-
+            case "Todos os produtos do estoque":
+                carregarColunasProduto();
+                List<Produto> todosProdutos = relatorioService.getTodosProdutos();
+                tblRelatorio.setItems(FXCollections.observableArrayList(todosProdutos));
+                break;
 
             default:
                 mostrarAlerta("Tipo de relatório ainda não implementado.");
@@ -105,13 +105,13 @@ public class GerarRelatoController implements UsuarioAware {
         document.add(titulo);
 
         // Tabela com 4 colunas
-        PdfPTable table = new PdfPTable(4);
+        PdfPTable table = new PdfPTable(5);
         table.setWidthPercentage(100);
-        table.setWidths(new float[]{1f, 3f, 1f, 1f});
+        table.setWidths(new float[]{1f,1f, 2f, 0.5f, 1f});
 
         // Cabeçalhos da tabela
-        Font headerFont = new Font(Font.HELVETICA, 12, Font.BOLD);
-        Stream.of("Código","Nome\n Descrição do Produto", "Quantidade", "Preço Unitário").forEach(headerTitle -> {
+        Font headerFont = new Font(Font.HELVETICA, 10, Font.BOLD);
+        Stream.of("Código","Fornecedor","Nome\n Descrição do Produto", "Qtd", "Preço Unitário").forEach(headerTitle -> {
             PdfPCell header = new PdfPCell(new Phrase(headerTitle, headerFont));
             header.setBackgroundColor(Color.LIGHT_GRAY);
             header.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -123,6 +123,7 @@ public class GerarRelatoController implements UsuarioAware {
         Font cellFont = new Font(Font.HELVETICA, 12);
         for (Produto produto : produtos) {
             table.addCell(new PdfPCell(new Phrase(produto.getCodigo(), cellFont)));
+            table.addCell(new PdfPCell((new Phrase(produto.getFornecedor().getNomeFornecedor(), cellFont))));
             table.addCell(new PdfPCell(new Phrase(produto.getNome(), cellFont)));
             table.addCell(new PdfPCell(new Phrase(String.valueOf(produto.getQuantidade_inicial()), cellFont)));
             table.addCell(new PdfPCell(new Phrase(String.format("R$ %.2f", produto.getPreco_unitario()), cellFont)));
@@ -137,11 +138,14 @@ public class GerarRelatoController implements UsuarioAware {
     private void carregarColunasProduto() {
         tblRelatorio.getColumns().clear();
 
-        TableColumn<Produto, String> nomeCol = new TableColumn<>("Nome");
-        nomeCol.setCellValueFactory(new PropertyValueFactory<>("nome"));
-
         TableColumn<Produto, String> codigoCol = new TableColumn<>("Código");
         codigoCol.setCellValueFactory(new PropertyValueFactory<>("codigo"));
+
+        TableColumn<Produto, String> fornecedorCol = new TableColumn<>("Fornecedor");
+        fornecedorCol.setCellValueFactory(new PropertyValueFactory<>("fornecedor"));
+
+        TableColumn<Produto, String> nomeCol = new TableColumn<>("Nome");
+        nomeCol.setCellValueFactory(new PropertyValueFactory<>("nome"));
 
         TableColumn<Produto, Integer> quantidadeCol = new TableColumn<>("Quantidade");
         quantidadeCol.setCellValueFactory(new PropertyValueFactory<>("quantidade_inicial"));
@@ -149,7 +153,7 @@ public class GerarRelatoController implements UsuarioAware {
         TableColumn<Produto, Double> precoCol = new TableColumn<>("Preço Unitário");
         precoCol.setCellValueFactory(new PropertyValueFactory<>("preco_unitario"));
 
-        tblRelatorio.getColumns().addAll(nomeCol, codigoCol, quantidadeCol, precoCol);
+        tblRelatorio.getColumns().addAll(codigoCol,fornecedorCol, nomeCol, quantidadeCol, precoCol);
     }
 //Implementar Futuramnet
 //    private void carregarColunasProdutoComValidade() {

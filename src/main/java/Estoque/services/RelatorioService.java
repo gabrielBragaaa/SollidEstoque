@@ -18,4 +18,7 @@ public class RelatorioService {
                 .filter(p -> p.getQuantidade_inicial() < 10)
                 .collect(Collectors.toList());
     }
+    public List<Produto> getTodosProdutos() {
+        return produtoService.findAll();
+    }
 }
