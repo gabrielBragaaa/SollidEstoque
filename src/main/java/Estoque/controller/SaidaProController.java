@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
-
 import java.io.*;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -518,11 +517,6 @@ public class SaidaProController implements Initializable, UsuarioAware {
             }
         }
 
-        produtosSelecionados.clear();
-        tblSelecionados.setItems(FXCollections.observableArrayList(produtosSelecionados));
-        mostrarAlerta("Saída de produtos finalizada com sucesso!", Alert.AlertType.INFORMATION);
-
-
         int numeroNota = NotaFiscalUtil.getProximaNota();
         String preview = gerarPreviewNota(numeroNota);
 
@@ -586,6 +580,11 @@ public class SaidaProController implements Initializable, UsuarioAware {
             NotaFiscalUtil.IncrementarNota();
             mostrarAlerta("PDF gerado com sucesso como " + nomeArquivo, Alert.AlertType.INFORMATION);
 
+            produtosSelecionados.clear();
+            tblSelecionados.setItems(FXCollections.observableArrayList(produtosSelecionados));
+            mostrarAlerta("Saída de produtos finalizada com sucesso!", Alert.AlertType.INFORMATION);
+
+
         } catch (Exception e) {
             e.printStackTrace();
             mostrarAlerta("Erro ao gerar PDF: " + e.getMessage(), Alert.AlertType.ERROR);
@@ -606,7 +605,7 @@ public class SaidaProController implements Initializable, UsuarioAware {
         }
 
         produtoExcluir = null;
-        btnExcluirProduto.setDisable(true); // Desativa o botão por padrão
+        btnExcluirProduto.setDisable(!"ADMIN".equalsIgnoreCase(usuarioLogado.getRole())); // Desativa o botão por padrão
 
         List<Produto> produtosEncontrados = new ArrayList<>();
 
@@ -660,7 +659,12 @@ public class SaidaProController implements Initializable, UsuarioAware {
         System.out.println("Produto selecionado na tabela: " + selecionado);
         if (selecionado != null) {
             produtoExcluir = selecionado;
-            btnExcluirProduto.setVisible(true);
+            if ("ADMIN".equalsIgnoreCase(usuarioLogado.getRole())){
+                btnExcluirProduto.setVisible(true);
+                btnExcluirProduto.setDisable(false); //HAbiliata para admin
+            }else {
+                btnExcluirProduto.setVisible(false); //Oculta para nao admin
+            }
         }
     }
 

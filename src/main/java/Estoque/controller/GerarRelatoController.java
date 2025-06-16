@@ -111,7 +111,7 @@ public class GerarRelatoController implements UsuarioAware {
 
         // Cabeçalhos da tabela
         Font headerFont = new Font(Font.HELVETICA, 10, Font.BOLD);
-        Stream.of("Código","Fornecedor","Nome\n Descrição do Produto", "Qtd", "Preço Unitário").forEach(headerTitle -> {
+        Stream.of("Código","Fornecedor","Nome\n Descrição do Produto", "Qtd ", "Preço Unitário").forEach(headerTitle -> {
             PdfPCell header = new PdfPCell(new Phrase(headerTitle, headerFont));
             header.setBackgroundColor(Color.LIGHT_GRAY);
             header.setHorizontalAlignment(Element.ALIGN_CENTER);
