@@ -4,6 +4,7 @@ import Estoque.entities.Produto;
 import Estoque.entities.Usuario;
 import Estoque.projections.UsuarioAware;
 import Estoque.repositories.ProdutoRepository;
+import Estoque.services.HistoricoAcaoService;
 import Estoque.services.ProdutoService;
 import Estoque.util.NotaFiscalUtil;
 import Estoque.util.TelaLoader;
@@ -25,13 +26,11 @@ import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
 import java.io.*;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.ResourceBundle;
 
 @Component
 public class SaidaProController implements Initializable, UsuarioAware {
@@ -143,6 +142,8 @@ public class SaidaProController implements Initializable, UsuarioAware {
 
     private Usuario usuarioLogado;
 
+    @Autowired
+    private HistoricoAcaoService historicoAcaoService;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -167,12 +168,38 @@ public class SaidaProController implements Initializable, UsuarioAware {
         nome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         quantidade_inicial.setCellValueFactory(new PropertyValueFactory<>("quantidade_inicial"));
         preco_unitario.setCellValueFactory(new PropertyValueFactory<>("preco_unitario"));
+        preco_unitario.setCellFactory(column -> new TableCell<>() {
+            private final NumberFormat formato = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(formato.format(item));
+                }
+            }
+        });
         fornecedorSelecionado.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getFornecedor() != null
                         ? cellData.getValue().getFornecedor().getNomeFornecedor() : "Não informado"));
         nomeSelecionado.setCellValueFactory(new PropertyValueFactory<>("nome"));
         quantidadeSelecionada.setCellValueFactory(new PropertyValueFactory<>("quantidade_inicial"));
         precoSelecionado.setCellValueFactory(new PropertyValueFactory<>("preco_unitario"));
+        precoSelecionado.setCellFactory(column -> new TableCell<>() {
+            private final NumberFormat formato = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(formato.format(item));
+                }
+            }
+        });
 
         tblSelecionados.setItems(produtosSelecionados);
 
@@ -224,6 +251,19 @@ public class SaidaProController implements Initializable, UsuarioAware {
         codigoProdutoExcluir.setCellValueFactory(new PropertyValueFactory<>("codigo"));
         quantidadeInicialExcluir.setCellValueFactory(new PropertyValueFactory<>("quantidade_inicial"));
         precoUnitarioExcluir.setCellValueFactory(new PropertyValueFactory<>("preco_unitario"));
+        precoUnitarioExcluir.setCellFactory(column -> new TableCell<>() {
+            private final NumberFormat formato = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(formato.format(item));
+                }
+            }
+        });
 
 
 //        btnExcluirProduto.setOnAction(event -> removerProdutoSelecionado());
@@ -589,8 +629,26 @@ public class SaidaProController implements Initializable, UsuarioAware {
             e.printStackTrace();
             mostrarAlerta("Erro ao gerar PDF: " + e.getMessage(), Alert.AlertType.ERROR);
         }
-    }
+        StringBuilder detalhes = new StringBuilder();
+        for (Produto p : produtosSelecionados) {
+            detalhes.append(p.getNome()).append("\n");
+        }
 
+        System.out.println("DETALHES GERADOS:\n" + detalhes); // debug
+
+        historicoAcaoService.registrarAcao(
+                "VENDA REALIZADA",
+                "Produto",
+                detalhes.toString(),
+                usuarioLogado
+        );
+
+
+        mostrarAlerta("Venda finalizada com sucesso!", Alert.AlertType.INFORMATION);
+        produtosSelecionados.clear();
+        tblSelecionados.refresh();
+
+    }
 
     //Tela para remover produto permanente do banco
 

@@ -124,7 +124,15 @@ public class CadastrarProController implements UsuarioAware {
                 novo.setNome(txtNome.getText());
                 novo.setCodigo(codigo);
                 novo.setQuantidade_inicial(quantidade);
-                novo.setPreco_unitario(Double.parseDouble(txtPreco.getText()));
+                String precoTexto = txtPreco.getText().trim().replace(".", "").replace(",", ".");
+                try {
+                    double preco = Double.parseDouble(precoTexto);
+                    novo.setPreco_unitario(preco);
+                } catch (NumberFormatException e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Preço inválido! Use o formato 1.234,56");
+                    alert.showAndWait();
+                    return; // impede salvar se o valor for inválido
+                }
                 novo.setFornecedor(fornecedorCombo.getValue());
                 novo.setCategoria(categoriaCombo.getValue());
 

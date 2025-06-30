@@ -19,7 +19,9 @@ import javafx.scene.input.KeyCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 @Component
@@ -93,6 +95,19 @@ public class BuscaProdutosController implements Initializable , UsuarioAware {
                 new SimpleStringProperty(cellData.getValue().getCategoria().getNome()));
         quantidade_inicial.setCellValueFactory(new PropertyValueFactory<>("quantidade_inicial"));
         preco_unitario.setCellValueFactory(new PropertyValueFactory<>("preco_unitario"));
+        preco_unitario.setCellFactory(column -> new TableCell<>() {
+            private final NumberFormat formato = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(formato.format(item));
+                }
+            }
+        });
 
         carregarProdutos();
 
@@ -137,7 +152,7 @@ public class BuscaProdutosController implements Initializable , UsuarioAware {
                     produtosFiltrados = repository.findByCategoriaNomeContainingIgnoreCase(textoBusca);
                 }
             }
-        } else {
+        } else { 
             produtosFiltrados = repository.findAll();
         }
 
@@ -156,9 +171,6 @@ public class BuscaProdutosController implements Initializable , UsuarioAware {
 
         tblProduto.getItems().setAll(produtosFiltrados);
     }
-
-
-
 
     private void carregarProdutos() {
         tblProduto.getItems().setAll(repository.findAll());

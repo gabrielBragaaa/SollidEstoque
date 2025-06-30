@@ -3,9 +3,11 @@ package Estoque.services;
 import Estoque.entities.Categoria;
 import Estoque.entities.Fornecedor;
 import Estoque.entities.Produto;
+import Estoque.entities.Usuario;
 import Estoque.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +38,7 @@ public class ProdutoService {
     public Produto findByCodigo(String codigo) {
         Optional<Produto> obj = repository.findByCodigo(codigo);
         return obj.get();
-    }
+    } 
 
     public Produto insert(Produto produto) {
         Optional<Produto> obj = repository.findByCodigo(produto.getCodigo());
@@ -69,6 +71,23 @@ public class ProdutoService {
                 (texto != null && !texto.trim().isEmpty()) ? texto.trim() : null,
                 categoria,
                 fornecedor
+        );
+    }
+
+    @Transactional
+    public void realizarSaida(Produto produto, int quantidade, Usuario usuario) {
+        if (produto.getQuantidade_inicial() < quantidade) {
+            throw new IllegalArgumentException("Estoque insuficiente para a saída");
+        }
+
+        produto.setQuantidade_inicial(produto.getQuantidade_inicial() - quantidade);
+        repository.save(produto);
+
+        historicoAcaoService.registrarAcao(
+                "Saída por Venda",
+                "Produto",
+                "Produto '" + produto.getNome() + "' - Código: " + produto.getCodigo() + " | Quantidade retirada: " + quantidade,
+                usuario
         );
     }
 }

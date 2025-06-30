@@ -29,7 +29,7 @@
                 <TableColumn fx:id="codigo" prefWidth="137.0" text="Codigo" />
                 <TableColumn fx:id="categoria" prefWidth="137.0" text="Categoria" />
                 <TableColumn fx:id="nomeProduto" prefWidth="255.0" text="Nome" />
-                <TableColumn fx:id="quantidade_inicial" minWidth="0.0" prefWidth="61.0" text="Quantidade no Estoque" />
+                <TableColumn fx:id="quantidade_inicial" minWidth="0.0" prefWidth="61.0" text="Qtd." />
                 <TableColumn fx:id="preco_unitario" prefWidth="137.0" text="Preço Unitário" />
             </columns>
         </TableView>
