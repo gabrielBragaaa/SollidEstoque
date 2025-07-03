@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.*?>
+<<<<<<< HEAD
+=======
+<?import javafx.scene.control.Button?>
+>>>>>>> 8938a1b0403e078427565c1ae42d2318d6681d57
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<<<<<<< HEAD
+
+<AnchorPane prefHeight="479.0" prefWidth="800.0"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Estoque.controller.HistoricoController">
+
+=======
+<AnchorPane prefHeight="479.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.controller.HistoricoController">
+>>>>>>> 8938a1b0403e078427565c1ae42d2318d6681d57
+    <children>
+        <HBox spacing="10" layoutX="10" layoutY="10">
+            <ComboBox fx:id="filtroUsuario" promptText="Filtrar por usuário" />
+            <DatePicker fx:id="filtroDataInicio" promptText="Data início" />
+            <DatePicker fx:id="filtroDataFim" promptText="Data fim" />
+            <Button text="Aplicar Filtro" onAction="#onFiltrarClicked" />
+            <Button text="Limpar Filtros" onAction="#onLimparFiltrosClicked" />
+        </HBox>
+
+        <TableView fx:id="tblHistorico" layoutY="50" prefWidth="800" prefHeight="400">
+            <columns>
+                <TableColumn fx:id="colunaUsuario" text="Usuário" prefWidth="100"/>
+                <TableColumn fx:id="colunaAcao" text="Ação" prefWidth="150"/>
+                <TableColumn fx:id="colunaEntidade" text="Entidade" prefWidth="150"/>
+                <TableColumn fx:id="colunaDetalhes" text="Detalhes" prefWidth="200"/>
+                <TableColumn fx:id="colunaDataHora" text="Data e Hora" prefWidth="200"/>
+            </columns>
+        </TableView>
+    </children>
+    <ImageView fitHeight="51.0" fitWidth="74.0" layoutX="722.0" layoutY="414.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@imagens/Sollid.png" />
+        </image>
+    </ImageView>
+
+   <Button layoutX="656.0" layoutY="427.0" mnemonicParsing="false" onAction="#voltar" style="-fx-background-color: red;" text="HOME" />
+
+</AnchorPane>

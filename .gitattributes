@@ -1,0 +1,2 @@
+Estoque/app/*.jar filter=lfs diff=lfs merge=lfs -text
+Estoque/runtime/lib/modules filter=lfs diff=lfs merge=lfs -text
