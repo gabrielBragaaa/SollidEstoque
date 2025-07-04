@@ -165,12 +165,12 @@ public class EntradaProController implements UsuarioAware {
                 novo.setNome(txtNome.getText());
                 novo.setCodigo(codigo);
                 novo.setQuantidade_inicial(quantidade);
-                String precoTexto = txtPreco.getText().trim().replace(".", "").replace(",", ".");
                 try {
-                    double preco = Double.parseDouble(precoTexto);
+                    Number precoNumber = (Number) txtPreco.getTextFormatter().getValue();
+                    double preco = precoNumber.doubleValue();
                     novo.setPreco_unitario(preco);
-                } catch (NumberFormatException e) {
-                    showAlert(AlertType.ERROR, "Preço inválido! Use o formato 1.234,56");
+                } catch (Exception e) {
+                    showAlert(AlertType.ERROR, "Preço inválido! Certifique-se de que o valor esteja no formato correto.");
                     return;
                 }
                 novo.setFornecedor(fornecedorCombo.getValue());

@@ -38,7 +38,7 @@ public class ProdutoService {
     public Produto findByCodigo(String codigo) {
         Optional<Produto> obj = repository.findByCodigo(codigo);
         return obj.get();
-    } 
+    }
 
     public Produto insert(Produto produto) {
         Optional<Produto> obj = repository.findByCodigo(produto.getCodigo());
@@ -90,7 +90,6 @@ public class ProdutoService {
                 usuario
         );
     }
-
 
     public List<Produto> findByNomeOuCodigo(String termo) {
         return repository.findByNomeOrCodigo(termo);
