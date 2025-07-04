@@ -55,24 +55,24 @@ public class GerarRelatoController implements UsuarioAware {
                 "Visualizar", "PDF"
         ));
 
-//        tblRelatorio.setRowFactory(tv -> new TableRow<>() {
-//            @Override
-//            protected void updateItem(Produto produto, boolean empty) {
-//                super.updateItem(produto, empty);
-//                if (produto == null || empty) {
-//                    setStyle("");
-//                } else {
-//                    int qtd = produto.getQuantidade_inicial();
-//                    if (qtd <= 5) {
-//                        setStyle("-fx-background-color: #ffcccc; -fx-text-fill: black;"); // Vermelho claro
-//                    } else if (qtd >= 20) {
-//                        setStyle("-fx-background-color: #ccffcc; -fx-text-fill: black;"); // Verde claro
-//                    } else {
-//                        setStyle(""); // Normal
-//                    }
-//                }
-//            }
-//        });
+        tblRelatorio.setRowFactory(tv -> new TableRow<>() {
+            @Override
+            protected void updateItem(Produto produto, boolean empty) {
+                super.updateItem(produto, empty);
+                if (produto == null || empty) {
+                    setStyle("");
+                } else {
+                    int qtd = produto.getQuantidade_inicial();
+                    if (qtd <= 5) {
+                        setStyle("-fx-background-color: #ffcccc; -fx-text-fill: black;"); // Vermelho claro
+                    } else if (qtd >= 20) {
+                        setStyle("-fx-background-color: #ccffcc; -fx-text-fill: black;"); // Verde claro
+                    } else {
+                        setStyle(""); // Normal
+                    }
+                }
+            }
+        });
 
     }
 

@@ -8,36 +8,34 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="500.0" prefWidth="778.0" xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.controller.EntradaProController">
+<AnchorPane prefHeight="500.0" prefWidth="778.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.controller.EntradaProController">
     <children>
-        <Label layoutX="20" layoutY="20" style="-fx-font-size: 20;" text="Entrada / Atualização de Produto" />
+        <Label layoutX="20" layoutY="20" style="-fx-font-size: 20;" text="Entrada de Produto" />
 
-        <TextField fx:id="txtBuscar" layoutX="514.0" layoutY="79.0" prefWidth="150" promptText="Buscar Código" />
-        <Button fx:id="btnBuscar" layoutX="688.0" layoutY="74.0" onAction="#buscarProduto" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #1ABC9C;" text="Buscar" />
+        <TextField fx:id="txtNome" layoutX="20.0" layoutY="73.0" prefWidth="300" promptText="Nome do Produto" />
+        <TextField fx:id="txtCodigo" layoutX="340.0" layoutY="73.0" prefWidth="150" promptText="Código" />
 
-        <TextField fx:id="txtNome" layoutX="20.0" layoutY="79.0" prefWidth="300" promptText="Nome do Produto" />
-        <TextField fx:id="txtCodigo" layoutX="340.0" layoutY="79.0" prefWidth="150" promptText="Código" />
+        <TextField fx:id="txtQuantidade" layoutX="20.0" layoutY="123.0" prefWidth="150" promptText="Quantidade Inicial" />
+        <TextField fx:id="txtPreco" layoutX="190.0" layoutY="123.0" prefWidth="150" promptText="Preço Unitário" text="R$ " />
 
-        <TextField fx:id="txtQuantidade" layoutX="20.0" layoutY="135.0" prefWidth="150" promptText="Quantidade Inicial" />
-        <TextField fx:id="txtPreco" layoutX="190.0" layoutY="135.0" prefWidth="150" promptText="Preço Unitário" />
+        <ComboBox fx:id="fornecedorCombo" layoutX="20.0" layoutY="185.0" prefWidth="300" promptText="Fornecedor" />
+        <ComboBox fx:id="categoriaCombo" layoutX="340.0" layoutY="185.0" prefWidth="300" promptText="Categoria" />
 
-        <ComboBox fx:id="fornecedorCombo" layoutX="20.0" layoutY="192.0" prefWidth="300" promptText="Fornecedor" />
-        <ComboBox fx:id="categoriaCombo" layoutX="340.0" layoutY="192.0" prefWidth="300" promptText="Categoria" />
+        <Button layoutX="20.0" layoutY="238.0" onAction="#salvarProduto" style="-fx-background-color: green; -fx-text-fill: white;" text="Salvar Produto" />
+        <Button fx:id="btnBuscar" layoutX="592.0" layoutY="20.0" onAction="#buscarProduto" style="-fx-background-color: blue;" text="Buscar Produto" />
 
-        <Button layoutX="20.0" layoutY="250.0" onAction="#atualizarProduto" style="-fx-background-color: blue; -fx-text-fill: white;" text="Atualizar Produto" />
 
-        <Button layoutX="688.0" layoutY="20.0" onAction="#EntradaHome" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: red;" text="HOME" />
-
+        <Button layoutX="702.0" layoutY="20.0" onAction="#cadastroPhome" style="-fx-background-color: red;" text="HOME" />
         <ImageView fitHeight="51.0" fitWidth="74.0" layoutX="707.0" layoutY="435.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@imagens/Sollid.png" />
             </image>
         </ImageView>
-      <Label layoutX="20.0" layoutY="112.0" prefHeight="17.0" prefWidth="101.0" text="Quantidade inicial" />
-      <Label layoutX="20.0" layoutY="57.0" prefHeight="17.0" prefWidth="101.0" text="Nome do produto" />
-      <Label layoutX="190.0" layoutY="112.0" prefHeight="17.0" prefWidth="101.0" text="Preço unitário" />
-      <Label layoutX="340.0" layoutY="57.0" prefHeight="17.0" prefWidth="101.0" text="Código" />
-      <Label layoutX="514.0" layoutY="57.0" prefHeight="17.0" prefWidth="101.0" text="Buscar Produto" />
+      <Label layoutX="19.0" layoutY="56.0" text="Nome do Produto" />
+      <Label layoutX="341.0" layoutY="56.0" text="Código" />
+      <Label layoutX="20.0" layoutY="106.0" text="Quantidade" />
+      <Label layoutX="190.0" layoutY="106.0" text="Preço" />
+      <Label layoutX="20.0" layoutY="168.0" text="Fornecedor" />
+      <Label layoutX="340.0" layoutY="168.0" text="Categoria" />
     </children>
 </AnchorPane>

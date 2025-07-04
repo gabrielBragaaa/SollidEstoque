@@ -33,19 +33,22 @@ public class TelaInicialController implements Initializable, UsuarioAware {
     @FXML
     private Button btnHistoricos;
 
+    @FXML
+    private Button btnAtualizarPro;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         Image imagem = new Image(getClass().getResource("/org/example/estoque/imagens/Sollid.png").toExternalForm());
         minhaImagem.setImage(imagem);
 
-        // Deixa o ImageView redondo
+        // Deixa o Imageredondo
         double raio = Math.min(minhaImagem.getFitWidth(), minhaImagem.getFitHeight()) / 2;
         Circle clip = new Circle(raio, raio, raio);
         minhaImagem.setClip(clip);
 
     }
-
+    //Filtro de acesso por tipo de Users
     public void setUsuarioLogado(Usuario usuario) {
         this.usuarioLogado = usuario;
 
@@ -53,14 +56,17 @@ public class TelaInicialController implements Initializable, UsuarioAware {
             System.out.println("Usuário está nulo no setUsuarioLogado da TelaInicialController.");
             // Opcional: desabilitar ou esconder elementos sensíveis, ou mostrar mensagem
             btnHistoricos.setVisible(false);
+            btnAtualizarPro.setVisible(false);
             return;  // sai do método para evitar erros
         }
 
         System.out.println("Usuário logado na telaInicial: " + usuario.getUsername() + " (ROLE: " + usuario.getRole() + ")");
         if (!"ADMIN".equalsIgnoreCase(usuario.getRole())) {
             btnHistoricos.setVisible(false);
+            btnAtualizarPro.setVisible(false);
         } else {
             btnHistoricos.setVisible(true);
+            btnAtualizarPro.setVisible(true);
         }
     }
 
@@ -83,10 +89,10 @@ public class TelaInicialController implements Initializable, UsuarioAware {
 
     //tela de cadastro de produto
     @FXML
-    public void cadastrarProd(ActionEvent event) {
+    public void entradaProd(ActionEvent event) {
         try {
             System.out.println("Usuário atual: " + usuarioLogado); // debug
-            TelaLoader.carregarTela("/org/example/estoque/cadastrar-produto.fxml", "Cadastro de Produtos", usuarioLogado);
+            TelaLoader.carregarTela("/org/example/estoque/entrada-produto.fxml", "Entrada de Produtos", usuarioLogado);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,10 +113,10 @@ public class TelaInicialController implements Initializable, UsuarioAware {
 
     //tela de entrada de produtos
     @FXML
-    public void entradaPro(ActionEvent event) {
+    public void atualizarPro(ActionEvent event) {
         try {
             System.out.println("Usuario Atual: " + usuarioLogado);
-            TelaLoader.carregarTela("/org/example/estoque/Entrada-produto.fxml","Entrada de Produtos", usuarioLogado);
+            TelaLoader.carregarTela("/org/example/estoque/atualizar-produto.fxml","Atualizar Produtos", usuarioLogado);
         } catch (Exception e) {
             e.printStackTrace();
         }

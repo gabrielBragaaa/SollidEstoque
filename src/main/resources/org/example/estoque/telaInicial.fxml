@@ -15,8 +15,8 @@
     <left>
         <VBox alignment="TOP_CENTER" prefWidth="150.0" spacing="10" style="-fx-background-color: #3333ff;" BorderPane.alignment="CENTER">
             <children>
-                <Button onAction="#entradaPro" prefWidth="130" text="Atualizar Produto" />
-                <Button onAction="#cadastrarProd" prefWidth="130" text="Entrada de Produtos" />
+                <Button fx:id="btnAtualizarPro" onAction="#atualizarPro" prefWidth="130" text="Atualizar Produto" />
+                <Button onAction="#entradaProd" prefWidth="130" text="Entrada de Produtos" />
                 <Button onAction="#saidaProd" prefWidth="130" text="Saída de Produtos" />
                 <Button onAction="#buscarProd" prefWidth="130" text="Consultar Estoque" />
                 <Button onAction="#gerarRelato" prefWidth="130" text="Gerar Relatório" />

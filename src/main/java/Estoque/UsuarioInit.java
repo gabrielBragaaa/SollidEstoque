@@ -18,13 +18,13 @@ public class UsuarioInit implements CommandLineRunner {
     //Senha criptografada
     @Override
     public void run(String... args) throws Exception {
-        if (usuarioRepository.findByUsername("gabriel.braga").isEmpty()) {
-            String senhaCriptografada = new BCryptPasswordEncoder().encode("s0ll1d");
+        if (usuarioRepository.findByUsername("lene.miranda").isEmpty()) {
+            String senhaCriptografada = new BCryptPasswordEncoder().encode("1234");
 
             Usuario user = new Usuario();
-            user.setUsername("gabriel.braga");
+            user.setUsername("lene.miranda");
             user.setPassword(senhaCriptografada);
-            user.setRole("ADMIN");
+            user.setRole("GUEST");//Tipos de users ADMIN ou GUEST
 
             usuarioRepository.save(user);
 
