@@ -3,27 +3,20 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.*?>
-<<<<<<< HEAD
-=======
+
 <?import javafx.scene.control.Button?>
->>>>>>> 8938a1b0403e078427565c1ae42d2318d6681d57
+
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<<<<<<< HEAD
-
 <AnchorPane prefHeight="479.0" prefWidth="800.0"
             xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="Estoque.controller.HistoricoController">
 
-=======
-<AnchorPane prefHeight="479.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.controller.HistoricoController">
->>>>>>> 8938a1b0403e078427565c1ae42d2318d6681d57
     <children>
         <HBox spacing="10" layoutX="10" layoutY="10">
             <ComboBox fx:id="filtroUsuario" promptText="Filtrar por usuário" />
