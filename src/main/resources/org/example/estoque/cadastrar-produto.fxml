@@ -24,7 +24,8 @@
         <Button layoutX="20.0" layoutY="238.0" onAction="#salvarProduto" style="-fx-background-color: green; -fx-text-fill: white;" text="Salvar Produto" />
         <Button fx:id="btnBuscar" text="Buscar Produto" onAction="#buscarProduto"/>
 
-        <Button layoutX="702.0" layoutY="20.0" onAction="#cadatroPhome" style="-fx-background-color: red;" text="HOME" />
+
+        <Button layoutX="702.0" layoutY="20.0" onAction="#cadastroPhome" style="-fx-background-color: red;" text="HOME" />
         <ImageView fitHeight="51.0" fitWidth="74.0" layoutX="707.0" layoutY="435.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@imagens/Sollid.png" />

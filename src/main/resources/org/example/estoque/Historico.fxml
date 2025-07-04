@@ -3,9 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.scene.control.Button?>
-
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
@@ -16,6 +14,7 @@
             xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="Estoque.controller.HistoricoController">
+
 
     <children>
         <HBox spacing="10" layoutX="10" layoutY="10">

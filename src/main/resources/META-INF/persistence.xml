@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd" version="2.1">
     <persistence-unit name="estoque-jpa" transaction-type="RESOURCE_LOCAL">
@@ -13,6 +14,8 @@
     </persistence-unit>
 </persistence>
 =======
+=======
+>>>>>>> 8938a1b0403e078427565c1ae42d2318d6681d57
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd" version="2.1">
     <persistence-unit name="estoque-jpa" transaction-type="RESOURCE_LOCAL">
@@ -26,4 +29,7 @@
         </properties>
     </persistence-unit>
 </persistence>
+<<<<<<< HEAD
+>>>>>>> 8938a1b0403e078427565c1ae42d2318d6681d57
+=======
 >>>>>>> 8938a1b0403e078427565c1ae42d2318d6681d57

@@ -1,4 +1,3 @@
-
 package Estoque.repositories;
 
 import Estoque.entities.Categoria;

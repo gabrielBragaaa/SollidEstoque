@@ -159,5 +159,4 @@ public class TelaInicialController implements Initializable, UsuarioAware {
             e.printStackTrace();
         }
     }
-
 }

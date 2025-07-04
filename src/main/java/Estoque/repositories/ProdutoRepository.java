@@ -31,8 +31,10 @@ public interface ProdutoRepository extends JpaRepository<Produto,Long> {
                                    @Param("categoria") Categoria categoria,
                                    @Param("fornecedor") Fornecedor fornecedor);
 
+
     @Query("SELECT p FROM Produto p WHERE LOWER(p.nome) LIKE LOWER(CONCAT('%', :termo, '%')) OR LOWER(p.codigo) LIKE LOWER(CONCAT('%', :termo, '%'))")
     List<Produto> findByNomeOrCodigo(@Param("termo") String termo);
 
 }
+
 

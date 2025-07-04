@@ -1,4 +1,3 @@
-
 package Estoque.projections;
 
 import Estoque.entities.Usuario;

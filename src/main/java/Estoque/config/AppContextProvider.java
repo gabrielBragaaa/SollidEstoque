@@ -1,4 +1,3 @@
-
 package Estoque.config;
 
 import javafx.stage.Stage;

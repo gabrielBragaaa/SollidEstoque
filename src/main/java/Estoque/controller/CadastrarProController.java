@@ -22,21 +22,34 @@ import java.util.List;
 @Component
 public class CadastrarProController implements UsuarioAware {
 
-    @FXML private TextField txtNome;
-    @FXML private TextField txtCodigo;
-    @FXML private TextField txtQuantidade;
-    @FXML private TextField txtPreco;
-    @FXML private ComboBox<Fornecedor> fornecedorCombo;
-    @FXML private ComboBox<Categoria> categoriaCombo;
+    @FXML
+    private TextField txtNome;
+    @FXML
+    private TextField txtCodigo;
+    @FXML
+    private TextField txtQuantidade;
+    @FXML
+    private TextField txtPreco;
+    @FXML
+    private ComboBox<Fornecedor> fornecedorCombo;
+    @FXML
+    private ComboBox<Categoria> categoriaCombo;
 
-    @Autowired private ProdutoService produtoService;
-    @Autowired private FornecedorService fornecedorService;
-    @Autowired private CategoriaService categoriaService;
+    @Autowired
+    private ProdutoService produtoService;
+
+    @Autowired
+    private FornecedorService fornecedorService;
+
+    @Autowired
+    private CategoriaService categoriaService;
+
 
     private Usuario usuarioLogado;
 
     @FXML
     public void initialize() {
+
         List<Fornecedor> fornecedores = fornecedorService.findAll();
         fornecedorCombo.getItems().addAll(fornecedores);
         fornecedorCombo.setCellFactory(param -> new ListCell<>() {
@@ -46,6 +59,21 @@ public class CadastrarProController implements UsuarioAware {
                 setText(empty || item == null ? "" : item.getNomeFornecedor());
             }
         });
+
+
+        // Carrega as categorias no ComboBox e exibe seus nomes
+        List<Categoria> categorias = categoriaService.findAll();
+        categoriaCombo.getItems().addAll(categorias);
+        categoriaCombo.setCellFactory(param -> new javafx.scene.control.ListCell<Categoria>() {
+            @Override
+            protected void updateItem(Categoria item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? "" : item.getNome());
+
+            }
+        });
+
+
         fornecedorCombo.setButtonCell(new ListCell<>() {
             @Override
             protected void updateItem(Fornecedor item, boolean empty) {
@@ -55,16 +83,8 @@ public class CadastrarProController implements UsuarioAware {
             }
         });
 
-        List<Categoria> categorias = categoriaService.findAll();
-        categoriaCombo.getItems().addAll(categorias);
-        categoriaCombo.setCellFactory(param -> new ListCell<>() {
-            @Override
-            protected void updateItem(Categoria item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty || item == null ? "" : item.getNome());
-            }
-        });
-        categoriaCombo.setButtonCell(new ListCell<>() {
+
+            categoriaCombo.setButtonCell(new ListCell<>() {
             @Override
             protected void updateItem(Categoria item, boolean empty) {
                 super.updateItem(item, empty);
@@ -79,7 +99,9 @@ public class CadastrarProController implements UsuarioAware {
         this.usuarioLogado = usuario;
     }
 
+
     private void limparCampos() {
+
         txtNome.clear();
         txtCodigo.clear();
         txtPreco.clear();
@@ -96,7 +118,10 @@ public class CadastrarProController implements UsuarioAware {
 
             try {
                 existente = produtoService.findByCodigo(codigo);
-            } catch (Exception ignored) {}
+
+            } catch (Exception ignored) {
+                // Produto não existe, será criado
+            }
 
             int quantidade = Integer.parseInt(txtQuantidade.getText());
 
@@ -104,7 +129,9 @@ public class CadastrarProController implements UsuarioAware {
                 existente.setQuantidade_inicial(quantidade);
                 produtoService.insert(existente);
                 showAlert(AlertType.INFORMATION, "Produto já existente. Quantidade atualizada com sucesso!");
-            } else {
+
+            } else{
+                // Cadastra novo produto
                 Produto novo = new Produto();
                 novo.setNome(txtNome.getText());
                 novo.setCodigo(codigo);
@@ -180,8 +207,9 @@ public class CadastrarProController implements UsuarioAware {
     }
 
     @FXML
-    public void cadatroPhome(ActionEvent event) {
+    public void cadastroPhome(ActionEvent event) {
         try {
+            System.out.println("Usuário atual: " + usuarioLogado); // debug
             TelaLoader.carregarTela("/org/example/estoque/telaInicial.fxml", "SOLLID COMERCIO LTDA", usuarioLogado);
         } catch (Exception e) {
             e.printStackTrace();

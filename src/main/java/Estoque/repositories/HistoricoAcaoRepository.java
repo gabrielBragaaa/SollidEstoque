@@ -1,4 +1,3 @@
-
 package Estoque.repositories;
 
 import Estoque.entities.HistoricoAcao;
@@ -27,5 +26,4 @@ public interface HistoricoAcaoRepository extends JpaRepository<HistoricoAcao, Lo
 
 
 }
-
 

@@ -1,4 +1,3 @@
-
 package Estoque.services;
 
 import Estoque.entities.Categoria;
@@ -92,6 +91,7 @@ public class ProdutoService {
         );
     }
 
+
     public List<Produto> findByNomeOuCodigo(String termo) {
         return repository.findByNomeOrCodigo(termo);
     }
@@ -100,3 +100,4 @@ public class ProdutoService {
     }
 
    }
+

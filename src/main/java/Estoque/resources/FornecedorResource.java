@@ -28,7 +28,5 @@ public class FornecedorResource {
         Fornecedor obj = service.findById(id_fornecedor);
         return ResponseEntity.ok().body(obj);
     }
-
-
 }
 
