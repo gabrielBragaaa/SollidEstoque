@@ -1,31 +1,30 @@
-# Sistema de Controle de Estoque 
+# Sistema de Gerenciamento de Estoque
+Sistema de gerenciamento de estoque desenvolvido em Java, com interface gráfica construída em JavaFX (Scene Builder) e integração com banco de dados MySQL.
+Projetado para oferecer controle eficiente sobre entradas e saídas de produtos, histórico de ações, geração de relatórios e segurança através de autenticação de usuários.
 
-Sistema de gerenciamento de estoque desenvolvido em Java com JavaFX (interface gráfica construída com Scene Builder) e integração com banco de dados MySQL. Idealizado para controle eficiente de entradas e saídas de produtos, histórico de ações, relatórios e gestão segura por login e senha.
+Autenticação
+Login com usuário e senha criptografada (armazenamento seguro no banco de dados).
+
+Recuperação e alteração de senha com verificação da senha atual.
+
+Tela Principal
+A tela principal conta com um menu lateral que dá acesso rápido às seguintes funcionalidades:
+
+Atualização de Produtos
+
+Entrada de Produtos
+
+Saída de Produtos
+
+Consulta de Estoque
+
+Geração de Relatórios
+
+Histórico de Ações
 
 Funcionalidades
-
-1 - Login
-Autenticação segura com usuário e senha (armazenada de forma criptografada).
-
-Recuperação e alteração de senha integrada.
-
-2 - Tela Principal
-Menu lateral com acesso rápido às funcionalidades:
-
-• Atualização de Produtos
-
-• Entrada de Produtos
-
-• Saída de Produtos
-
-• Consulta de Estoque
-
-• Geração de Relatórios
-
-• Histórico de Ações
-
-3 - Cadastro e Atualização de Produtos
-Registro de produtos com:
+Cadastro e Atualização de Produtos
+Registro de produtos com os seguintes campos:
 
 Nome
 
@@ -39,77 +38,93 @@ Fornecedor
 
 Categoria
 
-Atualização facilitada por busca.
+Atualização simplificada com busca por nome ou código.
 
-• Entrada de Produtos
-Entrada de novos lotes no estoque.
+Entrada de Produtos
+Registro de novos lotes de produtos no estoque.
 
 Atualização automática da quantidade existente.
 
-• Saída de Produtos
-Venda ou retirada de produtos do estoque.
+Saída de Produtos
+Controle de vendas ou retirada de itens do estoque.
 
-Tela dividida em duas abas:
+Duas abas distintas:
 
-Venda: Seleção e finalização da saída com cálculo do total.
+Venda: seleção de itens e cálculo automático do valor total.
 
-Excluir Produto: Remoção permanente do produto.
+Excluir Produto: remoção definitiva do produto do sistema.
 
-• Consulta de Estoque
-Busca filtrada por nome, categoria ou fornecedor.
+Consulta de Estoque
+Filtros por nome, categoria ou fornecedor.
 
-Visualização da quantidade, preço e demais dados do produto.
+Exibição das informações completas do produto, incluindo quantidade e preço.
 
-• Geração de Relatórios
-Seleção de tipo de relatório (baixa de estoque, histórico de entradas e saídas, etc.).
+Geração de Relatórios
+Escolha do tipo de relatório:
 
-Formatos de visualização e exportação em PDF.
+Produtos com baixo estoque
 
-• Histórico de Ações
-Registro detalhado das ações dos usuários.
+Histórico de entradas e saídas
 
-Filtros por nome e data para auditoria.
+Resumo geral
 
-• Tecnologias Utilizadas
-Java 11+
+Visualização direta ou exportação em PDF.
 
-JavaFX (FXML via Scene Builder)
+Histórico de Ações
+Registro completo das ações realizadas por usuários.
+
+Filtros por nome e data, permitindo auditoria precisa.
+
+Segurança
+Senhas armazenadas de forma criptografada.
+
+Alteração de senha condicionada à verificação da senha atual.
+
+Registro de todas as ações relevantes na tabela de histórico.
+
+Níveis de permissão para controle de acesso às funcionalidades.
+
+Tecnologias Utilizadas
+Java 11 ou superior
+
+JavaFX (FXML com Scene Builder)
 
 MySQL (banco de dados relacional)
 
 JDBC (conexão com banco de dados)
 
-Maven (gerenciamento de dependências)
+Maven (gerenciador de dependências)
 
-• Segurança
-Cada ação relevante no sistema é registrada na tabela historico.
+Capturas de Tela
+Tela de Login
 
-O sistema exige nivel de login para acesso às funcionalidades mais avançadas.
+Tela Principal
 
-Mudança de senha protegida por verificação da senha atual.
+Cadastro de Produto
 
-• Capturas de Tela
-• Login
-• Tela Principal
-• Entrada de Produtos
-• Cadastro de Produto
-• Saída de Produtos
-• Excluir Produto
-• Consultar Estoque
-• Gerar Relatórios
-• Histórico de Ações
+Entrada de Produtos
 
+Saída de Produtos
 
-• Requisitos
+Exclusão de Produto
+
+Consulta de Estoque
+
+Geração de Relatórios
+
+Histórico de Ações
+
+Requisitos para Execução
 Java 11 ou superior
 
-MySQL Server 8.0+
+MySQL Server 8.0 ou superior
 
-IDE (IntelliJ, Eclipse)
+IDE (IntelliJ IDEA, Eclipse)
 
-Scene Builder (para edição visual de telas FXML)
+Scene Builder (para edição visual das interfaces FXML)
 
-👨‍💻 Autor
+Autor
 Gabriel Oliveira Braga
 Desenvolvedor Full Stack
+
 © 2025 – Todos os direitos reservados.
