@@ -85,14 +85,31 @@ Cadastro e Atualização de Produtos
   • Níveis de permissão para controle de acesso às funcionalidades.
 
 # Tecnologias Utilizadas
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" width="60"/><br/>
+      Java
+    </td>
+    <td align="center">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/JavaFX_Logo.png" width="60"/><br/>
+      JavaFX
+    </td>
+    <td align="center">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" width="60"/><br/>
+      MySQL
+    </td>
+    <td align="center">
+      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/maven/maven-original-wordmark.svg" width="60"/><br/>
+      Maven
+    </td>
+  </tr>
+</table>
+
   • Java 11 ou superior
-  
   • JavaFX (FXML com Scene Builder)
-  
   • MySQL (banco de dados relacional)
-  
   • JDBC (conexão com banco de dados)
-  
   • Maven (gerenciador de dependências)
 
 ![TelaLogin](https://github.com/user-attachments/assets/84bdb554-70c2-4ea5-b435-1f3e6b4ae5b5)
