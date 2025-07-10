@@ -92,6 +92,8 @@ public class SaidaProController implements Initializable, UsuarioAware {
     @FXML
     private TableColumn<Produto, Double> precoUnitarioExcluir;
 
+    @FXML
+    private TextField txtTecnicoResponsavel;
 
     @FXML
     private TextField txtCampoBuscaVenda;
@@ -507,6 +509,10 @@ public class SaidaProController implements Initializable, UsuarioAware {
 
         sb.append(String.format("TOTAL DO PEDIDO: R$ %.2f\n", total));
         sb.append("Data: ").append(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))).append("\n");
+
+        String tecnico = txtTecnicoResponsavel.getText();
+        sb.append("Técnico Responsável: ").append(tecnico.isEmpty() ? "Não informado" : tecnico).append("\n");
+
         sb.append("\n* Sollid Comercio LTDA *\n");
 
         return sb.toString();
@@ -614,6 +620,8 @@ public class SaidaProController implements Initializable, UsuarioAware {
 
             document.add(new Paragraph(String.format("TOTAL DO PEDIDO: R$ %.2f\n", total), boldFont));
             document.add(new Paragraph("Data: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), regularFont));
+            String tecnico = txtTecnicoResponsavel.getText();
+            document.add(new Paragraph("Técnico Responsável: " + (tecnico.isEmpty() ? "Não informado" : tecnico), regularFont));
             document.add(new Paragraph("\n* Sollid Comercio LTDA *", regularFont));
             document.close();
 

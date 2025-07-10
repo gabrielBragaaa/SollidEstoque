@@ -16,7 +16,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.util.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;

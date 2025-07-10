@@ -190,9 +190,6 @@ public class AtualizarProController implements Initializable, UsuarioAware {
         }
     }
 
-
-
-
     @FXML
     public void EntradaHome(ActionEvent event) {
         try {
