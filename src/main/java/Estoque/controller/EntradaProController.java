@@ -97,25 +97,25 @@ public class EntradaProController implements UsuarioAware {
 
         NumberFormat formatoBR = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
-        TextFormatter<Number> precoFormatter = new TextFormatter<>(new StringConverter<>() {
-            @Override
-            public String toString(Number object) {
-                if (object == null) return "";
-                return formatoBR.format(object);
-            }
+        // Aceita qualquer valor e formata apenas ao sair do campo
+        TextFormatter<String> precoFormatter = new TextFormatter<>(change -> change);
+        txtPreco.setTextFormatter(precoFormatter);
 
-            @Override
-            public Number fromString(String string) {
+        txtPreco.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal) { // perdeu o foco
+                String texto = txtPreco.getText()
+                        .replace("R$", "")
+                        .replace(" ", "")
+                        .replace(".", "")
+                        .replace(",", ".");
                 try {
-                    return formatoBR.parse(string);
-                } catch (ParseException e) {
-                    return 0;
+                    double valor = Double.parseDouble(texto);
+                    txtPreco.setText(formatoBR.format(valor));
+                } catch (NumberFormatException e) {
+                    txtPreco.setText(""); // limpa se inválido
                 }
             }
-        }, 0); // valor inicial aqui
-
-
-        txtPreco.setTextFormatter(precoFormatter);
+        });
     }
 
 
@@ -165,8 +165,14 @@ public class EntradaProController implements UsuarioAware {
                 novo.setCodigo(codigo);
                 novo.setQuantidade_inicial(quantidade);
                 try {
-                    Number precoNumber = (Number) txtPreco.getTextFormatter().getValue();
-                    double preco = precoNumber.doubleValue();
+                    // Corrigido: aceita valor como "R$ 789.123,45"
+                    String textoPreco = txtPreco.getText()
+                            .replace("R$", "")
+                            .replace("\u00A0", "") // NBSP invisível
+                            .replace(" ", "")
+                            .replace(".", "")
+                            .replace(",", ".");
+                    double preco = Double.parseDouble(textoPreco);
                     novo.setPreco_unitario(preco);
                 } catch (Exception e) {
                     showAlert(AlertType.ERROR, "Preço inválido! Certifique-se de que o valor esteja no formato correto.");

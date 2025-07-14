@@ -19,7 +19,9 @@ import javafx.scene.input.KeyCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -70,6 +72,8 @@ public class AtualizarProController implements Initializable, UsuarioAware {
     private Produto produtoAtual;
 
     private Usuario usuarioLogado;
+
+    private final NumberFormat formatoBR = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -141,7 +145,8 @@ public class AtualizarProController implements Initializable, UsuarioAware {
         txtNome.setText(produto.getNome());
         txtCodigo.setText(produto.getCodigo());
         txtQuantidade.setText(String.valueOf(produto.getQuantidade_inicial()));
-        txtPreco.setText(String.valueOf(produto.getPreco_unitario()));
+        String precoFormatado = formatoBR.format(produto.getPreco_unitario());
+        txtPreco.setText(precoFormatado);
         fornecedorCombo.setValue(produto.getFornecedor());
         categoriaCombo.setValue(produto.getCategoria());
     }
@@ -155,7 +160,21 @@ public class AtualizarProController implements Initializable, UsuarioAware {
         produtoAtual.setNome(txtNome.getText());
         produtoAtual.setCodigo(txtCodigo.getText());
         produtoAtual.setQuantidade_inicial(Integer.parseInt(txtQuantidade.getText()));
-        produtoAtual.setPreco_unitario(Double.parseDouble(txtPreco.getText()));
+        try {
+            String textoPreco = txtPreco.getText()
+                    .replace("R$", "")
+                    .replace("\u00A0", "")
+                    .replace(" ", "")
+                    .replace(".", "")
+                    .replace(",", ".");
+            double preco = Double.parseDouble(textoPreco);
+            produtoAtual.setPreco_unitario(preco);
+        } catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Preço inválido. Use o formato correto, como R$ 12,34");
+            alert.showAndWait();
+            return;
+        }
+
         produtoAtual.setFornecedor(fornecedorCombo.getValue());
         produtoAtual.setCategoria(categoriaCombo.getValue());
 
