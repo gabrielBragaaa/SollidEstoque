@@ -21,7 +21,10 @@ import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -113,7 +116,12 @@ public class GerarRelatoController implements UsuarioAware {
     private void gerarPdfRelatorio(List<Produto> produtos, String tituloRelatorio) throws Exception {
         Document document = new Document();
         String nomeArquivo = "relatorio_" + System.currentTimeMillis() + ".pdf";
-        PdfWriter.getInstance(document, new FileOutputStream(nomeArquivo));
+        String diretorio = "C:/Relatorios/";
+        File pasta = new File(diretorio);
+        if(!pasta.exists()) pasta.mkdirs();
+
+        File file = new File(diretorio + nomeArquivo);
+        PdfWriter.getInstance(document, new FileOutputStream(file));
 
         document.open();
 
@@ -123,6 +131,14 @@ public class GerarRelatoController implements UsuarioAware {
         titulo.setAlignment(Element.ALIGN_CENTER);
         titulo.setSpacingAfter(20);
         document.add(titulo);
+
+        //Data e Hora
+        LocalDateTime dataHoraAtual = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        Paragraph dataParagrafo = new Paragraph(dataHoraAtual.format(formatter), new Font(Font.HELVETICA, 10));
+        dataParagrafo.setAlignment(Element.ALIGN_RIGHT);
+        dataParagrafo.setSpacingAfter(10);
+        document.add(dataParagrafo);
 
         // Tabela com 4 colunas
         PdfPTable table = new PdfPTable(5);
@@ -201,7 +217,7 @@ public class GerarRelatoController implements UsuarioAware {
     private void exportarRelatorioPDF() {
         String tipoRelatorio = tipoRelatorioComboBox.getValue();
 
-        if (tipoRelatorio == null) {
+          if (tipoRelatorio == null) {
             mostrarAlerta("Selecione um tipo de relatório!");
             return;
         }
