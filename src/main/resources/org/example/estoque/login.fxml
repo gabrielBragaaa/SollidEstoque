@@ -12,7 +12,7 @@
 
 <VBox alignment="CENTER" prefHeight="594.0" prefWidth="599.0" spacing="15.0"
       style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.controller.HelloController">
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.controller.LoginController">
 
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

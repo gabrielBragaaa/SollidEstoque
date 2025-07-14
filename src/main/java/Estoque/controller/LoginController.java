@@ -15,7 +15,7 @@ import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 @Controller
-public class HelloController {
+public class LoginController {
 
     @FXML
     private TextField txtUsername;

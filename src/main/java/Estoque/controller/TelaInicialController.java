@@ -71,9 +71,8 @@ public class TelaInicialController implements Initializable, UsuarioAware {
     }
 
     @FXML
-    public void sairDaAplicacao() {
-        Platform.exit(); //fecha o jvfx
-        System.exit(0);
+    public void sairDaAplicacao(ActionEvent event) {
+        TelaLoader.carregarTela("/org/example/estoque/login.fxml", "Login - Estoque", null);
     }
 
     @FXML

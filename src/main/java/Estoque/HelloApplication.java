@@ -21,7 +21,7 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().
-                getResource("/org/example/estoque/hello-view.fxml"));
+                getResource("/org/example/estoque/login.fxml"));
 
         loader.setControllerFactory(context::getBean);
 
