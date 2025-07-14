@@ -19,11 +19,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyCode;
+import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
+
 import java.io.*;
 import java.net.URL;
 import java.text.NumberFormat;
@@ -31,7 +33,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
-
+import java.text.ParseException;
 @Component
 public class SaidaProController implements Initializable, UsuarioAware {
 
@@ -150,14 +152,14 @@ public class SaidaProController implements Initializable, UsuarioAware {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-       txtCampoBuscaVenda.setOnKeyPressed(event -> {
-           if (event.getCode() == KeyCode.ENTER){
-               btnBuscarVenda.fire();
-           }
-       });
+        txtCampoBuscaVenda.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                btnBuscarVenda.fire();
+            }
+        });
 
         txtCampoBuscaExcluir.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER){
+            if (event.getCode() == KeyCode.ENTER) {
                 btnBuscarExcluir.fire();
             }
         });
@@ -278,6 +280,52 @@ public class SaidaProController implements Initializable, UsuarioAware {
             }
         });
 
+        tblSelecionados.setEditable(true);
+
+// Configura a célula de quantidade para edição
+        quantidadeSelecionada.setCellFactory(TextFieldTableCell.<Produto, Integer>forTableColumn(new IntegerStringConverter()));
+
+// Agora faça para o preço unitário, usando um conversor para Double e formatando o valor:
+        precoSelecionado.setCellFactory(TextFieldTableCell.<Produto, Double>forTableColumn(new StringConverter<>() {
+            private final NumberFormat formato = NumberFormat.getInstance(new Locale("pt", "BR"));
+
+            @Override
+            public String toString(Double object) {
+                if (object == null) return "";
+                return formato.format(object);
+            }
+
+            @Override
+            public Double fromString(String string) {
+                try {
+                    if (string == null || string.trim().isEmpty()) return 0.0;
+
+                    // Remove espaços extras
+                    string = string.trim();
+
+                    // Faz o parse corretamente com ponto como milhar e vírgula como decimal
+                    Number number = formato.parse(string);
+                    return number.doubleValue();
+
+                } catch (ParseException e) {
+                    return 0.0;
+                }
+            }
+        }));
+
+        precoSelecionado.setOnEditCommit(editEvent -> {
+            Produto produtoEditado = editEvent.getRowValue();
+            Double novoPreco = editEvent.getNewValue();
+
+            if (novoPreco == null || novoPreco <= 0) {
+                mostrarAlerta("Informe um preço válido e maior que zero.", Alert.AlertType.WARNING);
+                tblSelecionados.refresh(); // Volta ao valor anterior
+                return;
+            }
+
+            produtoEditado.setPreco_unitario(novoPreco);
+            atualizarTotal(); // Atualiza o total após alteração válida
+        });
     }
 
     //Remover visibilidade de botao para usurio sem permissao
@@ -513,6 +561,8 @@ public class SaidaProController implements Initializable, UsuarioAware {
         String tecnico = txtTecnicoResponsavel.getText();
         sb.append("Técnico Responsável: ").append(tecnico.isEmpty() ? "Não informado" : tecnico).append("\n");
 
+        
+
         sb.append("\n* Sollid Comercio LTDA *\n");
 
         return sb.toString();
@@ -725,10 +775,10 @@ public class SaidaProController implements Initializable, UsuarioAware {
         System.out.println("Produto selecionado na tabela: " + selecionado);
         if (selecionado != null) {
             produtoExcluir = selecionado;
-            if ("ADMIN".equalsIgnoreCase(usuarioLogado.getRole())){
+            if ("ADMIN".equalsIgnoreCase(usuarioLogado.getRole())) {
                 btnExcluirProduto.setVisible(true);
                 btnExcluirProduto.setDisable(false); //HAbiliata para admin
-            }else {
+            } else {
                 btnExcluirProduto.setVisible(false); //Oculta para nao admin
             }
         }
