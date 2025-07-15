@@ -3,6 +3,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -21,12 +23,23 @@
         <ComboBox fx:id="fornecedorCombo" layoutX="20.0" layoutY="185.0" prefWidth="300" promptText="Fornecedor" />
         <ComboBox fx:id="categoriaCombo" layoutX="340.0" layoutY="185.0" prefWidth="300" promptText="Categoria" />
 
-        <Button layoutX="20.0" layoutY="238.0" onAction="#salvarProduto" style="-fx-background-color: green; -fx-text-fill: white;" text="Salvar Produto" />
+
+        <Button layoutX="594.0" layoutY="456.0" onAction="#salvarProduto" style="-fx-background-color: green; -fx-text-fill: white;" text="Salvar Produto" />
         <Button fx:id="btnBuscar" layoutX="592.0" layoutY="20.0" onAction="#buscarProduto" style="-fx-background-color: blue;" text="Buscar Produto" />
 
 
         <Button layoutX="702.0" layoutY="20.0" onAction="#cadastroPhome" style="-fx-background-color: red;" text="HOME" />
-        <ImageView fitHeight="51.0" fitWidth="74.0" layoutX="707.0" layoutY="435.0" pickOnBounds="true" preserveRatio="true">
+        <TableView fx:id="tabelaProdutos" layoutX="19.0" layoutY="235.0" prefHeight="200.0" prefWidth="742.0">
+            <columns>
+                <TableColumn fx:id="colNome" prefWidth="240.0" text="Nome" />
+                <TableColumn fx:id="colCodigo" prefWidth="92.0" text="Código" />
+                <TableColumn fx:id="colQuantidade" prefWidth="94.0" text="Quantidade" />
+                <TableColumn fx:id="colPreco" prefWidth="112.0" text="Preço" />
+                <TableColumn fx:id="colFornecedor" prefWidth="91.0" text="Fornecedor" />
+                <TableColumn fx:id="colCategoria" prefWidth="111.0" text="Categoria" />
+            </columns>
+        </TableView>
+        <ImageView fitHeight="30.0" fitWidth="39.0" layoutX="724.0" layoutY="456.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@imagens/Sollid.png" />
             </image>

@@ -9,6 +9,9 @@ import Estoque.services.CategoriaService;
 import Estoque.services.FornecedorService;
 import Estoque.services.ProdutoService;
 import Estoque.util.TelaLoader;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -32,6 +35,22 @@ public class EntradaProController implements UsuarioAware {
     private TextField txtQuantidade;
     @FXML
     private TextField txtPreco;
+
+    //tabele de buscar
+    @FXML
+    private TableView<Produto> tabelaProdutos;
+    @FXML
+    private TableColumn<Produto, String> colNome;
+    @FXML
+    private TableColumn<Produto, String> colCodigo;
+    @FXML
+    private TableColumn<Produto, Integer> colQuantidade;
+    @FXML
+    private TableColumn<Produto, Double> colPreco;
+    @FXML
+    private TableColumn<Produto, String> colFornecedor;
+    @FXML
+    private TableColumn<Produto, String> colCategoria;
     @FXML
     private ComboBox<Fornecedor> fornecedorCombo;
     @FXML
@@ -116,6 +135,19 @@ public class EntradaProController implements UsuarioAware {
                 }
             }
         });
+        colNome.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getNome()));
+        colCodigo.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCodigo()));
+        colQuantidade.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getQuantidade_inicial()).asObject());
+        colPreco.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getPreco_unitario()).asObject());
+        colFornecedor.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getFornecedor() != null ? data.getValue().getFornecedor().getNomeFornecedor() : ""));
+        colCategoria.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCategoria() != null ? data.getValue().getCategoria().getNome() : ""));
+
+        tabelaProdutos.getSelectionModel().selectedItemProperty().addListener((obs, antigo, novo) -> {
+            if (novo != null) {
+                preencherCampos(novo);
+            }
+        });
+
     }
 
 
@@ -217,8 +249,12 @@ public class EntradaProController implements UsuarioAware {
             if (encontrados.isEmpty()) {
                 showAlert(AlertType.INFORMATION, "Nenhum produto encontrado.");
             } else {
-                Produto produto = encontrados.get(0); // Primeiro resultado
-                preencherCampos(produto);
+                tabelaProdutos.getItems().setAll(encontrados);
+
+                if (!encontrados.isEmpty()) {
+                    preencherCampos(encontrados.get(0));
+                }
+
             }
 
         } catch (Exception e) {

@@ -33,6 +33,8 @@
                               </TableView>
                                <Label layoutX="78.0" layoutY="255.0" text="Técnico Responsável:" />
                                <TextField fx:id="txtTecnicoResponsavel" layoutX="78.0" layoutY="270.0" prefHeight="25.0" prefWidth="148.0" promptText="Digite o nome do técnico" />
+                               <Label layoutX="246.0" layoutY="255.0" text="Cliente:" />
+                               <TextField fx:id="txtNomeCliente" layoutX="246.0" layoutY="270.0" prefHeight="25.0" prefWidth="148.0" promptText="Digite o nome do Cliente" />
                                <Label fx:id="labelTotal" layoutX="608.0" layoutY="330.0" prefHeight="32.0" prefWidth="167.0" style="-fx-font-size: 22px; -fx-background-color: black; -fx-text-fill: green;" text="Total: R$ 0,00" />
                               <Button layoutX="484.0" layoutY="303.0" mnemonicParsing="false" onAction="#removerProdutoSelecionado" prefHeight="25.0" prefWidth="111.0" style="-fx-background-color: YELLOW;" text="Remover Produto" underline="true" />
                                <Button layoutX="482.0" layoutY="362.0" mnemonicParsing="false" onAction="#finalizarSaida" prefHeight="25.0" prefWidth="114.0" style="-fx-background-color: #33ff33;" text="Finalizar Saída" underline="true" />

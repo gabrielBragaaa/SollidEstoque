@@ -98,6 +98,9 @@ public class SaidaProController implements Initializable, UsuarioAware {
     private TextField txtTecnicoResponsavel;
 
     @FXML
+    private TextField txtNomeCliente;
+
+    @FXML
     private TextField txtCampoBuscaVenda;
 
     @FXML
@@ -561,7 +564,8 @@ public class SaidaProController implements Initializable, UsuarioAware {
         String tecnico = txtTecnicoResponsavel.getText();
         sb.append("Técnico Responsável: ").append(tecnico.isEmpty() ? "Não informado" : tecnico).append("\n");
 
-        
+        String cliente = txtNomeCliente.getText();
+        sb.append("Cliente: ").append(cliente.isEmpty() ? "Não informado" : cliente).append("\n");
 
         sb.append("\n* Sollid Comercio LTDA *\n");
 
