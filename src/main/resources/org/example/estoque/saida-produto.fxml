@@ -11,6 +11,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="500.0" prefWidth="778.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.controller.SaidaProController">
    <children>
@@ -22,25 +23,31 @@
                      <children>
                         <AnchorPane prefHeight="582.0" prefWidth="778.0">
                            <children>
-                              <TableView fx:id="tblProdutos" layoutX="14.0" layoutY="54.0" prefHeight="197.0" prefWidth="754.0">
+                              <TableView fx:id="tblProdutos" layoutX="12.0" layoutY="46.0" prefHeight="168.0" prefWidth="754.0">
                                  <columns>
-                                     <TableColumn fx:id="fornecedor" prefWidth="69.0" text="Fornecedor" />
-                                    <TableColumn fx:id="codigo" prefWidth="117.0" text="Codigo" />
-                                    <TableColumn fx:id="nome" prefWidth="201.0" text="Produto" />
-                                    <TableColumn fx:id="quantidade_inicial" prefWidth="99.0" text="Qtd." />
-                                    <TableColumn fx:id="preco_unitario" prefWidth="267.0" text="Preço" />
+                                     <TableColumn fx:id="fornecedor" prefWidth="88.0" text="Fornecedor" />
+                                    <TableColumn fx:id="codigo" prefWidth="98.0" text="Codigo" />
+                                    <TableColumn fx:id="nome" prefWidth="314.0" text="Produto" />
+                                    <TableColumn fx:id="quantidade_inicial" prefWidth="96.0" text="Qtd." />
+                                    <TableColumn fx:id="preco_unitario" prefWidth="157.0" text="Preço" />
                                  </columns>
                               </TableView>
-                               <Label layoutX="78.0" layoutY="255.0" text="Técnico Responsável:" />
-                               <TextField fx:id="txtTecnicoResponsavel" layoutX="78.0" layoutY="270.0" prefHeight="25.0" prefWidth="148.0" promptText="Digite o nome do técnico" />
-                               <Label layoutX="246.0" layoutY="255.0" text="Cliente:" />
-                               <TextField fx:id="txtNomeCliente" layoutX="246.0" layoutY="270.0" prefHeight="25.0" prefWidth="148.0" promptText="Digite o nome do Cliente" />
-                               <Label fx:id="labelTotal" layoutX="608.0" layoutY="330.0" prefHeight="32.0" prefWidth="167.0" style="-fx-font-size: 22px; -fx-background-color: black; -fx-text-fill: green;" text="Total: R$ 0,00" />
-                              <Button layoutX="484.0" layoutY="303.0" mnemonicParsing="false" onAction="#removerProdutoSelecionado" prefHeight="25.0" prefWidth="111.0" style="-fx-background-color: YELLOW;" text="Remover Produto" underline="true" />
-                               <Button layoutX="482.0" layoutY="362.0" mnemonicParsing="false" onAction="#finalizarSaida" prefHeight="25.0" prefWidth="114.0" style="-fx-background-color: #33ff33;" text="Finalizar Saída" underline="true" />
+
+                               <Label layoutX="9.0" layoutY="214.0" text="Técnico Responsável:" />
+                               <TextField fx:id="txtTecnicoResponsavel" layoutX="16.0" layoutY="234.0" prefHeight="25.0" prefWidth="120.0" promptText="Nome do técnico" />
+
+                               <Label layoutX="149.0" layoutY="214.0" text="Cliente:" />
+                               <TextField fx:id="txtNomeCliente" layoutX="149.0" layoutY="234.0" prefHeight="25.0" prefWidth="97.0" promptText="Digite o nome do Cliente" />
+
+                               <Label layoutX="252.0" layoutY="214.0" text="CNPJ:" />
+                               <TextField fx:id="txtCnpj" layoutX="252.0" layoutY="234.0" prefHeight="25.0" prefWidth="146.0" promptText="Digite o CNPJ:" />
+
+                               <Label fx:id="labelTotal" layoutX="608.0" layoutY="330.0" prefHeight="32.0" prefWidth="167.0" style="-fx-font-size: 22px; -fx-background-color: black; -fx-text-fill: green;" text="R$ 0,00" />
+                              <Button layoutX="485.0" layoutY="350.0" mnemonicParsing="false" onAction="#removerProdutoSelecionado" prefHeight="25.0" prefWidth="111.0" style="-fx-background-color: YELLOW;" text="Remover Produto" underline="true" />
+                               <Button layoutX="483.0" layoutY="398.0" mnemonicParsing="false" onAction="#finalizarSaida" prefHeight="25.0" prefWidth="114.0" style="-fx-background-color: #33ff33;" text="Finalizar Saída" underline="true" />
                               <Button layoutX="658.0" layoutY="14.0" onAction="#voltar" style="-fx-background-color: red;" text="HOME" />
                               <Separator layoutX="602.0" layoutY="255.0" orientation="VERTICAL" prefHeight="265.0" prefWidth="3.0" />
-                               <TableView fx:id="tblSelecionados" layoutX="14.0" layoutY="299.0" prefHeight="150.0" prefWidth="461.0">
+                               <TableView fx:id="tblSelecionados" layoutX="16.0" layoutY="316.0" prefHeight="164.0" prefWidth="461.0">
                                    <columns>
                                        <TableColumn fx:id="fornecedorSelecionado" prefWidth="73.0" text="Fornecedor" />
                                        <TableColumn fx:id="nomeSelecionado" prefWidth="216.0" text="Produto" />
@@ -48,18 +55,23 @@
                                        <TableColumn fx:id="precoSelecionado" prefWidth="98.0" text="Preço Unitário" />
                                    </columns>
                                </TableView>
-                              <Label layoutX="14.0" layoutY="272.0" prefHeight="19.0" prefWidth="51.0" style="-fx-background-color: ORANGE;" text="PEDIDOS" />
+                              <Label layoutX="14.0" layoutY="294.0" prefHeight="19.0" prefWidth="51.0" style="-fx-background-color: ORANGE;" text="PEDIDOS:" />
+                              <TextField fx:id="txtCampoBuscaVenda" layoutX="10.0" layoutY="14.0" prefHeight="25.0" prefWidth="257.0" promptText="Buscar por nomeFornecedor ou ID" />
+                              <Button fx:id="btnBuscarVenda" layoutX="286.0" layoutY="14.0" onAction="#buscarProdutos" prefHeight="25.0" prefWidth="97.0" text="Buscar Produto" />
+      
+                               <ImageView fitHeight="51.0" fitWidth="40.0" layoutX="724.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@imagens/Sollid.png" />
+                                 </image>
+                              </ImageView>
+                              <Label layoutX="610.0" layoutY="289.0" prefHeight="35.0" prefWidth="96.0" text="Total:" textFill="#035890">
+                                 <font>
+                                    <Font name="Agency FB Bold" size="31.0" />
+                                 </font>
+                              </Label>
 
                            </children>
                         </AnchorPane>
-                        <TextField fx:id="txtCampoBuscaVenda" layoutX="14.0" layoutY="24.0" prefHeight="25.0" prefWidth="257.0" promptText="Buscar por nomeFornecedor ou ID" />
-                        <Button fx:id="btnBuscarVenda" layoutX="294.0" layoutY="24.0" onAction="#buscarProdutos" prefHeight="25.0" prefWidth="97.0" text="Buscar Produto" />
-
-                         <ImageView fitHeight="51.0" fitWidth="40.0" layoutX="727.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@imagens/Sollid.png" />
-                           </image>
-                        </ImageView>
                      </children>
                   </AnchorPane>
             </content>

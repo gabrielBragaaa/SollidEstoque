@@ -101,6 +101,9 @@ public class SaidaProController implements Initializable, UsuarioAware {
     private TextField txtNomeCliente;
 
     @FXML
+    private TextField txtCnpj;
+
+    @FXML
     private TextField txtCampoBuscaVenda;
 
     @FXML
@@ -562,10 +565,13 @@ public class SaidaProController implements Initializable, UsuarioAware {
         sb.append("Data: ").append(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))).append("\n");
 
         String tecnico = txtTecnicoResponsavel.getText();
-        sb.append("Técnico Responsável: ").append(tecnico.isEmpty() ? "Não informado" : tecnico).append("\n");
+        sb.append("Técnico Responsável: ").append(tecnico.isEmpty() ? "Não Informado" : tecnico).append("\n");
 
         String cliente = txtNomeCliente.getText();
-        sb.append("Cliente: ").append(cliente.isEmpty() ? "Não informado" : cliente).append("\n");
+        sb.append("Cliente: ").append(cliente.isEmpty() ? "Não Informado" : cliente).append("\n");
+ 
+        String cnpj = txtCnpj.getText();
+        sb.append("CNPJ: ").append(cnpj.isEmpty() ? "Não Informado" : cnpj).append("\n");
 
         sb.append("\n* Sollid Comercio LTDA *\n");
 
@@ -590,7 +596,7 @@ public class SaidaProController implements Initializable, UsuarioAware {
         Optional<ButtonType> result = alert.showAndWait();
         return result.isPresent() && result.get() == salvar;
     }
-
+ 
     @FXML
     public void finalizarSaida() {
         if (produtosSelecionados.isEmpty()) {
