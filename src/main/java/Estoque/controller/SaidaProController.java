@@ -596,7 +596,6 @@ public class SaidaProController implements Initializable, UsuarioAware {
         Optional<ButtonType> result = alert.showAndWait();
         return result.isPresent() && result.get() == salvar;
     }
- 
     @FXML
     public void finalizarSaida() {
         if (produtosSelecionados.isEmpty()) {

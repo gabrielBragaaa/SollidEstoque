@@ -4,7 +4,6 @@ import Estoque.config.AppContextProvider;
 import Estoque.entities.Usuario;
 import Estoque.projections.UsuarioAware;
 import Estoque.util.TelaLoader;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -135,7 +134,7 @@ public class TelaInicialController implements Initializable, UsuarioAware {
     @FXML
     public void Historico() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/estoque/Historico.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/estoque/historico.fxml"));
             loader.setControllerFactory(AppContextProvider.getApplicationContext()::getBean);
             Scene scene = new Scene(loader.load());
 

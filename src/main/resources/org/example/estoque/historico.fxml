@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<AnchorPane prefHeight="479.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.controller.HistoricoController">
+
+
+    <children>
+        <HBox layoutX="10" layoutY="10" spacing="10">
+            <ComboBox fx:id="filtroUsuario" promptText="Filtrar por usuário" />
+            <DatePicker fx:id="filtroDataInicio" promptText="Data início" />
+            <DatePicker fx:id="filtroDataFim" promptText="Data fim" />
+            <Button onAction="#onFiltrarClicked" text="Aplicar Filtro" />
+            <Button onAction="#onLimparFiltrosClicked" text="Limpar Filtros" />
+        </HBox>
+
+        <TableView fx:id="tblHistorico" layoutY="50" prefHeight="400" prefWidth="800">
+            <columns>
+                <TableColumn fx:id="colunaUsuario" prefWidth="100" text="Usuário" />
+                <TableColumn fx:id="colunaAcao" prefWidth="150" text="Ação" />
+                <TableColumn fx:id="colunaEntidade" prefWidth="150" text="Entidade" />
+                <TableColumn fx:id="colunaDetalhes" prefWidth="200" text="Detalhes" />
+                <TableColumn fx:id="colunaDataHora" prefWidth="200" text="Data e Hora" />
+            </columns>
+        </TableView>
+    </children>
+    <ImageView fitHeight="27.0" fitWidth="38.0" layoutX="752.0" layoutY="450.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@imagens/Sollid.png" />
+        </image>
+    </ImageView>
+
+    <Button layoutX="691.0" layoutY="450.0" mnemonicParsing="false" onAction="#voltar" style="-fx-background-color: red;" text="HOME" />
+
+</AnchorPane>

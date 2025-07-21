@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
 import javafx.util.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -64,12 +65,26 @@ public class EntradaProController implements UsuarioAware {
 
     @Autowired
     private CategoriaService categoriaService;
+    @FXML
+    private Button btnBuscar;
 
 
     private Usuario usuarioLogado;
 
     @FXML
     public void initialize() {
+
+        //Botoes de enter por acao
+        txtNome.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER){
+                btnBuscar.fire();
+            }
+        });
+        txtCodigo.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER){
+                btnBuscar.fire();
+            }
+        });
 
         List<Fornecedor> fornecedores = fornecedorService.findAll();
         fornecedorCombo.getItems().addAll(fornecedores);
