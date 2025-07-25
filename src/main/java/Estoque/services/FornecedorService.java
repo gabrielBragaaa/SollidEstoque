@@ -24,6 +24,10 @@ public class FornecedorService {
         return obj.get();
     }
 
+    public Fornecedor insert(Fornecedor fornecedor) {
+        return fornecedorRepository.save(fornecedor);
+    }
+
 
 }
 

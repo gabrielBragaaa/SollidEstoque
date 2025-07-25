@@ -27,10 +27,10 @@
              <Button fx:id="btnExportar" layoutX="318.0" layoutY="154.0" onAction="#exportarRelatorioPDF" style="-fx-background-color: yellow;" text="Exportar PDF" />
              <ComboBox fx:id="tipoRelatorioComboBox" layoutX="390.0" layoutY="88.0" prefHeight="25.0" prefWidth="103.0" />
               <Label layoutX="296.0" layoutY="16.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Gerar Relatório" />
-              <Button layoutX="575.0" layoutY="17.0" onAction="#voltar" style="-fx-background-color: red;" text="HOME" />
+              <Button layoutX="612.0" layoutY="17.0" onAction="#voltar" style="-fx-background-color: red;" text="HOME" />
       
                     <!-- Título e logo -->
-              <ImageView fitHeight="51.0" fitWidth="74.0" layoutX="664.0" pickOnBounds="true" preserveRatio="true">
+              <ImageView fitHeight="27.0" fitWidth="38.0" layoutX="677.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                   <image>
                       <Image url="@imagens/Sollid.png" />
                   </image>

@@ -20,6 +20,7 @@ import javafx.scene.input.KeyCode;
 import javafx.util.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
@@ -36,6 +37,9 @@ public class EntradaProController implements UsuarioAware {
     private TextField txtQuantidade;
     @FXML
     private TextField txtPreco;
+    @FXML
+    private TextField txtFornecedorField;
+
 
     //tabele de buscar
     @FXML
@@ -76,12 +80,12 @@ public class EntradaProController implements UsuarioAware {
 
         //Botoes de enter por acao
         txtNome.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER){
+            if (event.getCode() == KeyCode.ENTER) {
                 btnBuscar.fire();
             }
         });
         txtCodigo.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER){
+            if (event.getCode() == KeyCode.ENTER) {
                 btnBuscar.fire();
             }
         });
@@ -100,7 +104,7 @@ public class EntradaProController implements UsuarioAware {
         // Carrega as categorias no ComboBox e exibe seus nomes
         List<Categoria> categorias = categoriaService.findAll();
         categoriaCombo.getItems().addAll(categorias);
-        categoriaCombo.setCellFactory(param -> new javafx.scene.control.ListCell<Categoria>() {
+        categoriaCombo.setCellFactory(param -> new ListCell<Categoria>() {
             @Override
             protected void updateItem(Categoria item, boolean empty) {
                 super.updateItem(item, empty);
@@ -120,7 +124,7 @@ public class EntradaProController implements UsuarioAware {
         });
 
 
-            categoriaCombo.setButtonCell(new ListCell<>() {
+        categoriaCombo.setButtonCell(new ListCell<>() {
             @Override
             protected void updateItem(Categoria item, boolean empty) {
                 super.updateItem(item, empty);
@@ -163,6 +167,27 @@ public class EntradaProController implements UsuarioAware {
             }
         });
 
+        // Quando o usuário seleciona um fornecedor, desabilita o campo de novo fornecedor
+        fornecedorCombo.valueProperty().addListener((obs, antigo, novo) -> {
+            if (novo != null) {
+                txtFornecedorField.setDisable(true);
+                txtFornecedorField.clear();
+            } else {
+                txtFornecedorField.setDisable(false);
+            }
+        });
+
+        // Quando o usuário digita um novo fornecedor, desabilita o combo
+        txtFornecedorField.textProperty().addListener((obs, antigo, novo) -> {
+            if (!novo.trim().isEmpty()) {
+                fornecedorCombo.setDisable(true);
+                fornecedorCombo.getSelectionModel().clearSelection();
+            } else {
+                fornecedorCombo.setDisable(false);
+            }
+        });
+
+
     }
 
 
@@ -180,6 +205,7 @@ public class EntradaProController implements UsuarioAware {
         txtQuantidade.clear();
         fornecedorCombo.getSelectionModel().clearSelection();
         categoriaCombo.getSelectionModel().clearSelection();
+        txtFornecedorField.clear();
     }
 
     @FXML
@@ -205,7 +231,7 @@ public class EntradaProController implements UsuarioAware {
                 produtoService.insert(existente);
                 showAlert(AlertType.INFORMATION, "Produto já existente. Quantidade atualizada com sucesso!");
 
-            } else{
+            } else {
                 // Cadastra novo produto
                 Produto novo = new Produto();
                 novo.setNome(txtNome.getText());
@@ -225,7 +251,24 @@ public class EntradaProController implements UsuarioAware {
                     showAlert(AlertType.ERROR, "Preço inválido! Certifique-se de que o valor esteja no formato correto.");
                     return;
                 }
-                novo.setFornecedor(fornecedorCombo.getValue());
+                Fornecedor fornecedorSelecionado = fornecedorCombo.getValue();
+                String nomeNovoFornecedor = txtFornecedorField.getText().trim();
+
+                if (fornecedorSelecionado != null) {
+                    novo.setFornecedor(fornecedorSelecionado);
+                } else if (!nomeNovoFornecedor.isEmpty()) {
+                    Fornecedor novoF = new Fornecedor();
+                    novoF.setNomeFornecedor(nomeNovoFornecedor);
+                    Fornecedor salvo = fornecedorService.insert(novoF);
+                    novo.setFornecedor(salvo);
+
+
+                    fornecedorCombo.getItems().add(salvo);
+                } else {
+                    showAlert(AlertType.WARNING, "Selecione ou digite um fornecedor.");
+                    return;
+                }
+
                 novo.setCategoria(categoriaCombo.getValue());
                 produtoService.insert(novo);
                 showAlert(AlertType.INFORMATION, "Novo produto cadastrado com sucesso!");

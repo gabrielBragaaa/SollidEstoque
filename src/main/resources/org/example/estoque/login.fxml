@@ -10,9 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="594.0" prefWidth="599.0" spacing="15.0"
-      style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.controller.LoginController">
+<VBox alignment="CENTER" prefHeight="594.0" prefWidth="599.0" spacing="15.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.controller.LoginController">
 
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -25,7 +23,7 @@
                 <Image url="@imagens/LogoSollid.png" />
             </image>
         </ImageView>
-        <Label fx:id="loginSucces" textFill="#2d803c"/>
+        <Label fx:id="loginSucces" prefHeight="17.0" prefWidth="107.0" textFill="#2d803c" />
 
         <Label style="-fx-font-size: 14px; -fx-font-weight: bold;" text="LOGIN" />
         <Label fx:id="loginError" textFill="red" />
@@ -50,6 +48,7 @@
             <PasswordField fx:id="passwordField" promptText="Senha" styleClass="custom-field" />
         </HBox>
         <Button fx:id="btnEntrar" onAction="#onLoginClicked" styleClass="login-button" text="Entrar" />
+      <Label text="© 2025 Sollid Comércio LTDA." />
 
     </children>
 </VBox>
