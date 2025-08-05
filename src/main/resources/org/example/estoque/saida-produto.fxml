@@ -59,7 +59,7 @@
                                </TableView>
                               <Label layoutX="14.0" layoutY="294.0" prefHeight="19.0" prefWidth="51.0" style="-fx-background-color: ORANGE;" text="PEDIDOS:" />
                               <TextField fx:id="txtCampoBuscaVenda" layoutX="10.0" layoutY="14.0" prefHeight="25.0" prefWidth="257.0" promptText="Buscar por nomeFornecedor ou ID" />
-                              <Button fx:id="btnBuscarVenda" layoutX="286.0" layoutY="14.0" onAction="#buscarProdutos" prefHeight="25.0" prefWidth="97.0" text="Buscar Produto" />
+                              <Button fx:id="btnBuscarVenda" layoutX="286.0" layoutY="14.0" onAction="#buscarProdutos" prefHeight="25.0" prefWidth="97.0" style="-fx-background-color: #1affff;" text="Buscar Produto" />
       
                                <ImageView fitHeight="51.0" fitWidth="40.0" layoutX="724.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -92,7 +92,7 @@
                            </columns>
                         </TableView>
                             <TextField fx:id="txtCampoBuscaExcluir" layoutX="14.0" layoutY="27.0" prefHeight="27.0" prefWidth="259.0" promptText="Digite ID ou Código" />
-                            <Button fx:id="btnBuscarExcluir" layoutX="283.0" layoutY="27.0" onAction="#buscarProdutoParaExcluir" prefHeight="27.0" prefWidth="90.0" text="Buscar" />
+                            <Button fx:id="btnBuscarExcluir" layoutX="283.0" layoutY="27.0" onAction="#buscarProdutoParaExcluir" prefHeight="27.0" prefWidth="101.0" style="-fx-background-color: #1affff;" text="Buscar Produto" />
                             <Button fx:id="btnExcluirProduto" layoutX="400.0" layoutY="27.0" onAction="#ExcluirProduto" prefHeight="27.0" prefWidth="90.0" style="-fx-background-color: red;" text="Excluir" visible="false" />
 
                             <ImageView fitHeight="51.0" fitWidth="40.0" layoutX="724.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
