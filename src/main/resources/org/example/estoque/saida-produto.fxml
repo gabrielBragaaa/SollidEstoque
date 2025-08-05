@@ -97,12 +97,12 @@
                             <Button fx:id="btnBuscarExcluir" layoutX="283.0" layoutY="27.0" onAction="#buscarProdutoParaExcluir" prefHeight="27.0" prefWidth="90.0" text="Buscar" />
                             <Button fx:id="btnExcluirProduto" layoutX="400.0" layoutY="27.0" onAction="#ExcluirProduto" prefHeight="27.0" prefWidth="90.0" style="-fx-background-color: red;" text="Excluir" visible="false" />
 
-                            <ImageView fitHeight="51.0" fitWidth="40.0" layoutX="669.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                            <ImageView fitHeight="51.0" fitWidth="40.0" layoutX="724.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
                                 <image>
                                     <Image url="@imagens/Sollid.png" />
                                 </image>
                             </ImageView>
-                            <Button layoutX="601.0" layoutY="20.0" onAction="#voltar" style="-fx-background-color: blue;" text="HOME" />
+                            <Button layoutX="659.0" layoutY="28.0" onAction="#voltar" style="-fx-background-color: blue;" text="HOME" />
                         </children>
                     </AnchorPane>
                 </content>

@@ -22,10 +22,10 @@
 
         <TextField fx:id="txtQuantidade" layoutX="20.0" layoutY="123.0" prefWidth="150" promptText="Quantidade Inicial" />
         <TextField fx:id="txtPreco" layoutX="190.0" layoutY="123.0" prefWidth="150" promptText="Preço Unitário" text="R$ " />
-        <TextField fx:id="txtFornecedorField" layoutX="361.0" layoutY="123.0" prefWidth="300.0" promptText="Novo Fornecedor" />
+        <TextField fx:id="txtFornecedorField" layoutX="361.0" layoutY="123.0" prefHeight="25.0" prefWidth="150.0" promptText="Novo Fornecedor" />
 
-        <ComboBox fx:id="fornecedorCombo" layoutX="20.0" layoutY="185.0" prefWidth="300" promptText="Fornecedor" />
-        <ComboBox fx:id="categoriaCombo" layoutX="340.0" layoutY="185.0" prefWidth="300" promptText="Categoria" />
+        <ComboBox fx:id="fornecedorCombo" layoutX="20.0" layoutY="185.0" prefHeight="25.0" prefWidth="150.0" promptText="Fornecedor" />
+        <ComboBox fx:id="categoriaCombo" layoutX="190.0" layoutY="185.0" prefHeight="25.0" prefWidth="150.0" promptText="Categoria" />
 
 
         <Button layoutX="614.0" layoutY="447.0" onAction="#salvarProduto" style="-fx-background-color: #33ff33; -fx-text-fill: black;" text="Salvar Produto" />
@@ -53,7 +53,7 @@
       <Label layoutX="20.0" layoutY="106.0" text="Quantidade" />
       <Label layoutX="190.0" layoutY="106.0" text="Preço" />
       <Label layoutX="20.0" layoutY="168.0" text="Fornecedor" />
-      <Label layoutX="340.0" layoutY="168.0" text="Categoria" />
+      <Label layoutX="190.0" layoutY="168.0" text="Categoria" />
       <Label layoutX="362.0" layoutY="106.0" text="Fornecedor" />
       <Label layoutX="422.0" layoutY="106.0" textFill="#ff1a1a" />
       <AmbientLight color="CHARTREUSE" lightOn="true" />
