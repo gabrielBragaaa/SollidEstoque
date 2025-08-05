@@ -106,9 +106,8 @@ public class SaidaProController implements Initializable, UsuarioAware {
     @FXML
     private TextField txtCampoBuscaVenda;
 
-    @FXML
+    @FXML 
     private TextField txtObservacao;
-
     @FXML
     private TextField txtCampoQuantidadeSaida;
 

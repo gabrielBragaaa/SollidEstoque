@@ -78,7 +78,7 @@ public class TelaInicialController implements Initializable, UsuarioAware {
     public void buscarProd(ActionEvent event) {
         try {
             System.out.println("Usuário atual: " + usuarioLogado); // debug
-            TelaLoader.carregarTela("/org/example/estoque/buscar-produtos.fxml", "Consultar Estoque", usuarioLogado);
+            TelaLoader.carregarTela("/org/example/estoque/consultar-estoque.fxml", "Consultar Estoque", usuarioLogado);
 
         } catch (Exception e) {
             e.printStackTrace();

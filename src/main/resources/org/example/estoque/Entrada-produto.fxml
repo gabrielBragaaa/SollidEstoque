@@ -13,7 +13,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.controller.EntradaProController">
+<AnchorPane prefHeight="482.0" prefWidth="761.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Estoque.controller.EntradaProController">
     <children>
         <Label layoutX="20.0" layoutY="18.0" style="-fx-font-size: 20;" text="Entrada de Produto" />
 
@@ -28,7 +28,7 @@
         <ComboBox fx:id="categoriaCombo" layoutX="340.0" layoutY="185.0" prefWidth="300" promptText="Categoria" />
 
 
-        <Button layoutX="614.0" layoutY="459.0" onAction="#salvarProduto" style="-fx-background-color: #33ff33; -fx-text-fill: black;" text="Salvar Produto" />
+        <Button layoutX="614.0" layoutY="447.0" onAction="#salvarProduto" style="-fx-background-color: #33ff33; -fx-text-fill: black;" text="Salvar Produto" />
         <Button fx:id="btnBuscar" layoutX="592.0" layoutY="20.0" onAction="#buscarProduto" style="-fx-background-color: #1affff;" text="Buscar Produto" />
 
 
@@ -43,7 +43,7 @@
                 <TableColumn fx:id="colCategoria" prefWidth="111.0" text="Categoria" />
             </columns>
         </TableView>
-        <ImageView fitHeight="30.0" fitWidth="39.0" layoutX="724.0" layoutY="456.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="30.0" fitWidth="39.0" layoutX="720.0" layoutY="445.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@imagens/Sollid.png" />
             </image>

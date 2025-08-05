@@ -23,9 +23,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Stream;
 
 @Component
@@ -186,8 +188,22 @@ public class GerarRelatoController implements UsuarioAware {
         TableColumn<Produto, Integer> quantidadeCol = new TableColumn<>("Quantidade");
         quantidadeCol.setCellValueFactory(new PropertyValueFactory<>("quantidade_inicial"));
 
-        TableColumn<Produto, Double> precoCol = new TableColumn<>("Preço Unitário");
+        TableColumn<Produto,Double> precoCol = new  TableColumn<>("Preço Unitário");
         precoCol.setCellValueFactory(new PropertyValueFactory<>("preco_unitario"));
+
+        precoCol.setCellFactory(coluna -> new TableCell<Produto , Double>(){
+            private final NumberFormat formatoMoeda = NumberFormat.getCurrencyInstance(new Locale("pt","BR"));
+
+            @Override
+            protected void updateItem(Double preco, boolean empty){
+                super.updateItem(preco, empty);
+                if (empty || preco == null){
+                    setText(null);
+                }else{
+                    setText(formatoMoeda.format(preco));
+                }
+            }
+        });
 
         tblRelatorio.getColumns().addAll(codigoCol,fornecedorCol, nomeCol, quantidadeCol, precoCol);
     }

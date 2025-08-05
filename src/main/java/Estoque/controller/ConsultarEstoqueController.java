@@ -25,7 +25,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 @Component
-public class BuscaProdutosController implements Initializable , UsuarioAware {
+public class ConsultarEstoqueController implements Initializable , UsuarioAware {
 
     @Autowired
     private ProdutoRepository repository;

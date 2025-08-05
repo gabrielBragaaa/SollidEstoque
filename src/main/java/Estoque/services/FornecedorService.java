@@ -27,7 +27,7 @@ public class FornecedorService {
     public Fornecedor insert(Fornecedor fornecedor) {
         return fornecedorRepository.save(fornecedor);
     }
-
+ 
 
 }
 
