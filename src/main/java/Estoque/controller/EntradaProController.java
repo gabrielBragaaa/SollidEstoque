@@ -197,8 +197,8 @@ public class EntradaProController implements UsuarioAware {
     }
 
 
+    @FXML
     private void limparCampos() {
-
         txtNome.clear();
         txtCodigo.clear();
         txtPreco.clear();

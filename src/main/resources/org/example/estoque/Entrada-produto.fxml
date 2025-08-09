@@ -29,7 +29,7 @@
 
 
         <Button layoutX="614.0" layoutY="447.0" onAction="#salvarProduto" style="-fx-background-color: #33ff33; -fx-text-fill: black;" text="Salvar Produto" />
-        <Button fx:id="btnBuscar" layoutX="592.0" layoutY="20.0" onAction="#buscarProduto" style="-fx-background-color: #1affff;" text="Buscar Produto" />
+        <Button fx:id="btnBuscar" layoutX="517.0" layoutY="73.0" onAction="#buscarProduto" style="-fx-background-color: #1affff;" text="Buscar Produto" />
 
 
         <Button layoutX="702.0" layoutY="20.0" onAction="#cadastroPhome" style="-fx-background-color: #ff1a1a;" text="HOME" />
@@ -59,5 +59,6 @@
       <AmbientLight color="CHARTREUSE" lightOn="true" />
       <ParallelCamera />
       <PointLight color="CHARTREUSE" lightOn="true" />
+      <Button layoutX="623.0" layoutY="73.0" onAction="#limparCampos" mnemonicParsing="false" prefHeight="25.0" prefWidth="105.0" text="Limpar Campos" />
     </children>
 </AnchorPane>
