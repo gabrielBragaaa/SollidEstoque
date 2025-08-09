@@ -78,6 +78,8 @@ public class EntradaProController implements UsuarioAware {
     @FXML
     public void initialize() {
 
+        NumberFormat formatBr = NumberFormat.getCurrencyInstance(new Locale("pt","BR"));
+
         //Botoes de enter por acao
         txtNome.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
@@ -157,7 +159,11 @@ public class EntradaProController implements UsuarioAware {
         colNome.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getNome()));
         colCodigo.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCodigo()));
         colQuantidade.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getQuantidade_inicial()).asObject());
-        colPreco.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getPreco_unitario()).asObject());
+        colPreco.setCellValueFactory(data -> {
+            double preco = data.getValue().getPreco_unitario();
+            return new SimpleStringProperty(formatBr.format(preco));
+        });
+
         colFornecedor.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getFornecedor() != null ? data.getValue().getFornecedor().getNomeFornecedor() : ""));
         colCategoria.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCategoria() != null ? data.getValue().getCategoria().getNome() : ""));
 
@@ -321,10 +327,13 @@ public class EntradaProController implements UsuarioAware {
     }
 
     private void preencherCampos(Produto produto) {
+
+        NumberFormat formatBr = NumberFormat.getCurrencyInstance(new Locale("pt","BR"));
+
         txtNome.setText(produto.getNome());
         txtCodigo.setText(produto.getCodigo());
         txtQuantidade.setText(String.valueOf(produto.getQuantidade_inicial()));
-        txtPreco.setText(String.valueOf(produto.getPreco_unitario()));
+        txtPreco.setText(formatBr.format(produto.getPreco_unitario()));
         fornecedorCombo.setValue(produto.getFornecedor());
         categoriaCombo.setValue(produto.getCategoria());
     }
