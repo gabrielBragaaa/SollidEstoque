@@ -159,11 +159,18 @@ public class EntradaProController implements UsuarioAware {
         colNome.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getNome()));
         colCodigo.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCodigo()));
         colQuantidade.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getQuantidade_inicial()).asObject());
-        colPreco.setCellValueFactory(data -> {
-            double preco = data.getValue().getPreco_unitario();
-            return new SimpleStringProperty(formatBr.format(preco));
+        colPreco.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getPreco_unitario()).asObject());
+        colPreco.setCellFactory(column -> new TableCell<Produto,Double>() {
+            @Override
+            protected void updateItem(Double preco, boolean empty){
+                super.updateItem(preco, empty);
+                if (empty || preco == null){
+                    setText(null);
+                }else {
+                    setText(formatBr.format(preco));
+                }
+            }
         });
-
         colFornecedor.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getFornecedor() != null ? data.getValue().getFornecedor().getNomeFornecedor() : ""));
         colCategoria.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCategoria() != null ? data.getValue().getCategoria().getNome() : ""));
 
