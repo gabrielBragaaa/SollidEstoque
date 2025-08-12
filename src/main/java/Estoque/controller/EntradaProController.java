@@ -78,7 +78,7 @@ public class EntradaProController implements UsuarioAware {
     @FXML
     public void initialize() {
 
-        NumberFormat formatBr = NumberFormat.getCurrencyInstance(new Locale("pt","BR"));
+        NumberFormat formatBr = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
         //Botoes de enter por acao
         txtNome.setOnKeyPressed(event -> {
@@ -160,13 +160,13 @@ public class EntradaProController implements UsuarioAware {
         colCodigo.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCodigo()));
         colQuantidade.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getQuantidade_inicial()).asObject());
         colPreco.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getPreco_unitario()).asObject());
-        colPreco.setCellFactory(column -> new TableCell<Produto,Double>() {
+        colPreco.setCellFactory(column -> new TableCell<Produto, Double>() {
             @Override
-            protected void updateItem(Double preco, boolean empty){
+            protected void updateItem(Double preco, boolean empty) {
                 super.updateItem(preco, empty);
-                if (empty || preco == null){
+                if (empty || preco == null) {
                     setText(null);
-                }else {
+                } else {
                     setText(formatBr.format(preco));
                 }
             }
@@ -335,7 +335,7 @@ public class EntradaProController implements UsuarioAware {
 
     private void preencherCampos(Produto produto) {
 
-        NumberFormat formatBr = NumberFormat.getCurrencyInstance(new Locale("pt","BR"));
+        NumberFormat formatBr = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
         txtNome.setText(produto.getNome());
         txtCodigo.setText(produto.getCodigo());

@@ -49,6 +49,7 @@
         </HBox>
         <Button fx:id="btnEntrar" onAction="#onLoginClicked" styleClass="login-button" text="Entrar" />
       <Label text="© 2025 Sollid Comércio LTDA." />
+      <Label text="V-B.4" />
 
     </children>
 </VBox>
