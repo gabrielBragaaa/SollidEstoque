@@ -647,8 +647,41 @@ public class SaidaProController implements Initializable, UsuarioAware {
 
             // A geração do PDF (igual à sua lógica anterior)
             Document document = new Document(PageSize.A4);
-            PdfWriter.getInstance(document, new FileOutputStream(file));
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
             document.open();
+
+            try {
+                // 1) Carrega a imagem do classpath (src/main/resources/...)
+                URL logoUrl = SaidaProController.class.getResource("/org/example/estoque/imagens/LogoSollid.png");
+                if (logoUrl == null) {
+                    System.err.println("⚠️ Logo não encontrada em /org/example/estoque/imagens/LogoSollid.png");
+                } else {
+                    Image logo = Image.getInstance(logoUrl);
+
+                    // 2) Redimensiona e centraliza
+                    logo.scaleToFit(400, 400);
+                    float x = (PageSize.A4.getWidth() - logo.getScaledWidth()) / 2f;
+                    float y = (PageSize.A4.getHeight() - logo.getScaledHeight()) / 2f;
+                    logo.setAbsolutePosition(x, y);
+
+                    // 3) Aplica opacidade (marca d'água)
+                    PdfGState gs = new PdfGState();
+                    gs.setFillOpacity(0.12f);   // ajuste a opacidade aqui (0.05 a 0.25 costuma ficar bom)
+                    gs.setStrokeOpacity(0.12f);
+
+                    // 4) Desenha POR CIMA do conteúdo (visível sobre o texto)
+                    PdfContentByte over = writer.getDirectContent();
+                    over.saveState();
+                    over.setGState(gs);
+                    over.addImage(logo);
+                    over.restoreState();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+
 
             Font titleFont = new Font(Font.HELVETICA, 16, Font.BOLD);
             Font regularFont = new Font(Font.HELVETICA, 12);
@@ -685,7 +718,6 @@ public class SaidaProController implements Initializable, UsuarioAware {
             }
 
             document.add(new Paragraph(String.format("TOTAL DO PEDIDO: R$ %.2f\n", total), boldFont));
-            document.add(new Paragraph("Data: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), regularFont));
             String tecnico = txtTecnicoResponsavel.getText();
             String cliente = txtNomeCliente.getText();
             String cnpj = txtCnpj.getText();
@@ -694,6 +726,7 @@ public class SaidaProController implements Initializable, UsuarioAware {
             document.add(new Paragraph("\nCNPJ: " + (cnpj.isEmpty() ? "Não informado" : cnpj), regularFont));
             document.add(new Paragraph("Cliente: " + (cliente.isEmpty() ? "Não informado" : cliente), regularFont));
             document.add(new Paragraph("OBSERVAÇÃO: " + (obs.isEmpty() ? "Não informado" : obs), regularFont));
+            document.add(new Paragraph("\nData: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), regularFont));
             document.add(new Paragraph("\n* Sollid Comercio LTDA *", regularFont));
             document.close();
 
