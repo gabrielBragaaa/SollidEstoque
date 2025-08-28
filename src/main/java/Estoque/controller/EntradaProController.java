@@ -143,11 +143,7 @@ public class EntradaProController implements UsuarioAware {
 
         txtPreco.focusedProperty().addListener((obs, oldVal, newVal) -> {
             if (!newVal) { // perdeu o foco
-                String texto = txtPreco.getText()
-                        .replace("R$", "")
-                        .replace(" ", "")
-                        .replace(".", "")
-                        .replace(",", ".");
+                String texto = txtPreco.getText().replace("R$", "").replace(" ", "").replace(".", "").replace(",", ".");
                 try {
                     double valor = Double.parseDouble(texto);
                     txtPreco.setText(formatoBR.format(valor));
@@ -203,12 +199,10 @@ public class EntradaProController implements UsuarioAware {
 
     }
 
-
     @Override
     public void setUsuarioLogado(Usuario usuario) {
         this.usuarioLogado = usuario;
     }
-
 
     @FXML
     private void limparCampos() {
@@ -252,12 +246,8 @@ public class EntradaProController implements UsuarioAware {
                 novo.setQuantidade_inicial(quantidade);
                 try {
                     // Corrigido: aceita valor como "R$ 789.123,45"
-                    String textoPreco = txtPreco.getText()
-                            .replace("R$", "")
-                            .replace("\u00A0", "") // NBSP invisível
-                            .replace(" ", "")
-                            .replace(".", "")
-                            .replace(",", ".");
+                    String textoPreco = txtPreco.getText().replace("R$", "").replace("\u00A0", "") // NBSP invisível
+                            .replace(" ", "").replace(".", "").replace(",", ".");
                     double preco = Double.parseDouble(textoPreco);
                     novo.setPreco_unitario(preco);
                 } catch (Exception e) {

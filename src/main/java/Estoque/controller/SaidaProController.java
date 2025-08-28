@@ -34,6 +34,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
 import java.text.ParseException;
+
 @Component
 public class SaidaProController implements Initializable, UsuarioAware {
 
@@ -106,7 +107,7 @@ public class SaidaProController implements Initializable, UsuarioAware {
     @FXML
     private TextField txtCampoBuscaVenda;
 
-    @FXML 
+    @FXML
     private TextField txtObservacao;
     @FXML
     private TextField txtCampoQuantidadeSaida;
@@ -571,7 +572,7 @@ public class SaidaProController implements Initializable, UsuarioAware {
 
         String cliente = txtNomeCliente.getText();
         sb.append("Cliente: ").append(cliente.isEmpty() ? "Não Informado" : cliente).append("\n");
- 
+
         String cnpj = txtCnpj.getText();
         sb.append("CNPJ: ").append(cnpj.isEmpty() ? "Não Informado" : cnpj).append("\n");
 
@@ -600,6 +601,7 @@ public class SaidaProController implements Initializable, UsuarioAware {
         Optional<ButtonType> result = alert.showAndWait();
         return result.isPresent() && result.get() == salvar;
     }
+
     @FXML
     public void finalizarSaida() {
         if (produtosSelecionados.isEmpty()) {
@@ -678,17 +680,19 @@ public class SaidaProController implements Initializable, UsuarioAware {
                 document.add(new Paragraph("Fornecedor: " + p.getFornecedor().getNomeFornecedor(), regularFont));
                 document.add(new Paragraph("Quantidade: " + p.getQuantidade_inicial(), regularFont));
                 document.add(new Paragraph(String.format("Preço Unitário: R$ %.2f", p.getPreco_unitario()), regularFont));
-                document.add(new Paragraph(String.format("Subtotal: R$ %.2f", subtotal), regularFont));
+                document.add(new Paragraph(String.format("\nSubtotal: R$ %.2f", subtotal), regularFont));
                 document.add(new Paragraph("--------------------------------------------------"));
             }
 
             document.add(new Paragraph(String.format("TOTAL DO PEDIDO: R$ %.2f\n", total), boldFont));
             document.add(new Paragraph("Data: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), regularFont));
             String tecnico = txtTecnicoResponsavel.getText();
+            String cliente = txtNomeCliente.getText();
             String cnpj = txtCnpj.getText();
             String obs = txtObservacao.getText();
-            document.add(new Paragraph("Técnico Responsável: " + (tecnico.isEmpty() ? "Não informado" : tecnico), regularFont));
-            document.add(new Paragraph("CNPJ: " + (cnpj.isEmpty() ? "Não informado" : cnpj), regularFont));
+            document.add(new Paragraph("\nTécnico Responsável: " + (tecnico.isEmpty() ? "Não informado" : tecnico), regularFont));
+            document.add(new Paragraph("\nCNPJ: " + (cnpj.isEmpty() ? "Não informado" : cnpj), regularFont));
+            document.add(new Paragraph("Cliente: " + (cliente.isEmpty() ? "Não informado" : cliente), regularFont));
             document.add(new Paragraph("OBSERVAÇÃO: " + (obs.isEmpty() ? "Não informado" : obs), regularFont));
             document.add(new Paragraph("\n* Sollid Comercio LTDA *", regularFont));
             document.close();
